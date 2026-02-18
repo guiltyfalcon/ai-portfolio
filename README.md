@@ -13,6 +13,24 @@ An AI-powered fitness and nutrition assistant built with Streamlit and OpenAI GP
 
 ---
 
+### 2. 😊😐😞 [Sentiment Analyzer](./sentiment-analyzer/)
+A machine learning-powered sentiment analysis tool that classifies text as positive, negative, or neutral. Features real-time analysis, batch processing, and visual analytics with confidence scoring.
+
+**Tech:** Python, Streamlit, scikit-learn, NLTK, Plotly  
+**Demo:** [Link to live demo](https://sentiment-analyzer-demo.streamlit.app) - *coming soon*  
+**Code:** [`/sentiment-analyzer/`](./sentiment-analyzer/)
+
+---
+
+### 3. 🖼️🤖 [Image Classifier](./image-classifier/)
+A deep learning image classification application using TensorFlow/Keras and MobileNetV2. Classify images into 1000+ ImageNet categories with confidence scores.
+
+**Tech:** Python, Streamlit, TensorFlow, Keras, Pillow  
+**Demo:** [Link to live demo](https://image-classifier-demo.streamlit.app) - *coming soon*  
+**Code:** [`/image-classifier/`](./image-classifier/)
+
+---
+
 ## 🚀 Getting Started
 
 Each project has its own README with setup instructions. Navigate to a project folder to get started.
@@ -34,9 +52,11 @@ cd ai-portfolio
 
 ## 🔧 Technical Skills Demonstrated
 
-- **AI/ML:** Natural Language Processing, GPT integration, prompt engineering
-- **Web Development:** Streamlit, API integration
-- **Automation:** Web scraping, data processing
+- **AI/ML:** Natural Language Processing, GPT integration, prompt engineering, sentiment analysis, deep learning, computer vision
+- **Web Development:** Streamlit, API integration, interactive dashboards
+- **Deep Learning:** TensorFlow, Keras, CNNs, transfer learning, MobileNetV2
+- **Machine Learning:** scikit-learn, text classification, feature extraction
+- **Automation:** Web scraping, data processing, batch processing
 - **Best Practices:** Clean code, documentation, version control
 
 ---
