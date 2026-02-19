@@ -197,27 +197,31 @@ with tab2:
             pick = st.text_input("Custom Pick", placeholder="Enter your pick")
     
     with col2:
-        odds = st.number_input("Odds", value=-110, key="odds_input")
+        # Initialize odds in session state if not present
+        if 'odds_value' not in st.session_state:
+            st.session_state['odds_value'] = -110
+        
+        odds = st.number_input("Odds", value=st.session_state['odds_value'], key="odds_input_widget")
         stake = st.number_input("Stake ($)", value=10.0, min_value=0.01, step=5.0, key="stake_input")
     
-    # Quick odds buttons
+    # Quick odds buttons - update session state before widget renders next time
     st.caption("Quick Odds:")
     qcol1, qcol2, qcol3, qcol4 = st.columns(4)
     with qcol1:
-        if st.button("-110", use_container_width=True):
-            st.session_state['odds_input'] = -110
+        if st.button("-110", use_container_width=True, key="btn_110"):
+            st.session_state['odds_value'] = -110
             st.rerun()
     with qcol2:
-        if st.button("+150", use_container_width=True):
-            st.session_state['odds_input'] = 150
+        if st.button("+150", use_container_width=True, key="btn_150"):
+            st.session_state['odds_value'] = 150
             st.rerun()
     with qcol3:
-        if st.button("+200", use_container_width=True):
-            st.session_state['odds_input'] = 200
+        if st.button("+200", use_container_width=True, key="btn_200"):
+            st.session_state['odds_value'] = 200
             st.rerun()
     with qcol4:
-        if st.button("-200", use_container_width=True):
-            st.session_state['odds_input'] = -200
+        if st.button("-200", use_container_width=True, key="btn_minus200"):
+            st.session_state['odds_value'] = -200
             st.rerun()
     
     if st.button("Add Bet", type="primary", use_container_width=True):
