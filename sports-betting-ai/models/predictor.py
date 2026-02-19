@@ -8,8 +8,6 @@ from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, brier_score_loss, classification_report
-import tensorflow as tf
-from tensorflow import keras
 from typing import Tuple, Dict, Optional
 import joblib
 import os
@@ -26,25 +24,6 @@ class SportsPredictionModel:
             'home_win_pct', 'away_win_pct', 'win_pct_diff',
             'home_advantage', 'home_games_played', 'away_games_played'
         ]
-    
-    def build_neural_network(self, input_dim: int) -> keras.Model:
-        """Build a simple neural network for win probability."""
-        model = keras.Sequential([
-            keras.layers.Dense(64, activation='relu', input_shape=(input_dim,)),
-            keras.layers.Dropout(0.3),
-            keras.layers.Dense(32, activation='relu'),
-            keras.layers.Dropout(0.2),
-            keras.layers.Dense(16, activation='relu'),
-            keras.layers.Dense(1, activation='sigmoid')
-        ])
-        
-        model.compile(
-            optimizer='adam',
-            loss='binary_crossentropy',
-            metrics=['accuracy']
-        )
-        
-        return model
     
     def train(self, X: pd.DataFrame, y: pd.Series, validation_split: float = 0.2) -> Dict:
         """
@@ -107,27 +86,6 @@ class SportsPredictionModel:
             'brier_score': brier_score_loss(y_val, lr_prob)
         }
         
-        # Train Neural Network (if enough data)
-        if len(X_train) > 100:
-            print("Training Neural Network...")
-            nn = self.build_neural_network(len(available_cols))
-            
-            nn.fit(
-                X_train, y_train,
-                epochs=50,
-                batch_size=32,
-                validation_split=0.1,
-                verbose=0
-            )
-            self.models['neural_network'] = nn
-            
-            nn_prob = nn.predict(X_val, verbose=0).flatten()
-            nn_pred = (nn_prob > 0.5).astype(int)
-            metrics['neural_network'] = {
-                'accuracy': accuracy_score(y_val, nn_pred),
-                'brier_score': brier_score_loss(y_val, nn_prob)
-            }
-        
         self.is_trained = True
         self.feature_cols = available_cols
         
@@ -152,10 +110,7 @@ class SportsPredictionModel:
         
         # Get predictions from each model
         for name, model in self.models.items():
-            if name == 'neural_network':
-                prob = model.predict(X, verbose=0).flatten()
-            else:
-                prob = model.predict_proba(X)[:, 1]
+            prob = model.predict_proba(X)[:, 1]
             predictions[name] = prob
         
         # Ensemble prediction (average)
@@ -170,20 +125,10 @@ class SportsPredictionModel:
         
         return results
     
-    def save(self, filepath: str):
-        """Save the trained model."""
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        joblib.dump({
-            'models': {k: v for k, v in self.models.items() if k != 'neural_network'},
-            'feature_cols': self.feature_cols,
-            'sport': self.sport,
-            'is_trained': self.is_trained
-        }, filepath)
-        
-        # Save NN separately
-        if 'neural_network' in self.models:
-            nn_path = filepath.replace('.pkl', '_nn.keras')
-            self.models['neural_network'].save(nn_path)
+        try:
+            model.save(filepath)
+        except Exception as e:
+            print(f"Warning: Could not save model: {e}")
     
     def load(self, filepath: str):
         """Load a trained model."""
@@ -192,11 +137,6 @@ class SportsPredictionModel:
         self.feature_cols = data['feature_cols']
         self.sport = data['sport']
         self.is_trained = data['is_trained']
-        
-        # Load NN if exists
-        nn_path = filepath.replace('.pkl', '_nn.keras')
-        if os.path.exists(nn_path):
-            self.models['neural_network'] = keras.models.load_model(nn_path)
 
 if __name__ == "__main__":
     # Test with dummy data
