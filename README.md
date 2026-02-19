@@ -40,6 +40,15 @@ A smart question-answering chatbot with conversation history, customizable syste
 
 ---
 
+### 5. 🏆 [Sports Betting AI](./sports-betting-ai/)
+A multi-sport prediction engine using machine learning to identify value bets across NBA, NFL, MLB, and NHL. Integrates with ESPN API and The Odds API to find +EV betting opportunities.
+
+**Tech:** Python, Streamlit, TensorFlow, scikit-learn, ESPN API, Odds API  
+**Demo:** [Link to live demo](https://sports-betting-ai-demo.streamlit.app) - *coming soon*  
+**Code:** [`/sports-betting-ai/`](./sports-betting-ai/)
+
+---
+
 ## 🚀 Getting Started
 
 Each project has its own README with setup instructions. Navigate to a project folder to get started.
