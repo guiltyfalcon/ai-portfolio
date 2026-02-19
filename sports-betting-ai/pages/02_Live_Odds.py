@@ -28,7 +28,13 @@ st.markdown("""
     .odds-box {
         background: rgba(0,210,255,0.1); border: 1px solid rgba(0,210,255,0.3);
         border-radius: 12px; padding: 12px; text-align: center;
-        font-weight: 700; color: #00d2ff;
+        font-weight: 700; color: #00d2ff; font-size: 1.1rem;
+    }
+    .odds-label {
+        font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .best-odds {
+        background: rgba(46,204,113,0.2); border-color: rgba(46,204,113,0.5); color: #2ecc71;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -37,28 +43,108 @@ st.markdown('<div class="main-title">📊 Live Odds</div>', unsafe_allow_html=Tr
 
 sport = st.selectbox("Sport", ['NBA', 'NFL', 'MLB', 'NHL'])
 
+# Bookmaker selector
+bookmakers = ['DraftKings', 'FanDuel', 'BetMGM', 'Pinnacle']
+col1, col2 = st.columns([3, 1])
+with col2:
+    selected_book = st.selectbox("Bookmaker", bookmakers)
+
 odds_api = OddsAPI()
 if not odds_api.is_configured():
     st.warning("⚠️ Add THEODDS_API_KEY to secrets for live odds")
+    st.info("Get free API key at: https://the-odds-api.com/")
 
 try:
     with st.spinner("Loading odds..."):
-        odds = odds_api.get_odds(sport.lower()) if odds_api.is_configured() else pd.DataFrame()
+        odds_df = odds_api.get_odds(sport.lower()) if odds_api.is_configured() else pd.DataFrame()
     
-    if not odds.empty:
-        for _, game in odds.head(10).iterrows():
-            st.markdown(f'''
-            <div class="odds-card">
-                <h4>{game['home_team']} vs {game['away_team']}</h4>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;">
-                    <div class="odds-box">Spread<br/>-5.5</div>
-                    <div class="odds-box">ML<br/>{int(game.get('home_ml', -110))}</div>
-                    <div class="odds-box">O/U<br/>226.5</div>
+    if not odds_df.empty:
+        st.success(f"✅ Loaded {len(odds_df)} games with live odds")
+        
+        for _, game in odds_df.head(10).iterrows():
+            # Get spread - could be home or away
+            spread_val = game.get('home_spread') or game.get('away_spread')
+            spread_str = f"{spread_val:+}" if spread_val else "N/A"
+            
+            # Get total
+            total_val = game.get('total')
+            total_str = f"{total_val}" if pd.notna(total_val) else "N/A"
+            
+            # Get moneyline odds
+            home_ml = game.get('home_ml')
+            away_ml = game.get('away_ml')
+            home_ml_str = f"{int(home_ml)}" if pd.notna(home_ml) else "N/A"
+            away_ml_str = f"{int(away_ml)}" if pd.notna(away_ml) else "N/A"
+            
+            # Calculate implied win probability
+            def american_to_prob(odds):
+                if pd.isna(odds): return 0.5
+                if odds > 0: return 100 / (odds + 100)
+                return abs(odds) / (abs(odds) + 100)
+            
+            home_prob = american_to_prob(home_ml) * 100 if pd.notna(home_ml) else 50
+            
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                # Game info
+                st.markdown(f"""
+                <div class="odds-card">
+                    <h4 style="margin:0;color:#fff;">{game['home_team']} vs {game['away_team']}</h4>
+                    <p style="color:#888;margin:5px 0;font-size:0.9rem;">{game.get('commence_time', 'TBD')}</p>
                 </div>
-            </div>
-            ''', unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                # Odds display
+                cols = st.columns(3)
+                with cols[0]:
+                    st.markdown(f"""
+                        <div class="odds-box">
+                            <div class="odds-label">Spread</div>
+                            {spread_str}
+                        </div>
+                    """, unsafe_allow_html=True)
+                with cols[1]:
+                    st.markdown(f"""
+                        <div class="odds-box">
+                            <div class="odds-label">Home ML</div>
+                            {home_ml_str}
+                            <div style="font-size:0.75rem;color:#888;">{home_prob:.0f}%</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                with cols[2]:
+                    st.markdown(f"""
+                        <div class="odds-box">
+                            <div class="odds-label">O/U</div>
+                            {total_str}
+                        </div>
+                    """, unsafe_allow_html=True)
     else:
-        st.info("No live odds available")
+        if odds_api.is_configured():
+            st.info("No live odds currently available. The Odds API may have no active games.")
+        else:
+            # Show sample data
+            st.info("💡 Showing sample format - add THEODDS_API_KEY for live data")
+            sample_games = [
+                {"home": "Lakers", "away": "Warriors", "spread": "-4.5", "ml": "-180", "total": "225.5"},
+                {"home": "Celtics", "away": "Heat", "spread": "-7.5", "ml": "-300", "total": "218.5"},
+            ]
+            for game in sample_games:
+                cols = st.columns([1, 2])
+                with cols[0]:
+                    st.markdown(f"""
+                    <div class="odds-card" style="opacity:0.5;">
+                        <h4>{game['home']} vs {game['away']}</h4>
+                        <p style="color:#888;">Sample Game</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                with cols[1]:
+                    c = st.columns(3)
+                    c[0].markdown(f'<div class="odds-box" style="opacity:0.5;">Spread<br/>{game["spread"]}</div>', unsafe_allow_html=True)
+                    c[1].markdown(f'<div class="odds-box" style="opacity:0.5;">ML<br/>{game["ml"]}</div>', unsafe_allow_html=True)
+                    c[2].markdown(f'<div class="odds-box" style="opacity:0.5;">O/U<br/>{game["total"]}</div>', unsafe_allow_html=True)
         
 except Exception as e:
-    st.error(f"Error: {e}")
+    st.error(f"Error loading odds: {e}")
+    st.info("📚 Make sure THEODDS_API_KEY is set in your Streamlit secrets")
