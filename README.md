@@ -31,6 +31,15 @@ A deep learning image classification application using TensorFlow/Keras and Mobi
 
 ---
 
+### 4. 💬 [QA Bot](./qa-bot/)
+A smart question-answering chatbot with conversation history, customizable system prompts, and model selection. Features real-time chat, token tracking, and adjustable AI behavior.
+
+**Tech:** Python, Streamlit, OpenAI GPT-4, GPT-4o-mini  
+**Demo:** [Link to live demo](https://qa-bot-demo.streamlit.app) - *coming soon*  
+**Code:** [`/qa-bot/`](./qa-bot/)
+
+---
+
 ## 🚀 Getting Started
 
 Each project has its own README with setup instructions. Navigate to a project folder to get started.
@@ -52,11 +61,11 @@ cd ai-portfolio
 
 ## 🔧 Technical Skills Demonstrated
 
-- **AI/ML:** Natural Language Processing, GPT integration, prompt engineering, sentiment analysis, deep learning, computer vision
-- **Web Development:** Streamlit, API integration, interactive dashboards
+- **AI/ML:** Natural Language Processing, GPT integration, prompt engineering, sentiment analysis, deep learning, computer vision, conversational AI
+- **Web Development:** Streamlit, API integration, interactive dashboards, real-time chat interfaces
 - **Deep Learning:** TensorFlow, Keras, CNNs, transfer learning, MobileNetV2
 - **Machine Learning:** scikit-learn, text classification, feature extraction
-- **Automation:** Web scraping, data processing, batch processing
+- **Automation:** AI agents, data processing, batch processing, LLM applications
 - **Best Practices:** Clean code, documentation, version control
 
 ---
