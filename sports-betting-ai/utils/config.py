@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# API Keys
-THEODDS_API_KEY = os.getenv('THEODDS_API_KEY', '8fcaab13355be4098fc79f7dbce9821b')
+# API Keys - NEVER hardcode here! Use environment variables or Streamlit secrets
+THEODDS_API_KEY = os.getenv('THEODDS_API_KEY')
 
 # Model Settings
 MODEL_CONFIG = {
