@@ -65,7 +65,9 @@ try:
         odds_df = odds_api.get_odds(sport.lower(), bookmaker=selected_book) if odds_api.is_configured() else pd.DataFrame()
     
     if not odds_df.empty:
-        st.success(f"✅ Loaded {len(odds_df)} games with live odds")
+        # Show which bookmaker we're displaying
+        actual_bookmaker = odds_df['bookmaker'].iloc[0] if 'bookmaker' in odds_df.columns else selected_book_display
+        st.success(f"✅ Loaded {len(odds_df)} games from {actual_bookmaker}")
         
         for _, game in odds_df.head(10).iterrows():
             # Get spread - could be home or away
