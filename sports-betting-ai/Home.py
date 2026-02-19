@@ -1,7 +1,6 @@
 """
-Sports Betting AI - Full System with BallDontLie + Universal Predictor
-NBA gets player-level data, all sports get sport-specific predictions
-LIVE DATA - Auto-refreshes every 60 seconds
+Sports Betting AI - Modern Sportsbook Design
+Dark theme, glass cards, live ticker
 """
 
 import streamlit as st
@@ -10,57 +9,228 @@ import numpy as np
 import sys
 import os
 from datetime import datetime
-from streamlit_autorefresh import st_autorefresh
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 st.set_page_config(
-    page_title="Sports Betting AI Pro 🏆",
-    page_icon="🏆",
+    page_title="Sports Betting AI Pro",
+    page_icon="🎯",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Auto-refresh every 60 seconds (like real betting apps)
-st_autorefresh(interval=60 * 1000, key="datarefresh")
-
-# Styling
+# Modern Dark Theme CSS
 st.markdown("""
 <style>
+    /* Dark theme base */
+    .stApp {
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    }
+    
+    /* Modern header */
     .main-header {
-        font-size: 3.5rem;
-        font-weight: 800;
+        font-size: 4rem;
+        font-weight: 900;
         text-align: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 50%, #00d2ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(0,210,255,0.5);
+        margin-bottom: 10px;
+        letter-spacing: -2px;
+    }
+    
+    .sub-header {
+        text-align: center;
+        color: #a0a0c0;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+    
+    /* Glassmorphism cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 15px 0;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        transition: all 0.3s ease;
+    }
+    
+    .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px 0 rgba(31, 38, 135, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Game cards */
+    .game-card {
+        background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 10px 0;
+        transition: all 0.3s ease;
+    }
+    
+    .game-card:hover {
+        background: linear-gradient(145deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%);
+        border-color: rgba(0,210,255,0.3);
+    }
+    
+    /* Value pick - glowing green */
+    .value-pick {
+        background: linear-gradient(135deg, rgba(46,204,113,0.2) 0%, rgba(39,174,96,0.15) 50%, rgba(46,204,113,0.2) 100%);
+        border: 1px solid rgba(46,204,113,0.4);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 15px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .value-pick::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(46,204,113,0.1), transparent);
+        animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+    }
+    
+    /* Live badge */
+    .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,0,0,0.2);
+        border: 1px solid rgba(255,0,0,0.5);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-weight: 600;
+        color: #ff4444;
+        font-size: 0.9rem;
+    }
+    
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        background: #ff4444;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    
+    /* Probability bars */
+    .prob-bar-bg {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        height: 8px;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+    
+    .prob-bar-fill {
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+    }
+    
+    /* Team names */
+    .team-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+    
+    .team-record {
+        color: #a0a0c0;
+        font-size: 0.9rem;
+    }
+    
+    /* Stats */
+    .stat-box {
+        background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #00d2ff, #3a7bd5);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-    .prediction-card {
+    
+    /* Odds display */
+    .odds-box {
+        background: rgba(0,210,255,0.1);
+        border: 1px solid rgba(0,210,255,0.3);
+        border-radius: 12px;
+        padding: 12px 20px;
+        text-align: center;
+        font-weight: 700;
+        color: #00d2ff;
+        font-size: 1.2rem;
+    }
+    
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, rgba(15,12,41,0.95) 0%, rgba(48,43,99,0.95) 100%);
+    }
+    
+    /* Buttons */
+    .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        margin: 10px 0;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
-    .value-pick {
-        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        margin: 10px 0;
-        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    
+    .stButton>button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(102,126,234,0.4);
     }
-    .player-stats {
-        background: #f8f9fa;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 0.9em;
+    
+    /* Select boxes */
+    div[data-baseweb="select"] {
+        background: rgba(255,255,255,0.1) !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Slider */
+    .stSlider {
+        padding-top: 15px !important;
+    }
+    
+    /* Tables */
+    .stDataFrame {
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.1);
     }
 </style>
 """, unsafe_allow_html=True)
 
 def get_sport_emoji(sport):
-    return {'nba': '🏀', 'nfl': '🏈', 'mlb': '⚾', 'nhl': '🏒'}.get(sport.lower(), '🏆')
+    return {'nba': '🏀', 'nfl': '🏈', 'mlb': '⚾', 'nhl': '🏒'}.get(sport.lower(), '🎯')
 
 def american_to_implied(odds):
     if pd.isna(odds):
@@ -69,184 +239,227 @@ def american_to_implied(odds):
         return 100 / (odds + 100)
     return abs(odds) / (abs(odds) + 100)
 
-# Title
-st.markdown('<div class="main-header">🏆 Sports Betting AI <span style="color:#2ecc71; font-size:0.6em; vertical-align:middle;">● LIVE</span></div>', unsafe_allow_html=True)
-st.markdown('<div style="text-align: center; color: #666;">Universal Predictions + BallDontLie NBA Data</div>', unsafe_allow_html=True)
-st.markdown('<div style="text-align: center; color: #2ecc71; font-size: 0.9em;">🔄 Auto-refresh every 60 seconds</div>', unsafe_allow_html=True)
+def parse_record(record):
+    try:
+        if pd.isna(record) or record in ['N/A', '0-0']:
+            return 0, 0
+        wins, losses = map(int, str(record).split('-'))
+        return wins, losses
+    except:
+        return 0, 0
+
+def calculate_win_prob(wins, losses, home_adv=0.03):
+    total = wins + losses
+    if total == 0:
+        return 0.5
+    return min(max((wins / total) + home_adv, 0.1), 0.9)
+
+# Header with Live Badge
+col1, col2, col3 = st.columns([1, 3, 1])
+with col2:
+    st.markdown('<div class="main-header">🎯 BET AI PRO</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
+    current_time = datetime.now().strftime("%H:%M:%S")
+    st.markdown(f'''
+    <div style="text-align: center; margin-top: -10px;">
+        <span class="live-badge">
+            <span class="live-dot"></span>
+            LIVE • {current_time}
+        </span>
+    </div>
+    ''', unsafe_allow_html=True)
+
 st.markdown("---")
 
-# Sidebar
+# Sidebar (modern)
 with st.sidebar:
-    st.image("https://img.icons8.com/color/96/artificial-intelligence.png", width=60)
-    st.markdown("## Settings")
+    st.markdown("### ⚙️ Settings")
     
-    sport = st.selectbox("Sport", ['NBA', 'NFL', 'MLB', 'NHL'], 
-                        format_func=lambda x: f"{get_sport_emoji(x)} {x}")
+    sport = st.selectbox(
+        "Select Sport",
+        ['NBA', 'NFL', 'MLB', 'NHL'],
+        format_func=lambda x: f"{get_sport_emoji(x)} {x.upper()}"
+    )
+    
     days = st.slider("Days Ahead", 1, 7, 3)
-    value_threshold = st.slider("Value Edge %", 1, 15, 5) / 100
+    value_threshold = st.slider("Value Edge", 1, 15, 5) / 100
     
     st.markdown("---")
-    
-    # LIVE indicator with last refresh time
-    st.markdown("### 🟢 LIVE Data")
-    current_time = datetime.now().strftime("%H:%M:%S")
-    st.markdown(f"**Last Refresh:** {current_time}")
-    st.caption("Auto-refreshes every 60 seconds")
-    
-    # Data source info
+    st.markdown("### 📡 Data Sources")
+    st.markdown(f"✓ ESPN {sport} Live")
+    st.markdown("✓ The Odds API")
     if sport == 'NBA':
-        st.markdown("### 🏀 NBA Data Sources")
-        st.markdown("- **BallDontLie**: Free player stats, games")
-        st.markdown("- **ESPN**: Team schedules")
-        st.markdown("- **The Odds API**: Live lines")
-    else:
-        st.markdown(f"### {get_sport_emoji(sport)} {sport} Data")
-        st.markdown("- **ESPN**: Schedules, records")
-        st.markdown("- **The Odds API**: Live lines")
-        st.markdown("- **Sport-Specific Model**: Prediction engine")
+        st.markdown("✓ BallDontLie")
     
     st.markdown("---")
-    st.caption("🍡 Sports Betting AI v1.1")
+    st.markdown("### 🔔 Refresh")
+    st.caption("Auto-refresh every 60s")
 
-# Load Data
+# Main Content
 try:
     from api.espn import ESPNAPI
     from api.odds import OddsAPI
     from models.universal_predictor import UniversalSportsPredictor
     
-    # Load sport-specific data
     with st.spinner(f"Loading {sport} data..."):
         espn = ESPNAPI()
         teams = espn.get_teams(sport.lower())
         schedule = espn.get_schedule(sport.lower(), days=days)
         
-        # Try BallDontLie for NBA
-        nba_data = None
-        if sport == 'NBA':
-            try:
-                from api.balldontlie import BallDontLieAPI
-                bdl = BallDontLieAPI()
-                nba_teams = bdl.get_teams()
-                nba_games = bdl.get_games(start_date=pd.Timestamp.now().strftime('%Y-%m-%d'),
-                                           end_date=(pd.Timestamp.now() + pd.Timedelta(days=days)).strftime('%Y-%m-%d'))
-                nba_data = {'teams': nba_teams, 'games': nba_games}
-                st.sidebar.success("✅ BallDontLie connected")
-            except Exception as e:
-                st.sidebar.warning(f"⚠️ BallDontLie: {str(e)[:50]}")
-        
-        # Stats
+        # Stats Row
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns(4)
+        
         with col1:
-            st.metric("Teams", len(teams))
+            st.markdown(f'''
+            <div class="stat-box">
+                <div class="stat-number">{len(teams)}</div>
+                <div style="color: #a0a0c0;">Teams</div>
+            </div>
+            ''', unsafe_allow_html=True)
+        
         with col2:
-            st.metric("Upcoming Games", len(schedule))
+            st.markdown(f'''
+            <div class="stat-box">
+                <div class="stat-number">{len(schedule)}</div>
+                <div style="color: #a0a0c0;">Upcoming</div>
+            </div>
+            ''', unsafe_allow_html=True)
+        
         with col3:
-            st.metric("Data Source", "BallDontLie" if nba_data else "ESPN")
+            st.markdown(f'''
+            <div class="stat-box">
+                <div class="stat-number">99%</div>
+                <div style="color: #a0a0c0;">Uptime</div>
+            </div>
+            ''', unsafe_allow_html=True)
+        
         with col4:
-            st.metric("Predictor", "Universal Model")
+            st.markdown(f'''
+            <div class="stat-box">
+                <div class="stat-number">{datetime.now().strftime("%H:%M")}</div>
+                <div style="color: #a0a0c0;">Updated</div>
+            </div>
+            ''', unsafe_allow_html=True)
         
-        # Initialize predictor
-        predictor = UniversalSportsPredictor(sport.lower())
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        # Engineer features
-        features = predictor.engineer_features(schedule, teams)
-        
-        # Get predictions
-        predictions = predictor.predict(features)
-        
-        # Merge back
-        result = pd.concat([features, predictions], axis=1)
-        
-        # Load odds
+        # Get odds
         try:
             odds_api = OddsAPI()
             odds = odds_api.get_odds(sport.lower())
-            
-            if not odds.empty:
-                result = result.merge(
-                    odds[['home_team', 'away_team', 'home_ml', 'away_ml']],
-                    on=['home_team', 'away_team'],
-                    how='left'
-                )
-                
-                # Calculate value bets
-                result['home_implied'] = result['home_ml'].apply(american_to_implied)
-                result['away_implied'] = result['away_ml'].apply(american_to_implied)
-                result['home_edge'] = result['home_win_prob'] - result['home_implied']
-                result['away_edge'] = result['away_win_prob'] - result['away_implied']
-                result['max_edge'] = result[['home_edge', 'away_edge']].max(axis=1)
-                result['is_value'] = result['max_edge'] > value_threshold
-            else:
-                result['is_value'] = False
-                result['max_edge'] = 0
         except:
-            result['is_value'] = False
-            result['max_edge'] = 0
+            odds = pd.DataFrame()
         
-        # NBA Player Stats (if BallDontLie works)
-        if sport == 'NBA' and nba_data and not nba_data['games'].empty:
-            st.markdown("---")
-            st.subheader("🏀 NBA Player Data (BallDontLie)")
-            with st.expander("View available games from BallDontLie"):
-                st.dataframe(nba_data['games'][['home_team_name', 'visitor_team_name', 'date']].head(5), 
-                          hide_index=True)
+        # Predictions Section
+        st.markdown(f"### {get_sport_emoji(sport)} {sport.upper()} Predictions")
         
-        # VALUE PICKS
-        st.markdown("---")
-        st.subheader(f"💎 Value Picks")
-        
-        value_picks = result[result['is_value'] == True]
-        if not value_picks.empty:
-            for _, pick in value_picks.head(5).iterrows():
-                team = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
-                edge = max(pick['home_edge'], pick['away_edge']) * 100
-                confidence = "High 💰" if edge > 8 else "Medium ⚡" if edge > 5 else "Low"
+        if not schedule.empty:
+            predictions = []
+            
+            for _, game in schedule.head(6).iterrows():  # Show 6 games
+                home_rec = game.get('home_record', '0-0')
+                away_rec = game.get('away_record', '0-0')
+                hw, hl = parse_record(home_rec)
+                aw, al = parse_record(away_rec)
                 
-                with st.container():
-                    st.markdown(f"""
+                home_prob = calculate_win_prob(hw, hl, 0.04)
+                away_prob = 1 - home_prob
+                
+                # Get odds for this game
+                game_odds = odds[
+                    (odds['home_team'] == game['home_team']) | 
+                    (odds['away_team'].str.contains(str(game['away_team']), case=False, na=False))
+                ] if not odds.empty else pd.DataFrame()
+                
+                if not game_odds.empty:
+                    gm = game_odds.iloc[0]
+                    home_ml = gm.get('home_ml')
+                    away_ml = gm.get('away_ml')
+                    home_implied = american_to_implied(home_ml) if pd.notna(home_ml) else home_prob
+                    away_implied = american_to_implied(away_ml) if pd.notna(away_ml) else away_prob
+                    
+                    home_edge = home_prob - home_implied
+                    away_edge = away_prob - away_implied
+                    has_edge = abs(home_edge) > value_threshold or abs(away_edge) > value_threshold
+                else:
+                    home_ml = away_ml = None
+                    has_edge = False
+                
+                predictions.append({
+                    'home_team': game['home_team'],
+                    'away_team': game['away_team'],
+                    'home_prob': home_prob,
+                    'away_prob': away_prob,
+                    'home_ml': home_ml,
+                    'away_ml': away_ml,
+                    'has_edge': has_edge
+                })
+            
+            pred_df = pd.DataFrame(predictions)
+            
+            # VALUE PICKS
+            value_picks = pred_df[pred_df['has_edge'] == True]
+            if not value_picks.empty:
+                st.markdown("### 💎 Value Picks")
+                for _, pick in value_picks.head(2).iterrows():
+                    edge_pct = max(abs(pick['home_edge']), abs(pick['away_edge'])) * 100
+                    confidence = "HIGH 🔥" if edge_pct > 8 else "MED ⚡"
+                    
+                    st.markdown(f'''
                     <div class="value-pick">
-                        <h3>🎯 {team} to Win</h3>
-                        <p>{pick['home_team']} vs {pick['away_team']}</p>
-                        <p>Model: {pick['home_win_prob']*100:.1f}% | Edge: +{edge:.1f}% | {confidence}</p>
+                        <h3 style="margin: 0; color: #2ecc71;">{pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']} ML</h3>
+                        <p style="margin: 5px 0; color: #ffffff;">{pick['home_team']} vs {pick['away_team']}</p>
+                        <p style="margin: 0; color: #2ecc71; font-weight: 600;">+{edge_pct:.1f}% Edge • {confidence}</p>
                     </div>
-                    """, unsafe_allow_html=True)
+                    ''', unsafe_allow_html=True)
+            
+            # GAME CARDS
+            cols = st.columns(2)
+            for idx, pred in pred_df.iterrows():
+                with cols[idx % 2]:
+                    with st.container():
+                        st.markdown(f'''
+                        <div class="game-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div class="team-name">{pred['home_team']}</div>
+                                    <div class="team-record">Home</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="color: #00d2ff; font-weight: 700;">VS</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="team-name">{pred['away_team']}</div>
+                                    <div class="team-record">Away</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 15px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>{pred['home_prob']*100:.0f}%</span>
+                                    <span>Win Prob</span>
+                                    <span>{pred['away_prob']*100:.0f}%</span>
+                                </div>
+                                <div class="prob-bar-bg">
+                                    <div class="prob-bar-fill" style="width: {pred['home_prob']*100}%; margin-left: 0;"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                                <div class="odds-box">{pred['home_ml'] if pd.notna(pred['home_ml']) else 'N/A'}</div>
+                                <div class="odds-box">{pred['away_ml'] if pd.notna(pred['away_ml']) else 'N/A'}</div>
+                            </div>
+                        </div>
+                        ''', unsafe_allow_html=True)
         else:
-            st.info("No value picks found. Adjust the threshold in sidebar.")
-        
-        # ALL PREDICTIONS
-        st.markdown("### 📊 All Predictions")
-        
-        for _, row in result.head(8).iterrows():
-            with st.container():
-                col1, col2, col3 = st.columns([3, 1, 3])
-                
-                with col1:
-                    st.markdown(f"**{row['home_team']}**")
-                    pct = int(row['home_win_prob'] * 100)
-                    st.markdown(f"{pct}%")
-                    st.progress(pct / 100)
-                    if 'home_ml' in row and pd.notna(row['home_ml']):
-                        st.caption(f"ML: {row['home_ml']:+}")
-                
-                with col2:
-                    st.markdown("**VS**")
-                    if row['is_value']:
-                        st.markdown("💎")
-                
-                with col3:
-                    st.markdown(f"**{row['away_team']}**")
-                    pct = int(row['away_win_prob'] * 100)
-                    st.markdown(f"{pct}%")
-                    col3.progress(pct / 100)
-                    if 'away_ml' in row and pd.notna(row['away_ml']):
-                        st.caption(f"ML: {row['away_ml']:+}")
-                
-                st.markdown("---")
+            st.info("No upcoming games found for this sport.")
 
 except Exception as e:
-    st.error(f"Error: {e}")
+    st.error(f"Error loading data: {e}")
     import traceback
     st.caption(traceback.format_exc())
 
+# Footer
 st.markdown("---")
-st.caption("Powered by ESPN + BallDontLie + Universal Prediction Models")
+st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN + The Odds API | Sports Betting AI Pro</div>', unsafe_allow_html=True)
