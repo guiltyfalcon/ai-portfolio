@@ -10,7 +10,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, brier_score_loss
 import joblib
-from typing import Dict, Tuple, Optional
+from typing import Dict, Tuple, Optional, List
 import warnings
 warnings.filterwarnings('ignore')
 
