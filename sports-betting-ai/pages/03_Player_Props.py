@@ -69,7 +69,7 @@ if api.is_configured():
 
 # Use sample data if no API or load failed
 if top_players.empty:
-    st.caption("📊 Using sample player data (2024 season averages)")
+    st.caption("📊 Using sample player data (2026 season averages)")
     top_players = pd.DataFrame([
         {'id': 1, 'full_name': 'LeBron James', 'ppg': 25.2, 'rpg': 7.8, 'apg': 9.0, 'fg_pct': 0.52, 'games': 60},
         {'id': 2, 'full_name': 'Stephen Curry', 'ppg': 28.5, 'rpg': 4.4, 'apg': 5.1, 'fg_pct': 0.47, 'games': 65},
@@ -106,7 +106,7 @@ with col3:
     line = st.number_input("Line", value=float(prop_avg), step=0.5, format="%.1f")
 
 if not api.is_configured():
-    st.caption("📊 Using sample data. Add BALLDONTLIE_API_KEY for real-time stats.")
+    st.caption("📊 Using sample data (2026 season). Add BALLDONTLIE_API_KEY for real-time stats.")
 
 # Prediction panel
 st.markdown("### 🔮 Prediction")

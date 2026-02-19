@@ -33,7 +33,7 @@ class APIBasketball:
         teams = [team['team'] for team in data.get('response', [])]
         return pd.DataFrame(teams)
     
-    def get_games(self, season: int = 2024) -> pd.DataFrame:
+    def get_games(self, season: int = 2026) -> pd.DataFrame:
         """Get games for a season."""
         url = f"{self.BASE_URL}/games"
         params = {"season": season}
@@ -57,7 +57,7 @@ class APIBasketball:
             })
         return pd.DataFrame(games)
     
-    def get_team_statistics(self, team_id: int, season: int = 2024) -> pd.DataFrame:
+    def get_team_statistics(self, team_id: int, season: int = 2026) -> pd.DataFrame:
         """Get advanced team statistics."""
         url = f"{self.BASE_URL}/teams/statistics"
         params = {"id": team_id, "season": season}

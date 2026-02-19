@@ -53,15 +53,15 @@ class BallDontLieAPI:
             return pd.DataFrame()
     
     @st.cache_data(ttl=300)
-    def get_player_season_averages(_self, player_id: int) -> Dict:
-        """Get current season averages for a player."""
+    def get_player_season_averages(_self, player_id: int, season: int = 2026) -> Dict:
+        """Get season averages for a player (default 2026)."""
         if not _self.is_configured():
             return {}
         
         url = f"{_self.BASE_URL}/season_averages"
         params = {
             "player_ids[]": player_id,
-            "season": 2024
+            "season": season
         }
         
         try:
