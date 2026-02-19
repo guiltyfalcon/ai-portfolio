@@ -1,6 +1,6 @@
 """
-Sports Betting AI - Full Predictive System
-Live ESPN data + Odds + Advanced ML Predictions
+Sports Betting AI - Full System with BallDontLie + Universal Predictor
+NBA gets player-level data, all sports get sport-specific predictions
 """
 
 import streamlit as st
@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling
+# Styling
 st.markdown("""
 <style>
     .main-header {
@@ -44,42 +44,17 @@ st.markdown("""
         margin: 10px 0;
         box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
     }
-    .game-card {
-        background: white;
-        border: 1px solid #e0e0e0;
-        padding: 20px;
-        border-radius: 12px;
-        margin: 10px 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .confidence-high { background: #2ecc71; color: white; padding: 4px 12px; border-radius: 20px; }
-    .confidence-medium { background: #f39c12; color: white; padding: 4px 12px; border-radius: 20px; }
-    .stat-box {
+    .player-stats {
         background: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 0.9em;
     }
 </style>
 """, unsafe_allow_html=True)
 
 def get_sport_emoji(sport):
     return {'nba': '🏀', 'nfl': '🏈', 'mlb': '⚾', 'nhl': '🏒'}.get(sport.lower(), '🏆')
-
-def parse_record(record):
-    try:
-        if pd.isna(record) or record in ['N/A', '0-0']:
-            return 0, 0
-        wins, losses = map(int, str(record).split('-'))
-        return wins, losses
-    except:
-        return 0, 0
-
-def calculate_win_prob(wins, losses, home_adv=0.03):
-    total = wins + losses
-    if total == 0:
-        return 0.5
-    return min(max((wins / total) + home_adv, 0.1), 0.9)
 
 def american_to_implied(odds):
     if pd.isna(odds):
@@ -90,7 +65,7 @@ def american_to_implied(odds):
 
 # Title
 st.markdown('<div class="main-header">🏆 Sports Betting AI</div>', unsafe_allow_html=True)
-st.markdown('<div style="text-align: center; color: #666;">ML Predictions + Live Odds + Value Detection</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #666;">Universal Predictions + BallDontLie NBA Data</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # Sidebar
@@ -104,22 +79,47 @@ with st.sidebar:
     value_threshold = st.slider("Value Edge %", 1, 15, 5) / 100
     
     st.markdown("---")
-    st.markdown("### 📊 Model Info")
-    st.markdown("**Current Model**: Ensemble (Win % + ELO + Home)")
-    st.markdown("**Training**: Real-time from ESPN")
+    
+    # Data source info
+    if sport == 'NBA':
+        st.markdown("### 🏀 NBA Data Sources")
+        st.markdown("- **BallDontLie**: Free player stats, games")
+        st.markdown("- **ESPN**: Team schedules")
+        st.markdown("- **The Odds API**: Live lines")
+    else:
+        st.markdown(f"### {get_sport_emoji(sport)} {sport} Data")
+        st.markdown("- **ESPN**: Schedules, records")
+        st.markdown("- **The Odds API**: Live lines")
+        st.markdown("- **Sport-Specific Model**: Prediction engine")
     
     st.markdown("---")
-    st.caption("🍡 Sports Betting AI Pro v1.0")
+    st.caption("🍡 Sports Betting AI v1.1")
 
 # Load Data
 try:
     from api.espn import ESPNAPI
     from api.odds import OddsAPI
+    from models.universal_predictor import UniversalSportsPredictor
     
+    # Load sport-specific data
     with st.spinner(f"Loading {sport} data..."):
         espn = ESPNAPI()
         teams = espn.get_teams(sport.lower())
         schedule = espn.get_schedule(sport.lower(), days=days)
+        
+        # Try BallDontLie for NBA
+        nba_data = None
+        if sport == 'NBA':
+            try:
+                from api.balldontlie import BallDontLieAPI
+                bdl = BallDontLieAPI()
+                nba_teams = bdl.get_teams()
+                nba_games = bdl.get_games(start_date=pd.Timestamp.now().strftime('%Y-%m-%d'),
+                                           end_date=(pd.Timestamp.now() + pd.Timedelta(days=days)).strftime('%Y-%m-%d'))
+                nba_data = {'teams': nba_teams, 'games': nba_games}
+                st.sidebar.success("✅ BallDontLie connected")
+            except Exception as e:
+                st.sidebar.warning(f"⚠️ BallDontLie: {str(e)[:50]}")
         
         # Stats
         col1, col2, col3, col4 = st.columns(4)
@@ -128,122 +128,107 @@ try:
         with col2:
             st.metric("Upcoming Games", len(schedule))
         with col3:
-            st.metric("Data Source", "ESPN ✓")
+            st.metric("Data Source", "BallDontLie" if nba_data else "ESPN")
         with col4:
-            st.metric("Model", "Live ✓")
+            st.metric("Predictor", "Universal Model")
         
-        # Odds
+        # Initialize predictor
+        predictor = UniversalSportsPredictor(sport.lower())
+        
+        # Engineer features
+        features = predictor.engineer_features(schedule, teams)
+        
+        # Get predictions
+        predictions = predictor.predict(features)
+        
+        # Merge back
+        result = pd.concat([features, predictions], axis=1)
+        
+        # Load odds
         try:
             odds_api = OddsAPI()
             odds = odds_api.get_odds(sport.lower())
+            
+            if not odds.empty:
+                result = result.merge(
+                    odds[['home_team', 'away_team', 'home_ml', 'away_ml']],
+                    on=['home_team', 'away_team'],
+                    how='left'
+                )
+                
+                # Calculate value bets
+                result['home_implied'] = result['home_ml'].apply(american_to_implied)
+                result['away_implied'] = result['away_ml'].apply(american_to_implied)
+                result['home_edge'] = result['home_win_prob'] - result['home_implied']
+                result['away_edge'] = result['away_win_prob'] - result['away_implied']
+                result['max_edge'] = result[['home_edge', 'away_edge']].max(axis=1)
+                result['is_value'] = result['max_edge'] > value_threshold
+            else:
+                result['is_value'] = False
+                result['max_edge'] = 0
         except:
-            odds = pd.DataFrame()
+            result['is_value'] = False
+            result['max_edge'] = 0
         
-        # PREDICTIONS
+        # NBA Player Stats (if BallDontLie works)
+        if sport == 'NBA' and nba_data and not nba_data['games'].empty:
+            st.markdown("---")
+            st.subheader("🏀 NBA Player Data (BallDontLie)")
+            with st.expander("View available games from BallDontLie"):
+                st.dataframe(nba_data['games'][['home_team_name', 'visitor_team_name', 'date']].head(5), 
+                          hide_index=True)
+        
+        # VALUE PICKS
         st.markdown("---")
-        st.subheader(f"🎯 {get_sport_emoji(sport)} Game Predictions")
+        st.subheader(f"💎 Value Picks")
         
-        if schedule.empty:
-            st.info(f"No {sport} games found.")
-        else:
-            predictions = []
-            
-            for _, game in schedule.iterrows():
-                home_rec = game.get('home_record', '0-0')
-                away_rec = game.get('away_record', '0-0')
+        value_picks = result[result['is_value'] == True]
+        if not value_picks.empty:
+            for _, pick in value_picks.head(5).iterrows():
+                team = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
+                edge = max(pick['home_edge'], pick['away_edge']) * 100
+                confidence = "High 💰" if edge > 8 else "Medium ⚡" if edge > 5 else "Low"
                 
-                hw, hl = parse_record(home_rec)
-                aw, al = parse_record(away_rec)
-                
-                home_win_pct = calculate_win_prob(hw, hl, 0.03)
-                away_win_pct = calculate_win_prob(aw, al, -0.03)
-                
-                # Find odds
-                game_odds = odds[(odds['home_team'] == game['home_team']) | 
-                               (odds['away_team'] == game['away_team'])] if not odds.empty else pd.DataFrame()
-                
-                if not game_odds.empty:
-                    gm = game_odds.iloc[0]
-                    home_ml = gm.get('home_ml')
-                    away_ml = gm.get('away_ml')
-                    home_implied = american_to_implied(home_ml)
-                    away_implied = american_to_implied(away_ml)
-                    
-                    home_edge = home_win_pct - home_implied
-                    away_edge = away_win_pct - away_implied
-                    is_value = abs(home_edge) > value_threshold or abs(away_edge) > value_threshold
-                    value_team = game['home_team'] if home_edge > away_edge else game['away_team']
-                    value_edge = max(home_edge, away_edge)
-                else:
-                    home_ml = away_ml = None
-                    home_implied = away_implied = 0.5
-                    home_edge = away_edge = 0
-                    is_value = False
-                    value_team = None
-                    value_edge = 0
-                
-                predictions.append({
-                    'home_team': game['home_team'],
-                    'away_team': game['away_team'],
-                    'home_record': f"{hw}-{hl}",
-                    'away_record': f"{aw}-{al}",
-                    'home_prob': home_win_pct,
-                    'away_prob': away_win_pct,
-                    'home_ml': home_ml,
-                    'away_ml': away_ml,
-                    'home_implied': home_implied,
-                    'away_implied': away_implied,
-                    'home_edge': home_edge,
-                    'away_edge': away_edge,
-                    'is_value': is_value,
-                    'value_team': value_team,
-                    'value_edge': value_edge
-                })
-            
-            pred_df = pd.DataFrame(predictions)
-            
-            # VALUE PICKS
-            value_picks = pred_df[pred_df['is_value'] == True]
-            if not value_picks.empty:
-                st.markdown("### 💎 Value Picks (Model Edge > Market)")
-                for _, pick in value_picks.iterrows():
-                    with st.container():
-                        edge_pct = pick['value_edge'] * 100
-                        confidence = "High" if edge_pct > 8 else "Medium" if edge_pct > 5 else "Low"
-                        
-                        st.markdown(f"""
-                        <div class="value-pick">
-                            <h3>🎯 {pick['value_team']} to Win</h3>
-                            <p>{pick['home_team']} vs {pick['away_team']}</p>
-                            <p>Edge: +{edge_pct:.1f}% | Confidence: {confidence}</p>
-                        </div>
-                        """, unsafe_allow_html=True)
-            
-            # ALL GAMES
-            st.markdown("### 📊 All Predictions")
-            
-            for _, pred in pred_df.head(8).iterrows():
                 with st.container():
-                    col1, col2, col3 = st.columns([3, 2, 3])
-                    
-                    with col1:
-                        st.markdown(f"**{pred['home_team']}**")
-                        st.markdown(f"{pred['home_record']}")
-                        prob_bar = int(pred['home_prob'] * 100)
-                        st.progress(prob_bar / 100, text=f"{prob_bar:.0f}% win")
-                        
-                    with col2:
-                        st.markdown("**VS**")
-                        if pred['is_value']:
-                            st.markdown("💎 VALUE")
-                        
-                    with col3:
-                        st.markdown(f"**{pred['away_team']}**")
-                        st.markdown(f"{pred['away_record']}")
-                        prob_bar = int(pred['away_prob'] * 100)
-                        st.progress(prob_bar / 100, text=f"{prob_bar:.0f}% win")
-                    
-                    st.markdown("---")
+                    st.markdown(f"""
+                    <div class="value-pick">
+                        <h3>🎯 {team} to Win</h3>
+                        <p>{pick['home_team']} vs {pick['away_team']}</p>
+                        <p>Model: {pick['home_win_prob']*100:.1f}% | Edge: +{edge:.1f}% | {confidence}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+        else:
+            st.info("No value picks found. Adjust the threshold in sidebar.")
+        
+        # ALL PREDICTIONS
+        st.markdown("### 📊 All Predictions")
+        
+        for _, row in result.head(8).iterrows():
+            with st.container():
+                col1, col2, col3 = st.columns([3, 1, 3])
+                
+                with col1:
+                    st.markdown(f"**{row['home_team']}**")
+                    pct = int(row['home_win_prob'] * 100)
+                    st.markdown(f"{pct}%")
+                    st.progress(pct / 100)
+                    if 'home_ml' in row and pd.notna(row['home_ml']):
+                        st.caption(f"ML: {row['home_ml']:+}")
+                
+                with col2:
+                    st.markdown("**VS**")
+                    if row['is_value']:
+                        st.markdown("💎")
+                
+                with col3:
+                    st.markdown(f"**{row['away_team']}**")
+                    pct = int(row['away_win_prob'] * 100)
+                    st.markdown(f"{pct}%")
+                    col3.progress(pct / 100)
+                    if 'away_ml' in row and pd.notna(row['away_ml']):
+                        st.caption(f"ML: {row['away_ml']:+}")
+                
+                st.markdown("---")
 
 except Exception as e:
     st.error(f"Error: {e}")
@@ -251,4 +236,4 @@ except Exception as e:
     st.caption(traceback.format_exc())
 
 st.markdown("---")
-st.caption("Powered by ESPN API + The Odds API | Sports Betting AI Pro")
+st.caption("Powered by ESPN + BallDontLie + Universal Prediction Models")
