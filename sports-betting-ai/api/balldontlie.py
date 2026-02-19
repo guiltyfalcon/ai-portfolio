@@ -13,6 +13,15 @@ import os
 BASE_URL = "https://api.balldontlie.io/v1"
 
 
+def _get_api_key():
+    """Get API key from Streamlit secrets or env var."""
+    try:
+        # Try Streamlit secrets first (for Cloud deployment)
+        return st.secrets.get("BALLDONTLIE_API_KEY") or os.getenv("BALLDONTLIE_API_KEY")
+    except:
+        return os.getenv("BALLDONTLIE_API_KEY")
+
+
 def get_session(api_key: str) -> requests.Session:
     """Create a requests session with auth headers."""
     session = requests.Session()
@@ -117,6 +126,20 @@ def _get_all_players(api_key: str, per_page: int = 600) -> pd.DataFrame:
     return pd.DataFrame(all_players) if all_players else pd.DataFrame()
 
 
+@st.cache_data(ttl=60)
+def _test_api_connection(api_key: str) -> bool:
+    """Test if API key works."""
+    url = f"{BASE_URL}/players"
+    params = {"per_page": 1}
+    session = get_session(api_key)
+    
+    try:
+        response = session.get(url, params=params, timeout=10)
+        return response.status_code == 200
+    except:
+        return False
+
+
 class BallDontLieAPI:
     """
     BallDontLie API - Requires API key (free tier available)
@@ -124,11 +147,17 @@ class BallDontLieAPI:
     """
     
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.getenv('BALLDONTLIE_API_KEY')
+        self.api_key = api_key or _get_api_key()
     
     def is_configured(self) -> bool:
-        """Check if API key is configured."""
+        """Check if API key is configured and valid."""
         return self.api_key is not None and len(self.api_key) > 10
+    
+    def test_connection(self) -> bool:
+        """Test if API key works."""
+        if not self.is_configured():
+            return False
+        return _test_api_connection(self.api_key)
     
     def get_players(self, search: str = None, per_page: int = 100) -> pd.DataFrame:
         """Search for NBA players."""

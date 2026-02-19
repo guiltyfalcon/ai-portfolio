@@ -42,7 +42,7 @@ st.markdown('<div class="main-title">🏀 Player Props</div>', unsafe_allow_html
 # Initialize API
 api = BallDontLieAPI()
 
-# Check config
+# Check config and test connection
 if not api.is_configured():
     st.warning("⚠️ BallDontLie API Key Not Configured")
     st.error("""
@@ -62,6 +62,14 @@ if not api.is_configured():
     
     💡 BallDontLie is **completely FREE** - just needs authentication
     """)
+else:
+    # Test the connection
+    with st.spinner("Testing API connection..."):
+        if not api.test_connection():
+            st.error("⚠️ API key found but connection failed!")
+            st.info("The key might be invalid or the API might be down. Using sample data.")
+        else:
+            st.success("✅ BallDontLie API connected!")
 
 # Load player data
 top_players = []
