@@ -125,8 +125,21 @@ class SportsPredictionModel:
         
         return results
     
+    def save(self, filepath: str):
+        """Save the trained model."""
+        if not self.is_trained:
+            print("Model not trained, nothing to save")
+            return
+        
         try:
-            model.save(filepath)
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            joblib.dump({
+                'models': self.models,
+                'feature_cols': self.feature_cols,
+                'sport': self.sport,
+                'is_trained': self.is_trained
+            }, filepath)
+            print(f"Model saved to {filepath}")
         except Exception as e:
             print(f"Warning: Could not save model: {e}")
     
