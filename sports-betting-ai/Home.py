@@ -22,13 +22,11 @@ st.set_page_config(
 def load_css():
     st.markdown("""
     <style>
-        /* Dark theme base with animated gradient */
         .stApp {
             background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             background-attachment: fixed;
         }
         
-        /* Modern header with glow effect */
         .main-header {
             font-size: 4rem;
             font-weight: 900;
@@ -56,7 +54,6 @@ def load_css():
             margin-bottom: 30px;
         }
         
-        /* Glassmorphism cards - enhanced */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -74,7 +71,6 @@ def load_css():
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        /* Game cards */
         .game-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
             border: 1px solid rgba(255,255,255,0.1);
@@ -89,7 +85,6 @@ def load_css():
             border-color: rgba(0,210,255,0.3);
         }
         
-        /* Value pick - glowing green */
         .value-pick {
             background: linear-gradient(135deg, rgba(46,204,113,0.2) 0%, rgba(39,174,96,0.15) 50%, rgba(46,204,113,0.2) 100%);
             border: 1px solid rgba(46,204,113,0.4);
@@ -116,7 +111,6 @@ def load_css():
             100% { transform: translateX(100%) rotate(45deg); }
         }
         
-        /* Live badge */
         .live-badge {
             display: inline-flex;
             align-items: center;
@@ -143,7 +137,6 @@ def load_css():
             50% { opacity: 0.5; transform: scale(1.2); }
         }
         
-        /* Probability bars */
         .prob-bar-bg {
             background: rgba(255,255,255,0.1);
             border-radius: 10px;
@@ -158,7 +151,6 @@ def load_css():
             background: linear-gradient(90deg, #00d2ff, #3a7bd5);
         }
         
-        /* Team names */
         .team-name {
             font-size: 1.3rem;
             font-weight: 700;
@@ -170,7 +162,6 @@ def load_css():
             font-size: 0.9rem;
         }
         
-        /* Stats */
         .stat-box {
             background: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
             border-radius: 16px;
@@ -187,7 +178,6 @@ def load_css():
             -webkit-text-fill-color: transparent;
         }
         
-        /* Odds display */
         .odds-box {
             background: rgba(0,210,255,0.1);
             border: 1px solid rgba(0,210,255,0.3);
@@ -199,12 +189,10 @@ def load_css():
             font-size: 1.2rem;
         }
         
-        /* Sidebar styling */
         [data-testid="stSidebar"] {
             background: linear-gradient(180deg, rgba(15,12,41,0.95) 0%, rgba(48,43,99,0.95) 100%);
         }
         
-        /* Buttons */
         .stButton>button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -218,61 +206,11 @@ def load_css():
             transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(102,126,234,0.4);
         }
-        
-        /* Select boxes */
-        div[data-baseweb="select"] {
-            background: rgba(255,255,255,0.1) !important;
-            border-radius: 12px !important;
-        }
-        
-        /* Slider */
-        .stSlider {
-            padding-top: 15px !important;
-        }
-        
-        /* Tables */
-        .stDataFrame {
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        /* Error/Success messages */
-        .stAlert {
-            border-radius: 12px !important;
-        }
-        
-        /* Navigation pills */
-        .nav-pill {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 10px 20px;
-            margin: 5px;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-pill:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(0,210,255,0.3);
-        }
-        
-        /* Metric cards */
-        [data-testid="stMetric"] {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            padding: 15px;
-        }
-        
-        [data-testid="stMetric"] > div {
-            color: white !important;
-        }
     </style>
     """, unsafe_allow_html=True)
 
 load_css()
 
-# Helper functions
 def get_sport_emoji(sport):
     return {'nba': '🏀', 'nfl': '🏈', 'mlb': '⚾', 'nhl': '🏒'}.get(sport.lower(), '🎯')
 
@@ -299,14 +237,13 @@ def calculate_win_prob(wins, losses, home_adv=0.03):
     return min(max((wins / total) + home_adv, 0.1), 0.9)
 
 def format_odds(odds):
-    """Format odds for display"""
     if pd.isna(odds) or odds is None:
         return "N/A"
     if odds > 0:
         return f"+{int(odds)}"
     return f"{int(odds)}"
 
-# Header with Live Badge
+# Header
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
     st.markdown('<div class="main-header">🎯 BET AI PRO</div>', unsafe_allow_html=True)
@@ -323,7 +260,7 @@ with col2:
 
 st.markdown("---")
 
-# Sidebar with improved settings
+# Sidebar
 with st.sidebar:
     st.markdown("### ⚙️ Settings")
     
@@ -339,7 +276,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### 📡 Data Sources")
     
-    # Check API status
     odds_api_key = os.getenv('THEODDS_API_KEY')
     if odds_api_key:
         st.markdown("✅ The Odds API (Configured)")
@@ -348,31 +284,8 @@ with st.sidebar:
         st.caption("Set THEODDS_API_KEY in secrets for live odds")
     
     st.markdown("✅ ESPN API (Free)")
-    
-    st.markdown("---")
-    st.markdown("### 📊 Quick Stats")
-    
-    # Show mini bet tracker stats
-    try:
-        from data.bet_tracker import BetTracker
-        tracker = BetTracker()
-        stats = tracker.get_stats()
-        
-        if stats['total_bets'] > 0:
-            st.metric("Total Bets", stats['total_bets'])
-            st.metric("Win Rate", f"{stats['win_rate']*100:.1f}%")
-            profit_color = "normal" if stats['total_profit'] >= 0 else "inverse"
-            st.metric("Profit", f"${stats['total_profit']:.2f}", delta_color=profit_color)
-        else:
-            st.caption("No bets tracked yet")
-    except Exception as e:
-        st.caption("Bet tracker unavailable")
 
 # Main Content
-api_error = None
-odds_error = None
-
-# Add path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
@@ -380,7 +293,6 @@ try:
     from api.odds import OddsAPI
     
     with st.spinner(f"Loading {sport} data..."):
-        # Get ESPN data (free, always works)
         espn = ESPNAPI()
         teams = espn.get_teams(sport.lower())
         schedule = espn.get_schedule(sport.lower(), days=days)
@@ -390,41 +302,23 @@ try:
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.markdown(f'''
-            <div class="stat-box">
-                <div class="stat-number">{len(teams)}</div>
-                <div style="color: #a0a0c0;">Teams</div>
-            </div>
-            ''', unsafe_allow_html=True)
+            st.markdown(f'''<div class="stat-box"><div class="stat-number">{len(teams)}</div><div style="color: #a0a0c0;">Teams</div></div>''', unsafe_allow_html=True)
         
         with col2:
-            st.markdown(f'''
-            <div class="stat-box">
-                <div class="stat-number">{len(schedule)}</div>
-                <div style="color: #a0a0c0;">Upcoming</div>
-            </div>
-            ''', unsafe_allow_html=True)
+            st.markdown(f'''<div class="stat-box"><div class="stat-number">{len(schedule)}</div><div style="color: #a0a0c0;">Upcoming</div></div>''', unsafe_allow_html=True)
         
         with col3:
-            st.markdown(f'''
-            <div class="stat-box">
-                <div class="stat-number">99%</div>
-                <div style="color: #a0a0c0;">Uptime</div>
-            </div>
-            ''', unsafe_allow_html=True)
+            st.markdown(f'''<div class="stat-box"><div class="stat-number">99%</div><div style="color: #a0a0c0;">Uptime</div></div>''', unsafe_allow_html=True)
         
         with col4:
-            st.markdown(f'''
-            <div class="stat-box">
-                <div class="stat-number">{datetime.now().strftime("%H:%M")}</div>
-                <div style="color: #a0a0c0;">Updated</div>
-            </div>
-            ''', unsafe_allow_html=True)
+            st.markdown(f'''<div class="stat-box"><div class="stat-number">{datetime.now().strftime("%H:%M")}</div><div style="color: #a0a0c0;">Updated</div></div>''', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
         
-        # Try to get odds (may fail without API key)
+        # Try to get odds
         odds = pd.DataFrame()
+        odds_error = None
+        
         try:
             odds_api = OddsAPI()
             odds = odds_api.get_odds(sport.lower())
@@ -432,7 +326,6 @@ try:
             odds_error = str(e)
             pass
         
-        # Show odds warning if needed
         if odds_error:
             with st.expander("⚠️ Odds API Issue (Click for details)"):
                 st.warning("Live odds unavailable. Using estimated probabilities.")
@@ -445,7 +338,7 @@ try:
         if not schedule.empty:
             predictions = []
             
-            for _, game in schedule.head(8).iterrows():  # Show 8 games
+            for _, game in schedule.head(8).iterrows():
                 home_rec = game.get('home_record', '0-0')
                 away_rec = game.get('away_record', '0-0')
                 hw, hl = parse_record(home_rec)
@@ -454,11 +347,10 @@ try:
                 home_prob = calculate_win_prob(hw, hl, 0.04)
                 away_prob = 1 - home_prob
                 
-                # Get odds for this game
                 game_odds = pd.DataFrame()
                 if not odds.empty:
                     game_odds = odds[
-                        (odds['home_team'].str.contains(str(game['home_team']), case=False, na=False)) | 
+                        (odds['home_team'].str.contains(str(game['home_team']), case=False, na=False)) |
                         (odds['away_team'].str.contains(str(game['away_team']), case=False, na=False))
                     ]
                 
@@ -486,19 +378,20 @@ try:
                     'away_ml': away_ml,
                     'home_edge': home_edge,
                     'away_edge': away_edge,
-                    'has_edge': has_edge,
-                    'game_date': game.get('date', '')
+                    'has_edge': has_edge
                 })
             
             pred_df = pd.DataFrame(predictions)
             
-            # VALUE PICKS Section
+            # VALUE PICKS
             value_picks = pred_df[pred_df['has_edge'] == True]
             if not value_picks.empty:
                 st.markdown("### 💎 Value Picks")
+                
                 for _, pick in value_picks.head(3).iterrows():
                     edge_pct = max(abs(pick['home_edge']), abs(pick['away_edge'])) * 100
                     confidence = "HIGH 🔥" if edge_pct > 8 else "MED ⚡"
+                    
                     best_pick = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
                     best_odds = pick['home_ml'] if pick['home_edge'] > pick['away_edge'] else pick['away_ml']
                     
@@ -517,54 +410,31 @@ try:
                     </div>
                     ''', unsafe_allow_html=True)
             
-            # GAME CARDS Section
+            # GAME CARDS
             st.markdown("### 📋 All Games")
             cols = st.columns(2)
+            
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
-                    with st.container():
-                        st.markdown(f'''
-                        <div class="game-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div class="team-name">{pred['home_team']}</div>
-                                    <div class="team-record">Home</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="color: #00d2ff; font-weight: 700;">VS</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div class="team-name">{pred['away_team']}</div>
-                                    <div class="team-record">Away</div>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-top: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span>{pred['home_prob']*100:.0f}%</span>
-                                    <span style="color: #a0a0c0;">Win Prob</span>
-                                    <span>{pred['away_prob']*100:.0f}%</span>
-                                </div>
-                                <div class="prob-bar-bg">
-                                    <div class="prob-bar-fill" style="width: {pred['home_prob']*100}%; margin-left: 0;"></div>
-                                </div>
-                            </div>
-                            
-                            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                                <div class="odds-box">{format_odds(pred['home_ml'])}</div>
-                                <div class="odds-box">{format_odds(pred['away_ml'])}</div>
-                            </div>
+                    st.markdown(f'''
+                    <div class="game-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div><div class="team-name">{pred['home_team']}</div><div class="team-record">Home</div></div>
+                            <div style="text-align: center;"><div style="color: #00d2ff; font-weight: 700;">VS</div></div>
+                            <div style="text-align: right;"><div class="team-name">{pred['away_team']}</div><div class="team-record">Away</div></div>
                         </div>
-                        ''', unsafe_allow_html=True)
-                        
-                        # Quick add to bet tracker
-                        if st.button(f"➕ Track This Game", key=f"track_{idx}"):
-                            st.session_state['track_game'] = {
-                                'home': pred['home_team'],
-                                'away': pred['away_team'],
-                                'sport': sport
-                            }
-                            st.info("Go to Bet Tracker to add your pick!")
+                        <div style="margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span>{pred['home_prob']*100:.0f}%</span><span style="color: #a0a0c0;">Win Prob</span><span>{pred['away_prob']*100:.0f}%</span>
+                            </div>
+                            <div class="prob-bar-bg"><div class="prob-bar-fill" style="width: {pred['home_prob']*100}%; margin-left: 0;"></div></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                            <div class="odds-box">{format_odds(pred['home_ml'])}</div>
+                            <div class="odds-box">{format_odds(pred['away_ml'])}</div>
+                        </div>
+                    </div>
+                    ''', unsafe_allow_html=True)
         else:
             st.info("No upcoming games found for this sport.")
 
@@ -574,6 +444,5 @@ except Exception as e:
     with st.expander("Debug Info"):
         st.code(traceback.format_exc())
 
-# Footer
 st.markdown("---")
 st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN API | Sports Betting AI Pro</div>', unsafe_allow_html=True)
