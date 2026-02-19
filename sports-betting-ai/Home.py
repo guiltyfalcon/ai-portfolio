@@ -1,6 +1,7 @@
 """
 Sports Betting AI - Full System with BallDontLie + Universal Predictor
 NBA gets player-level data, all sports get sport-specific predictions
+LIVE DATA - Auto-refreshes every 60 seconds
 """
 
 import streamlit as st
@@ -8,6 +9,8 @@ import pandas as pd
 import numpy as np
 import sys
 import os
+from datetime import datetime
+from streamlit_autorefresh import st_autorefresh
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -17,6 +20,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Auto-refresh every 60 seconds (like real betting apps)
+st_autorefresh(interval=60 * 1000, key="datarefresh")
 
 # Styling
 st.markdown("""
@@ -64,8 +70,9 @@ def american_to_implied(odds):
     return abs(odds) / (abs(odds) + 100)
 
 # Title
-st.markdown('<div class="main-header">🏆 Sports Betting AI</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header">🏆 Sports Betting AI <span style="color:#2ecc71; font-size:0.6em; vertical-align:middle;">● LIVE</span></div>', unsafe_allow_html=True)
 st.markdown('<div style="text-align: center; color: #666;">Universal Predictions + BallDontLie NBA Data</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #2ecc71; font-size: 0.9em;">🔄 Auto-refresh every 60 seconds</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # Sidebar
@@ -79,6 +86,12 @@ with st.sidebar:
     value_threshold = st.slider("Value Edge %", 1, 15, 5) / 100
     
     st.markdown("---")
+    
+    # LIVE indicator with last refresh time
+    st.markdown("### 🟢 LIVE Data")
+    current_time = datetime.now().strftime("%H:%M:%S")
+    st.markdown(f"**Last Refresh:** {current_time}")
+    st.caption("Auto-refreshes every 60 seconds")
     
     # Data source info
     if sport == 'NBA':
