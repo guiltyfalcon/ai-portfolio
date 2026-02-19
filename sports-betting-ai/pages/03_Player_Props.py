@@ -63,13 +63,7 @@ if not api.is_configured():
     💡 BallDontLie is **completely FREE** - just needs authentication
     """)
 else:
-    # Test the connection
-    with st.spinner("Testing API connection..."):
-        if not api.test_connection():
-            st.error("⚠️ API key found but connection failed!")
-            st.info("The key might be invalid or the API might be down. Using sample data.")
-        else:
-            st.success("✅ BallDontLie API connected!")
+    st.success("✅ BallDontLie API key configured")
 
 # Load player data
 top_players = []
