@@ -59,7 +59,7 @@ class OddsAPI:
             return pd.DataFrame()
     
     @st.cache_data(ttl=300)  # Cache for 5 minutes
-    def get_odds(_self, sport: str, regions: str = 'us', markets: str = 'h2h,spreads,totals') -> pd.DataFrame:
+    def get_odds(_self, sport: str, regions: str = 'us', markets: str = 'h2h,spreads,totals', bookmaker: str = None) -> pd.DataFrame:
         """
         Get odds for a sport.
         
@@ -101,13 +101,24 @@ class OddsAPI:
                     'bookmaker_count': len(game.get('bookmakers', []))
                 }
                 
-                # Extract best odds across bookmakers
+                # Extract odds from selected bookmaker or best available
                 bookmakers = game.get('bookmakers', [])
                 if bookmakers:
-                    # Get DraftKings or first available
-                    dk = next((b for b in bookmakers if b['key'] == 'draftkings'), bookmakers[0])
+                    # Map display names to API keys
+                    bookmaker_map = {
+                        'draftkings': 'draftkings',
+                        'fanduel': 'fanduel', 
+                        'betmgm': 'betmgm',
+                        'pinnacle': 'pinnacle',
+                        'williamhill': 'williamhill_us',
+                        'bet365': 'bet365'
+                    }
                     
-                    for market in dk.get('markets', []):
+                    # Get selected bookmaker or DraftKings as default
+                    target_key = bookmaker_map.get(bookmaker.lower(), 'draftkings') if bookmaker else 'draftkings'
+                    selected = next((b for b in bookmakers if b['key'] == target_key), bookmakers[0])
+                    
+                    for market in selected.get('markets', []):
                         if market['key'] == 'h2h':
                             outcomes = market.get('outcomes', [])
                             for outcome in outcomes:

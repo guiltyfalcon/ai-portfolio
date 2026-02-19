@@ -43,11 +43,17 @@ st.markdown('<div class="main-title">📊 Live Odds</div>', unsafe_allow_html=Tr
 
 sport = st.selectbox("Sport", ['NBA', 'NFL', 'MLB', 'NHL'])
 
-# Bookmaker selector
-bookmakers = ['DraftKings', 'FanDuel', 'BetMGM', 'Pinnacle']
+# Bookmaker selector - mapped to API keys
+bookmaker_map = {
+    'DraftKings': 'draftkings',
+    'FanDuel': 'fanduel', 
+    'BetMGM': 'betmgm',
+    'Pinnacle': 'pinnacle'
+}
 col1, col2 = st.columns([3, 1])
 with col2:
-    selected_book = st.selectbox("Bookmaker", bookmakers)
+    selected_book_display = st.selectbox("Bookmaker", list(bookmaker_map.keys()))
+    selected_book = bookmaker_map[selected_book_display]
 
 odds_api = OddsAPI()
 if not odds_api.is_configured():
@@ -55,8 +61,8 @@ if not odds_api.is_configured():
     st.info("Get free API key at: https://the-odds-api.com/")
 
 try:
-    with st.spinner("Loading odds..."):
-        odds_df = odds_api.get_odds(sport.lower()) if odds_api.is_configured() else pd.DataFrame()
+    with st.spinner(f"Loading {selected_book_display} odds..."):
+        odds_df = odds_api.get_odds(sport.lower(), bookmaker=selected_book) if odds_api.is_configured() else pd.DataFrame()
     
     if not odds_df.empty:
         st.success(f"✅ Loaded {len(odds_df)} games with live odds")
