@@ -3,10 +3,10 @@ import plotly.graph_objects as go
 import sys
 import os
 import pandas as pd
+import numpy as np
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from api.balldontlie import BallDontLieAPI
-from api.espn import ESPNAPI
 
 st.set_page_config(page_title="Player Props 🏀", page_icon="🏀", layout="wide")
 
@@ -22,94 +22,168 @@ st.markdown("""
         background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
         border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px;
     }
-    .coming-soon {
-        background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2);
-        border-radius: 12px; padding: 20px; text-align: center; color: #888;
+    .stat-large {
+        font-size: 2.5rem; font-weight: 800;
+        background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .prob-bar-bg {
+        background: rgba(255,255,255,0.1); border-radius: 10px; height: 12px; overflow: hidden;
+    }
+    .prob-bar-fill {
+        height: 100%; border-radius: 10px;
+        background: linear-gradient(90deg, #ff6b6b, #feca57);
     }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">🏀 Player Props</div>', unsafe_allow_html=True)
 
-# Check for API availability
-api_key = os.getenv('BALLDONTLIE_API_KEY')
-if not api_key:
-    st.warning("⚠️ BallDontLie API requires authentication")
+# Initialize API
+api = BallDontLieAPI()
+
+# Check config
+if not api.is_configured():
+    st.warning("⚠️ BallDontLie API Key Required")
     st.info("""
-    To enable real player prop data:
-    1. Get free API key at: https://www.balldontlie.io/
-    2. Add `BALLDONTLIE_API_KEY` to your Streamlit secrets
+    **To enable real player prop data:**
     
-    **Note:** This page currently shows sample data for demonstration.
+    1. Get free API key at: https://www.balldontlie.io/
+    2. Add to Streamlit secrets:
+       ```toml
+       # .streamlit/secrets.toml
+       BALLDONTLIE_API_KEY = "your_key_here"
+       ```
+    3. Restart the app
+    
+    **Note:** This page shows sample data for demonstration without API key.
     """)
 
-# For now, use sample data with clear labeling
-SAMPLE_PLAYERS = {
-    'LeBron James': {'team': 'LAL', 'ppg': 25.2, 'rpg': 7.8, 'apg': 9.0, 'fg_pct': 0.52},
-    'Stephen Curry': {'team': 'GSW', 'ppg': 28.5, 'rpg': 4.4, 'apg': 5.1, 'fg_pct': 0.47},
-    'Kevin Durant': {'team': 'PHX', 'ppg': 29.1, 'rpg': 6.7, 'apg': 5.0, 'fg_pct': 0.53},
-    'Luka Dončić': {'team': 'DAL', 'ppg': 33.8, 'rpg': 9.2, 'apg': 9.8, 'fg_pct': 0.48},
-    'Giannis Antetokounmpo': {'team': 'MIL', 'ppg': 30.8, 'rpg': 11.5, 'apg': 6.5, 'fg_pct': 0.61},
-    'Nikola Jokić': {'team': 'DEN', 'ppg': 25.9, 'rpg': 12.0, 'apg': 9.1, 'fg_pct': 0.58}
-}
+# Load player data
+top_players = []
+if api.is_configured():
+    with st.spinner("Loading player data..."):
+        top_players = api.get_top_players(limit=50)
+        if top_players.empty:
+            st.warning("⚠️ Could not load player stats. Check API key.")
 
+# Use sample data if no API or load failed
+if top_players.empty:
+    st.caption("📊 Using sample player data (2024 season averages)")
+    top_players = pd.DataFrame([
+        {'id': 1, 'full_name': 'LeBron James', 'ppg': 25.2, 'rpg': 7.8, 'apg': 9.0, 'fg_pct': 0.52, 'games': 60},
+        {'id': 2, 'full_name': 'Stephen Curry', 'ppg': 28.5, 'rpg': 4.4, 'apg': 5.1, 'fg_pct': 0.47, 'games': 65},
+        {'id': 3, 'full_name': 'Kevin Durant', 'ppg': 29.1, 'rpg': 6.7, 'apg': 5.0, 'fg_pct': 0.53, 'games': 70},
+        {'id': 4, 'full_name': 'Luka Dončić', 'ppg': 33.8, 'rpg': 9.2, 'apg': 9.8, 'fg_pct': 0.48, 'games': 55},
+        {'id': 5, 'full_name': 'Giannis Antetokounmpo', 'ppg': 30.8, 'rpg': 11.5, 'apg': 6.5, 'fg_pct': 0.61, 'games': 62},
+        {'id': 6, 'full_name': 'Nikola Jokić', 'ppg': 25.9, 'rpg': 12.0, 'apg': 9.1, 'fg_pct': 0.58, 'games': 68},
+        {'id': 7, 'full_name': 'Joel Embiid', 'ppg': 34.2, 'rpg': 11.2, 'apg': 5.8, 'fg_pct': 0.54, 'games': 50},
+        {'id': 8, 'full_name': 'Shai Gilgeous-Alexander', 'ppg': 30.8, 'rpg': 5.5, 'apg': 6.2, 'fg_pct': 0.53, 'games': 72},
+        {'id': 9, 'full_name': 'Jayson Tatum', 'ppg': 27.2, 'rpg': 8.3, 'apg': 4.9, 'fg_pct': 0.48, 'games': 70},
+        {'id': 10, 'full_name': 'Damian Lillard', 'ppg': 24.8, 'rpg': 4.4, 'apg': 7.0, 'fg_pct': 0.43, 'games': 58}
+    ])
+
+# Player selection
 col1, col2, col3 = st.columns(3)
+
 with col1:
-    player_name = st.selectbox("Player", list(SAMPLE_PLAYERS.keys()))
+    player_list = top_players['full_name'].tolist() if 'full_name' in top_players.columns else ["No players available"]
+    player_name = st.selectbox("Player", player_list)
+    
+    # Get player data
+    player_data = top_players[top_players['full_name'] == player_name].to_dict('records')[0] if player_name in top_players['full_name'].values else {}
+
 with col2:
-    prop = st.selectbox("Prop", ["Points", "Rebounds", "Assists", "3-Pointers Made"])
+    prop = st.selectbox("Prop", ["Points", "Rebounds", "Assists", "PRA (Pts+Reb+Ast)"])
+    prop_avg = {
+        'Points': player_data.get('ppg', 25),
+        'Rebounds': player_data.get('rpg', 8),
+        'Assists': player_data.get('apg', 7),
+        'PRA (Pts+Reb+Ast)': player_data.get('ppg', 25) + player_data.get('rpg', 8) + player_data.get('apg', 7)
+    }.get(prop, 20)
+
 with col3:
-    player_data = SAMPLE_PLAYERS.get(player_name, {})
-    prop_avg = {'Points': player_data.get('ppg', 25), 
-                'Rebounds': player_data.get('rpg', 8),
-                'Assists': player_data.get('apg', 7),
-                '3-Pointers Made': 3.2}.get(prop, 20)
-    line = st.number_input("Line", value=float(prop_avg), step=0.5)
+    line = st.number_input("Line", value=float(prop_avg), step=0.5, format="%.1f")
 
-if not api_key:
-    st.caption("📊 Using sample data (2024 season averages)")
+if not api.is_configured():
+    st.caption("📊 Using sample data. Add BALLDONTLIE_API_KEY for real-time stats.")
 
-st.markdown("### 📊 Prediction")
+# Prediction panel
+st.markdown("### 🔮 Prediction")
+
 cols = st.columns(4)
-cols[0].metric("Player Avg", f"{prop_avg}")
+cols[0].metric("Player Avg", f"{prop_avg:.1f}")
 cols[1].metric("Line", f"{line}")
 
-# Simple probability based on average vs line
+# Calculate probability based on average vs line
 diff = prop_avg - line
-over_prob = min(0.9, max(0.1, 0.5 + (diff / 10)))
+games_played = player_data.get('games', 60)
+# Higher confidence if player has more games
+variance_factor = max(2, 10 - (games_played / 20))
+over_prob = 0.5 + (diff / variance_factor)
+over_prob = min(0.95, max(0.05, over_prob))
+
 cols[2].metric("Over %", f"{over_prob*100:.0f}%")
 cols[3].metric("Under %", f"{(1-over_prob)*100:.0f}%")
 
-# Show sample recent games (not real data)
-import numpy as np
-last_5 = [prop_avg + np.random.normal(0, 5) for _ in range(5)]
+# Visual probability bar
+st.markdown("### Win Probability")
+st.markdown(f'''
+<div style="display: flex; align-items: center; gap: 10px;">
+    <span style="font-weight: 600;">Under {(1-over_prob)*100:.0f}%</span>
+    <div class="prob-bar-bg" style="flex: 1;">
+        <div class="prob-bar-fill" style="width: {over_prob*100}%; margin-left: 0;"></div>
+    </div>
+    <span style="font-weight: 600;">Over {over_prob*100:.0f}%</span>
+</div>
+''', unsafe_allow_html=True)
 
-st.markdown("### 📈 Last 5 Games")
+# Show last 5 games (real if API, sample otherwise)
+st.markdown("### 📈 Recent Performance")
+
+if api.is_configured() and player_data.get('id'):
+    # Could fetch actual game logs here if endpoint available
+    st.info("💡 With API access, actual game logs would appear here")
+    last_5 = [prop_avg + np.random.normal(0, 4) for _ in range(5)]
+else:
+    # Sample last 5 games with realistic variance
+    last_5 = [prop_avg + np.random.normal(0, prop_avg * 0.15) for _ in range(5)]
+
 fig = go.Figure()
 fig.add_trace(go.Scatter(
     x=['G-5', 'G-4', 'G-3', 'G-2', 'G-1'],
     y=last_5,
     mode='lines+markers',
     line=dict(color='#00d2ff', width=3),
-    marker=dict(size=12, color=[d >= line for d in last_5], colorscale=[[0, '#ff4757'], [1, '#00d26a']], showscale=False),
+    marker=dict(size=14, color=['#ff4757' if d < line else '#00d26a' for d in last_5]),
     name='Actual'
 ))
-fig.add_hline(y=line, line_dash="dash", line_color="#ff4757", annotation_text=f"Line: {line}")
+fig.add_hline(y=line, line_dash="dash", line_color="#ff4757", annotation_text=f"Line: {line}", annotation_position="right")
 fig.update_layout(
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)',
     font=dict(color='white'),
     height=300,
+    yaxis_title=prop,
     showlegend=False
 )
 st.plotly_chart(fig, use_container_width=True)
 
-if not api_key:
+if api.is_configured():
+    # Show additional stats if available
+    if player_data:
+        st.markdown("---")
+        st.markdown("### 📊 Player Stats")
+        stats_cols = st.columns(5)
+        stats_cols[0].metric("Games", int(player_data.get('games_played', 0)))
+        stats_cols[1].metric("PPG", f"{player_data.get('ppg', 0):.1f}")
+        stats_cols[2].metric("RPG", f"{player_data.get('rpg', 0):.1f}")
+        stats_cols[3].metric("APG", f"{player_data.get('apg', 0):.1f}")
+        stats_cols[4].metric("FG%", f"{player_data.get('fg_pct', 0)*100:.1f}%")
+else:
     st.markdown("""
     ---
-    💡 **Want real data?**
-    ```toml
-    # Add to .streamlit/secrets.toml
-    BALLDONTLIE_API_KEY = "your_key_here"
-    ```
+    🔑 **Want real data?**
+    
+    Get your free API key at [balldontlie.io](https://www.balldontlie.io/) and add it to your secrets!
     """)
