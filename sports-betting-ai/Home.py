@@ -358,8 +358,17 @@ try:
                     gm = game_odds.iloc[0]
                     home_ml = gm.get('home_ml')
                     away_ml = gm.get('away_ml')
-                    home_implied = american_to_implied(home_ml) if pd.notna(home_ml) else home_prob
-                    away_implied = american_to_implied(away_ml) if pd.notna(away_ml) else away_prob
+                    
+                    # Use implied probability from odds when available
+                    if pd.notna(home_ml):
+                        home_implied = american_to_implied(home_ml)
+                        away_implied = american_to_implied(away_ml) if pd.notna(away_ml) else (1 - home_implied)
+                        # Use implied probs for display (more accurate than record-based)
+                        home_prob = home_implied
+                        away_prob = away_implied
+                    else:
+                        home_implied = home_prob
+                        away_implied = away_prob
                     
                     home_edge = home_prob - home_implied
                     away_edge = away_prob - away_implied
