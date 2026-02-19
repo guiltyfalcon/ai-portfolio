@@ -44,28 +44,34 @@ api = BallDontLieAPI()
 
 # Check config
 if not api.is_configured():
-    st.warning("⚠️ BallDontLie API Key Required")
-    st.info("""
-    **To enable real player prop data:**
+    st.warning("⚠️ BallDontLie API Key Not Configured")
+    st.error("""
+    **API Key Missing!**
     
-    1. Get free API key at: https://www.balldontlie.io/
-    2. Add to Streamlit secrets:
-       ```toml
-       # .streamlit/secrets.toml
-       BALLDONTLIE_API_KEY = "your_key_here"
-       ```
-    3. Restart the app
+    To get REAL player stats, add this to your **Streamlit Cloud Secrets**:
     
-    **Note:** This page shows sample data for demonstration without API key.
+    ```toml
+    BALLDONTLIE_API_KEY = "edbb1b5d-32f0-48cb-b813-6fdc08574f58"
+    ```
+    
+    **How to add:**
+    1. Go to https://share.streamlit.io
+    2. Click your app → **Settings (⚙️)** → **Secrets**
+    3. Paste the key above
+    4. Click **Save** and **Reboot**
+    
+    💡 BallDontLie is **completely FREE** - just needs authentication
     """)
 
 # Load player data
 top_players = []
 if api.is_configured():
     with st.spinner("Loading player data..."):
-        top_players = api.get_top_players(limit=50)
-        if top_players.empty:
-            st.warning("⚠️ Could not load player stats. Check API key.")
+        try:
+            top_players = api.get_top_players(limit=50)
+        except Exception as e:
+            st.error(f"API Error: {e}")
+            top_players = pd.DataFrame()
 
 # Use sample data if no API or load failed
 if top_players.empty:
