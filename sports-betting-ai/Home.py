@@ -384,6 +384,7 @@ try:
                     has_edge = abs(home_edge) > value_threshold or abs(away_edge) > value_threshold
                 else:
                     home_ml = away_ml = None
+                    home_edge = away_edge = 0
                     has_edge = False
                 
                 predictions.append({
@@ -393,6 +394,8 @@ try:
                     'away_prob': away_prob,
                     'home_ml': home_ml,
                     'away_ml': away_ml,
+                    'home_edge': home_edge if not game_odds.empty else 0,
+                    'away_edge': away_edge if not game_odds.empty else 0,
                     'has_edge': has_edge
                 })
             
