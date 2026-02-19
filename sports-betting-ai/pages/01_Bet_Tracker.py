@@ -8,6 +8,7 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from data.bet_tracker import BetTracker
+from api.espn import ESPNAPI
 
 st.set_page_config(
     page_title="Bet Tracker 💰",
@@ -41,12 +42,63 @@ st.markdown("""
     .push { border-left: 4px solid #ffa502; }
     .profit-positive { color: #00d26a; font-weight: 700; }
     .profit-negative { color: #ff4757; font-weight: 700; }
+    .vs-divider {
+        text-align: center;
+        color: #00d2ff;
+        font-weight: 700;
+        font-size: 1.2rem;
+        padding: 10px 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">💰 Bet Tracker</div>', unsafe_allow_html=True)
 
 tracker = BetTracker()
+
+# Initialize ESPN API for team data
+@st.cache_data(ttl=3600)
+def get_teams_for_sport(sport):
+    """Fetch teams for selected sport."""
+    try:
+        espn = ESPNAPI()
+        teams_df = espn.get_teams(sport.lower())
+        if not teams_df.empty and 'name' in teams_df.columns:
+            return teams_df['name'].tolist()
+    except:
+        pass
+    return []
+
+# Default teams by sport (fallback if API fails)
+DEFAULT_TEAMS = {
+    'NBA': ['Atlanta Hawks', 'Boston Celtics', 'Brooklyn Nets', 'Charlotte Hornets', 'Chicago Bulls',
+            'Cleveland Cavaliers', 'Dallas Mavericks', 'Denver Nuggets', 'Detroit Pistons', 'Golden State Warriors',
+            'Houston Rockets', 'Indiana Pacers', 'LA Clippers', 'Los Angeles Lakers', 'Memphis Grizzlies',
+            'Miami Heat', 'Milwaukee Bucks', 'Minnesota Timberwolves', 'New Orleans Pelicans', 'New York Knicks',
+            'Oklahoma City Thunder', 'Orlando Magic', 'Philadelphia 76ers', 'Phoenix Suns', 'Portland Trail Blazers',
+            'Sacramento Kings', 'San Antonio Spurs', 'Toronto Raptors', 'Utah Jazz', 'Washington Wizards'],
+    'NFL': ['Arizona Cardinals', 'Atlanta Falcons', 'Baltimore Ravens', 'Buffalo Bills', 'Carolina Panthers',
+            'Chicago Bears', 'Cincinnati Bengals', 'Cleveland Browns', 'Dallas Cowboys', 'Denver Broncos',
+            'Detroit Lions', 'Green Bay Packers', 'Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars',
+            'Kansas City Chiefs', 'Las Vegas Raiders', 'Los Angeles Chargers', 'Los Angeles Rams', 'Miami Dolphins',
+            'Minnesota Vikings', 'New England Patriots', 'New Orleans Saints', 'New York Giants', 'New York Jets',
+            'Philadelphia Eagles', 'Pittsburgh Steelers', 'San Francisco 49ers', 'Seattle Seahawks', 'Tampa Bay Buccaneers',
+            'Tennessee Titans', 'Washington Commanders'],
+    'MLB': ['Arizona Diamondbacks', 'Atlanta Braves', 'Baltimore Orioles', 'Boston Red Sox', 'Chicago Cubs',
+            'Chicago White Sox', 'Cincinnati Reds', 'Cleveland Guardians', 'Colorado Rockies', 'Detroit Tigers',
+            'Houston Astros', 'Kansas City Royals', 'Los Angeles Angels', 'Los Angeles Dodgers', 'Miami Marlins',
+            'Milwaukee Brewers', 'Minnesota Twins', 'New York Mets', 'New York Yankees', 'Oakland Athletics',
+            'Philadelphia Phillies', 'Pittsburgh Pirates', 'San Diego Padres', 'San Francisco Giants', 'Seattle Mariners',
+            'St. Louis Cardinals', 'Tampa Bay Rays', 'Texas Rangers', 'Toronto Blue Jays', 'Washington Nationals'],
+    'NHL': ['Anaheim Ducks', 'Arizona Coyotes', 'Boston Bruins', 'Buffalo Sabres', 'Calgary Flames',
+            'Carolina Hurricanes', 'Chicago Blackhawks', 'Colorado Avalanche', 'Columbus Blue Jackets', 'Dallas Stars',
+            'Detroit Red Wings', 'Edmonton Oilers', 'Florida Panthers', 'Los Angeles Kings', 'Minnesota Wild',
+            'Montreal Canadiens', 'Nashville Predators', 'New Jersey Devils', 'New York Islanders', 'New York Rangers',
+            'Ottawa Senators', 'Philadelphia Flyers', 'Pittsburgh Penguins', 'San Jose Sharks', 'Seattle Kraken',
+            'St. Louis Blues', 'Tampa Bay Lightning', 'Toronto Maple Leafs', 'Utah Hockey Club', 'Vancouver Canucks',
+            'Vegas Golden Knights', 'Winnipeg Jets'],
+    'Other': ['Team A', 'Team B', 'Team C', 'Team D', 'Team E']
+}
 
 with st.sidebar:
     st.markdown("### 💵 Bankroll")
@@ -100,25 +152,84 @@ with tab1:
 
 with tab2:
     st.markdown("### ➕ Add New Bet")
+    
+    # Sport selection first
+    sport = st.selectbox("Select Sport", ['NBA', 'NFL', 'MLB', 'NHL', 'Other'], key="bet_sport")
+    
+    # Get teams for selected sport
+    teams = get_teams_for_sport(sport) if sport != 'Other' else DEFAULT_TEAMS['Other']
+    if not teams:
+        teams = DEFAULT_TEAMS.get(sport, DEFAULT_TEAMS['Other'])
+    
+    # Team selection with dropdowns
+    col1, col2, col3 = st.columns([2, 1, 2])
+    
+    with col1:
+        home_team = st.selectbox("Home Team", teams, key="home_team_select")
+    
+    with col2:
+        st.markdown('<div class="vs-divider">VS</div>', unsafe_allow_html=True)
+    
+    with col3:
+        # Filter out home team from away options
+        away_teams = [t for t in teams if t != home_team]
+        away_team = st.selectbox("Away Team", away_teams, key="away_team_select")
+    
+    # Pick selection
+    st.markdown("---")
+    
     col1, col2 = st.columns(2)
     
     with col1:
-        sport = st.selectbox("Sport", ['NBA', 'NFL', 'MLB', 'NHL', 'Other'])
-        home = st.text_input("Home Team", placeholder="Lakers")
-        pick = st.text_input("Your Pick", placeholder="Lakers ML")
+        # Auto-generate pick options based on teams
+        pick_options = [
+            f"{home_team} ML",
+            f"{away_team} ML",
+            f"{home_team} Spread",
+            f"{away_team} Spread",
+            f"Over",
+            f"Under",
+            "Other"
+        ]
+        pick = st.selectbox("Your Pick", pick_options, key="pick_select")
+        
+        if pick == "Other":
+            pick = st.text_input("Custom Pick", placeholder="Enter your pick")
     
     with col2:
-        away = st.text_input("Away Team", placeholder="Warriors")
-        odds = st.number_input("Odds", value=-110)
-        stake = st.number_input("Stake ($)", value=10.0, min_value=0.01)
+        odds = st.number_input("Odds", value=-110, key="odds_input")
+        stake = st.number_input("Stake ($)", value=10.0, min_value=0.01, step=5.0, key="stake_input")
+    
+    # Quick odds buttons
+    st.caption("Quick Odds:")
+    qcol1, qcol2, qcol3, qcol4 = st.columns(4)
+    with qcol1:
+        if st.button("-110", use_container_width=True):
+            st.session_state['odds_input'] = -110
+            st.rerun()
+    with qcol2:
+        if st.button("+150", use_container_width=True):
+            st.session_state['odds_input'] = 150
+            st.rerun()
+    with qcol3:
+        if st.button("+200", use_container_width=True):
+            st.session_state['odds_input'] = 200
+            st.rerun()
+    with qcol4:
+        if st.button("-200", use_container_width=True):
+            st.session_state['odds_input'] = -200
+            st.rerun()
     
     if st.button("Add Bet", type="primary", use_container_width=True):
-        if home and away and pick:
-            bet = tracker.add_bet(sport, home, away, pick, odds, stake)
-            st.success(f"✅ Bet #{bet['id']} added!")
-            st.balloons()
+        if home_team and away_team and pick and pick != "Other":
+            bet, error = tracker.add_bet(sport, home_team, away_team, pick, odds, stake)
+            if bet:
+                st.success(f"✅ Bet #{bet['id']} added! {home_team} vs {away_team} - {pick}")
+                st.balloons()
+            else:
+                st.error(f"Error: {error}")
         else:
-            st.error("Fill all fields")
+            st.error("⚠️ Please select teams and pick")
 
 with tab3:
     pending = tracker.get_pending_bets()
@@ -144,11 +255,18 @@ with tab3:
                     st.rerun()
             st.divider()
     else:
-        st.info("No pending bets!")
+        st.info("🎉 No pending bets! Time to add some!")
 
 with tab4:
     all_bets = tracker.load_bets()
     if not all_bets.empty:
-        st.dataframe(all_bets, use_container_width=True, hide_index=True)
+        # Format for display
+        display_df = all_bets.copy()
+        display_df['date'] = pd.to_datetime(display_df['date']).dt.strftime('%Y-%m-%d %H:%M')
+        display_df['profit'] = display_df['profit'].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "-")
+        display_df['stake'] = display_df['stake'].apply(lambda x: f"${x:.2f}")
+        display_df['odds'] = display_df['odds'].apply(lambda x: f"{int(x)}")
+        
+        st.dataframe(display_df, use_container_width=True, hide_index=True)
     else:
-        st.info("No bets in history")
+        st.info("📭 No bets in history yet.")
