@@ -1,42 +1,41 @@
 """
 Bet Tracker - Track picks, stakes, results, ROI
-Stores bets persistently using Streamlit session state + CSV backup
+Uses Streamlit session state for persistence (works on Streamlit Cloud)
 """
 
 import pandas as pd
 import json
-import os
 from datetime import datetime
 from typing import Dict, List, Optional
 import streamlit as st
 
 class BetTracker:
-    """Track all bets with persistence."""
+    """Track all bets using Streamlit session state."""
     
-    def __init__(self, data_dir: str = "/mount/data"):
-        self.data_dir = data_dir
-        self.bets_file = os.path.join(data_dir, "bets.json")
-        self.bankroll_file = os.path.join(data_dir, "bankroll.json")
-        self._ensure_data_dir()
-        
-    def _ensure_data_dir(self):
-        """Create data directory if needed."""
-        os.makedirs(self.data_dir, exist_ok=True)
+    def __init__(self, storage_key: str = "bet_tracker_data"):
+        self.storage_key = storage_key
+        self._init_storage()
+    
+    def _init_storage(self):
+        """Initialize session state storage."""
+        if self.storage_key not in st.session_state:
+            st.session_state[self.storage_key] = {
+                'bets': [],
+                'bankroll': 100.0  # Default starting bankroll
+            }
+        if f"{self.storage_key}_bets" not in st.session_state:
+            st.session_state[f"{self.storage_key}_bets"] = pd.DataFrame(columns=[
+                'id', 'date', 'sport', 'home_team', 'away_team', 
+                'pick', 'odds', 'stake', 'result', 'profit', 'status'
+            ])
     
     def load_bets(self) -> pd.DataFrame:
-        """Load all bets from storage."""
-        if os.path.exists(self.bets_file):
-            with open(self.bets_file, 'r') as f:
-                data = json.load(f)
-            return pd.DataFrame(data)
-        return pd.DataFrame(columns=[
-            'id', 'date', 'sport', 'home_team', 'away_team', 
-            'pick', 'odds', 'stake', 'result', 'profit', 'status'
-        ])
+        """Load all bets from session state."""
+        return st.session_state.get(f"{self.storage_key}_bets", pd.DataFrame())
     
     def save_bets(self, df: pd.DataFrame):
-        """Save bets to storage."""
-        df.to_json(self.bets_file, orient='records')
+        """Save bets to session state."""
+        st.session_state[f"{self.storage_key}_bets"] = df
     
     def add_bet(self, sport: str, home_team: str, away_team: str,
                 pick: str, odds: float, stake: float) -> Dict:
@@ -44,20 +43,25 @@ class BetTracker:
         bets = self.load_bets()
         
         new_bet = {
-            'id': len(bets) + 1,
+            'id': len(bets) + 1 if len(bets) > 0 else 1,
             'date': datetime.now().isoformat(),
             'sport': sport,
             'home_team': home_team,
             'away_team': away_team,
             'pick': pick,
-            'odds': odds,
-            'stake': stake,
+            'odds': float(odds),
+            'stake': float(stake),
             'result': None,
-            'profit': 0,
+            'profit': 0.0,
             'status': 'pending'
         }
         
-        bets = pd.concat([bets, pd.DataFrame([new_bet])], ignore_index=True)
+        # Convert to DataFrame and concat
+        if bets.empty:
+            bets = pd.DataFrame([new_bet])
+        else:
+            bets = pd.concat([bets, pd.DataFrame([new_bet])], ignore_index=True)
+        
         self.save_bets(bets)
         return new_bet
     
@@ -69,56 +73,69 @@ class BetTracker:
             idx = bets[bets['id'] == bet_id].index[0]
             bet = bets.loc[idx]
             
+            # Calculate profit
+            odds = float(bet['odds'])
+            stake = float(bet['stake'])
+            
             if result == 'win':
-                profit = bet['stake'] * (abs(bet['odds']) / 100 if bet['odds'] > 0 else 100 / abs(bet['odds']))
-                if bet['odds'] < 0:
-                    profit = bet['stake'] * (100 / abs(bet['odds']))
+                if odds > 0:
+                    profit = stake * (odds / 100)
+                else:
+                    profit = stake * (100 / abs(odds))
             elif result == 'loss':
-                profit = -bet['stake']
-            else:
-                profit = 0
+                profit = -stake
+            else:  # push
+                profit = 0.0
             
             bets.at[idx, 'result'] = result
             bets.at[idx, 'profit'] = profit
             bets.at[idx, 'status'] = 'settled'
             
             self.save_bets(bets)
+            return True
+        return False
     
     def get_stats(self) -> Dict:
         """Get betting statistics."""
         bets = self.load_bets()
-        settled = bets[bets['status'] == 'settled']
+        settled = bets[bets['status'] == 'settled'] if 'status' in bets.columns else pd.DataFrame()
         
-        if settled.empty:
+        if settled.empty or len(settled) == 0:
             return {
                 'total_bets': 0,
                 'wins': 0,
                 'losses': 0,
-                'win_rate': 0,
-                'total_staked': 0,
-                'total_profit': 0,
-                'roi': 0,
-                'avg_odds': 0
+                'win_rate': 0.0,
+                'total_staked': 0.0,
+                'total_profit': 0.0,
+                'roi': 0.0,
+                'avg_odds': 0.0
             }
         
         wins = len(settled[settled['result'] == 'win'])
         losses = len(settled[settled['result'] == 'loss'])
         total = len(settled)
         
+        total_staked = settled['stake'].sum() if 'stake' in settled.columns else 0
+        total_profit = settled['profit'].sum() if 'profit' in settled.columns else 0
+        
         return {
             'total_bets': total,
             'wins': wins,
             'losses': losses,
-            'win_rate': wins / total if total > 0 else 0,
-            'total_staked': settled['stake'].sum(),
-            'total_profit': settled['profit'].sum(),
-            'roi': settled['profit'].sum() / settled['stake'].sum() if settled['stake'].sum() > 0 else 0,
-            'avg_odds': settled['odds'].mean()
+            'win_rate': wins / total if total > 0 else 0.0,
+            'total_staked': float(total_staked),
+            'total_profit': float(total_profit),
+            'roi': (total_profit / total_staked) if total_staked > 0 else 0.0,
+            'avg_odds': settled['odds'].mean() if 'odds' in settled.columns else 0.0
         }
     
     def get_pending_bets(self) -> pd.DataFrame:
         """Get all pending bets."""
         bets = self.load_bets()
+        if bets.empty or 'status' not in bets.columns:
+            return pd.DataFrame(columns=['id', 'date', 'sport', 'home_team', 'away_team', 
+                                       'pick', 'odds', 'stake', 'result', 'profit', 'status'])
         return bets[bets['status'] == 'pending']
     
     def calculate_kelly_criterion(self, model_prob: float, odds: float, 
@@ -130,12 +147,12 @@ class BetTracker:
             decimal_odds = 1 + (100 / abs(odds))
         
         kelly = ((decimal_odds - 1) * model_prob - (1 - model_prob)) / (decimal_odds - 1)
-        return max(0, kelly * fraction)
+        return max(0.0, kelly * fraction)
     
     def get_performance_by_sport(self) -> pd.DataFrame:
         """Get ROI breakdown by sport."""
         bets = self.load_bets()
-        settled = bets[bets['status'] == 'settled']
+        settled = bets[bets['status'] == 'settled'] if 'status' in bets.columns else pd.DataFrame()
         
         if settled.empty:
             return pd.DataFrame()
@@ -146,11 +163,20 @@ class BetTracker:
             'result': lambda x: (x == 'win').sum() / len(x) if len(x) > 0 else 0
         }).reset_index()
     
-    def export_to_csv(self, filepath: str):
-        """Export bets to CSV."""
+    def export_to_csv(self):
+        """Export bets to CSV for download."""
         bets = self.load_bets()
-        bets.to_csv(filepath, index=False)
+        if not bets.empty:
+            return bets.to_csv(index=False)
+        return None
+    
+    def clear_all(self):
+        """Clear all bets."""
+        st.session_state[f"{self.storage_key}_bets"] = pd.DataFrame(columns=[
+            'id', 'date', 'sport', 'home_team', 'away_team', 
+            'pick', 'odds', 'stake', 'result', 'profit', 'status'
+        ])
 
 if __name__ == "__main__":
-    tracker = BetTracker("./data")
+    tracker = BetTracker()
     print("Bet Tracker ready")
