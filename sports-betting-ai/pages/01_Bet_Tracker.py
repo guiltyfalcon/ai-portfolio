@@ -1,5 +1,5 @@
 """
-Bet Tracker - Enhanced with CSV export, filters, and bankroll management
+Bet Tracker - Enhanced with CSV export, filters, charts, and bankroll management
 """
 
 import streamlit as st
@@ -65,10 +65,18 @@ st.markdown("""
         padding: 15px;
         margin-bottom: 20px;
     }
+    .quick-btn {
+        background: rgba(0,210,106,0.2);
+        border: 1px solid #00d26a;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        cursor: pointer;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">💰 Bet Tracker</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">💰 Bet Tracker Pro</div>', unsafe_allow_html=True)
 
 # Initialize tracker
 tracker = BetTracker()
@@ -79,39 +87,44 @@ with st.sidebar:
     
     # Get current bankroll
     current_bankroll = st.session_state.get('bankroll', 1000.0)
-    new_bankroll = st.number_input("Starting Bankroll ($)", 
-                                   value=float(current_bankroll), 
-                                   min_value=10.0, 
-                                   step=50.0)
+    new_bankroll = st.number_input(
+        "Starting Bankroll ($)", 
+        value=float(current_bankroll), 
+        min_value=10.0, 
+        step=50.0
+    )
+    
     if new_bankroll != current_bankroll:
         st.session_state['bankroll'] = new_bankroll
-        st.success("Bankroll updated!")
+        st.success("✅ Bankroll updated!")
     
     st.markdown("---")
     st.markdown("### 📊 Quick Actions")
     
     # Export bets
-    if st.button("📥 Export to CSV"):
+    if st.button("📥 Export to CSV", use_container_width=True):
         csv = tracker.export_to_csv()
         if csv:
             st.download_button(
-                label="Download CSV",
+                label="⬇️ Download CSV",
                 data=csv,
                 file_name=f"bets_{datetime.now().strftime('%Y%m%d')}.csv",
-                mime="text/csv"
+                mime="text/csv",
+                use_container_width=True
             )
         else:
             st.info("No bets to export")
     
     # Clear all
-    if st.button("🗑️ Clear All Bets", type="secondary"):
-        if st.checkbox("Confirm delete all bets?"):
+    if st.button("🗑️ Clear All Bets", type="secondary", use_container_width=True):
+        confirm = st.checkbox("⚠️ Confirm delete all bets?")
+        if confirm:
             tracker.clear_all()
-            st.success("All bets cleared!")
+            st.success("✅ All bets cleared!")
             st.rerun()
     
     st.markdown("---")
-    st.markdown("### 📈 Performance")
+    st.markdown("### 🏆 Performance by Sport")
     
     # Sport breakdown
     sport_perf = tracker.get_performance_by_sport()
@@ -124,14 +137,14 @@ tab1, tab2, tab3, tab4 = st.tabs(["📊 Dashboard", "➕ Add Bet", "📝 Pending
 with tab1:
     stats = tracker.get_stats()
     
-    # Stats row with improved styling
+    # Stats row
     st.markdown("### 📊 Overall Statistics")
     cols = st.columns(5)
     
     with cols[0]:
         st.metric("Total Bets", stats['total_bets'])
     with cols[1]:
-        st.metric("Wins", stats['wins'])
+        st.metric("Wins", stats['wins'], delta=f"{stats['win_rate']*100:.1f}%")
     with cols[2]:
         st.metric("Losses", stats['losses'])
     with cols[3]:
@@ -140,7 +153,7 @@ with tab1:
     with cols[4]:
         st.metric("ROI", f"{stats['roi']*100:.1f}%")
     
-    # Win rate and average odds
+    # Additional stats
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("Win Rate", f"{stats['win_rate']*100:.1f}%")
@@ -184,7 +197,6 @@ with tab1:
         
         with col2:
             st.markdown("### 📊 Win/Loss Distribution")
-            
             win_count = len(settled[settled['result'] == 'win'])
             loss_count = len(settled[settled['result'] == 'loss'])
             push_count = len(settled[settled['result'] == 'push'])
@@ -208,8 +220,8 @@ with tab1:
         sport_perf = tracker.get_performance_by_sport()
         if not sport_perf.empty:
             fig3 = px.bar(
-                sport_perf, 
-                x='sport', 
+                sport_perf,
+                x='sport',
                 y='profit',
                 color='profit',
                 color_continuous_scale=['#ff4757', '#ffa502', '#00d26a'],
@@ -223,40 +235,65 @@ with tab1:
             )
             st.plotly_chart(fig3, use_container_width=True)
     else:
-        st.info("No settled bets yet. Start tracking to see your performance!")
+        st.info("🎯 No settled bets yet. Start tracking to see your performance!")
 
 with tab2:
     st.markdown("### ➕ Add New Bet")
     
     col1, col2 = st.columns(2)
+    
     with col1:
-        sport = st.selectbox("Sport", ['NBA', 'NFL', 'MLB', 'NHL', 'NCAAB', 'NCAAF', 'Soccer', 'Other'])
+        sport = st.selectbox(
+            "Sport",
+            ['NBA', 'NFL', 'MLB', 'NHL', 'NCAAB', 'NCAAF', 'Soccer', 'Other']
+        )
         home = st.text_input("Home Team", placeholder="e.g., Lakers")
-        pick = st.text_input("Your Pick", placeholder="e.g., Lakers ML or Lakers -5.5")
+        pick = st.text_input(
+            "Your Pick",
+            value=st.session_state.get('quick_pick', ''),
+            placeholder="e.g., Lakers ML or Lakers -5.5"
+        )
         
         # Quick pick buttons
-        st.caption("Quick Pick:")
+        st.caption("⚡ Quick Pick:")
         qcol1, qcol2, qcol3 = st.columns(3)
         with qcol1:
-            if st.button("🏠 Home ML"):
-                st.session_state['quick_pick'] = f"{home} ML"
+            if st.button("🏠 Home ML", use_container_width=True):
+                if home:
+                    st.session_state['quick_pick'] = f"{home} ML"
+                    st.rerun()
         with qcol2:
-            if st.button("✈️ Away ML"):
-                away_team = st.session_state.get('away_team', '')
-                st.session_state['quick_pick'] = f"{away_team} ML"
+            away_team = st.session_state.get('away_team_input', '')
+            if st.button("✈️ Away ML", use_container_width=True):
+                if away_team:
+                    st.session_state['quick_pick'] = f"{away_team} ML"
+                    st.rerun()
         with qcol3:
-            if st.button("🎯 Over"):
+            if st.button("🎯 Over", use_container_width=True):
                 st.session_state['quick_pick'] = "Over"
+                st.rerun()
     
     with col2:
-        away = st.text_input("Away Team", placeholder="e.g., Warriors")
-        st.session_state['away_team'] = away
+        away = st.text_input(
+            "Away Team",
+            placeholder="e.g., Warriors",
+            key="away_team_input"
+        )
         
         odds_col, stake_col = st.columns(2)
         with odds_col:
-            odds = st.number_input("Odds", value=-110, help="American odds format. -110 is standard, +150 is underdog")
+            odds = st.number_input(
+                "Odds",
+                value=-110,
+                help="American odds. -110 is standard, +150 is underdog"
+            )
         with stake_col:
-            stake = st.number_input("Stake ($)", value=10.0, min_value=0.01, step=5.0)
+            stake = st.number_input(
+                "Stake ($)",
+                value=10.0,
+                min_value=0.01,
+                step=5.0
+            )
         
         # Kelly Criterion calculator
         st.markdown("---")
@@ -269,33 +306,46 @@ with tab2:
             decimal_odds = 1 + (100 / abs(odds))
         
         kelly = ((decimal_odds - 1) * kelly_prob - (1 - kelly_prob)) / (decimal_odds - 1)
-        kelly_stake = max(0, kelly * st.session_state.get('bankroll', 1000) * 0.25)  # Quarter Kelly
+        kelly_stake = max(0, kelly * st.session_state.get('bankroll', 1000) * 0.25)
         
-        st.caption(f"Recommended stake (Quarter Kelly): ${kelly_stake:.2f}")
-    
-    # Apply quick pick if set
-    if 'quick_pick' in st.session_state:
-        pick = st.session_state.pop('quick_pick')
-    
-    if st.button("Add Bet", type="primary", use_container_width=True):
-        if home and away and pick:
-            bet = tracker.add_bet(sport, home, away, pick, odds, stake)
-            st.success(f"✅ Bet #{bet['id']} added successfully!")
-            st.balloons()
-        else:
-            st.error("Please fill in all fields")
+        st.caption(f"💰 Recommended stake (Quarter Kelly): **${kelly_stake:.2f}**")
+        
+        if st.button("➕ Add Bet", type="primary", use_container_width=True):
+            if home and away and pick:
+                bet, error = tracker.add_bet(sport, home, away, pick, odds, stake)
+                if bet:
+                    st.success(f"✅ Bet #{bet['id']} added successfully!")
+                    st.balloons()
+                else:
+                    st.error(f"❌ {error}")
+            else:
+                st.error("⚠️ Please fill in all fields")
 
 with tab3:
     # Filters
     st.markdown("### 🔍 Filters")
+    
     with st.container():
         fcol1, fcol2, fcol3 = st.columns(3)
+        
         with fcol1:
-            filter_sport = st.multiselect("Filter by Sport", ['NBA', 'NFL', 'MLB', 'NHL', 'NCAAB', 'NCAAF', 'Soccer', 'Other'])
+            filter_sport = st.multiselect(
+                "Filter by Sport",
+                ['NBA', 'NFL', 'MLB', 'NHL', 'NCAAB', 'NCAAF', 'Soccer', 'Other']
+            )
+        
         with fcol2:
-            date_range = st.date_input("Date Range", [datetime.now() - timedelta(days=30), datetime.now() + timedelta(days=7)])
+            date_range = st.date_input(
+                "Date Range",
+                [datetime.now() - timedelta(days=30), datetime.now() + timedelta(days=7)],
+                key="date_filter"
+            )
+        
         with fcol3:
-            sort_by = st.selectbox("Sort By", ["Date (Newest)", "Date (Oldest)", "Stake (High)", "Odds"])
+            sort_by = st.selectbox(
+                "Sort By",
+                ["Date (Newest)", "Date (Oldest)", "Stake (High)", "Odds"]
+            )
     
     pending = tracker.get_pending_bets()
     
@@ -306,8 +356,10 @@ with tab3:
         
         if len(date_range) == 2:
             pending['date'] = pd.to_datetime(pending['date'])
-            pending = pending[(pending['date'] >= pd.Timestamp(date_range[0])) & 
-                             (pending['date'] <= pd.Timestamp(date_range[1]))]
+            pending = pending[
+                (pending['date'] >= pd.Timestamp(date_range[0])) &
+                (pending['date'] <= pd.Timestamp(date_range[1]))
+            ]
         
         # Sort
         if sort_by == "Date (Newest)":
@@ -325,24 +377,30 @@ with tab3:
         for _, bet in pending.iterrows():
             with st.container():
                 col1, col2, col3, col4, col5 = st.columns([2, 2, 1, 1, 1])
+                
                 with col1:
                     st.markdown(f"**{bet['home_team']} vs {bet['away_team']}**")
                     st.caption(f"📅 {pd.to_datetime(bet['date']).strftime('%Y-%m-%d %H:%M')}")
+                
                 with col2:
                     st.markdown(f"🎯 **{bet['pick']}**")
                     st.caption(f"Odds: {bet['odds']} | Stake: ${bet['stake']:.2f}")
+                
                 with col3:
                     if st.button("✅ Win", key=f"w{bet['id']}", type="primary"):
                         tracker.update_result(bet['id'], 'win')
                         st.rerun()
+                
                 with col4:
                     if st.button("❌ Loss", key=f"l{bet['id']}"):
                         tracker.update_result(bet['id'], 'loss')
                         st.rerun()
+                
                 with col5:
                     if st.button("🔄 Push", key=f"p{bet['id']}"):
                         tracker.update_result(bet['id'], 'push')
                         st.rerun()
+                
                 st.divider()
     else:
         st.info("🎉 No pending bets. Great job keeping up!")
@@ -351,6 +409,7 @@ with tab4:
     st.markdown("### 📜 Bet History")
     
     all_bets = tracker.load_bets()
+    
     if not all_bets.empty:
         # Format for display
         display_df = all_bets.copy()
@@ -372,7 +431,7 @@ with tab4:
         styled_df = display_df.style.applymap(color_result, subset=['result'])
         st.dataframe(styled_df, use_container_width=True, hide_index=True)
     else:
-        st.info("No bets in history yet.")
+        st.info("📭 No bets in history yet.")
 
 st.markdown("---")
-st.caption("💡 Tip: Use the Kelly Criterion calculator to optimize your bet sizing based on your edge.")
+st.caption("💡 **Tip:** Use the Kelly Criterion calculator to optimize your bet sizing based on your edge.")
