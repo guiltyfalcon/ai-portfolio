@@ -34,6 +34,68 @@ BOOKMAKER_MAP = {
     'bet365': 'bet365'
 }
 
+# Sample odds data for fallback when API is rate limited
+SAMPLE_ODDS = {
+    'nba': [
+        {
+            'game_id': 'sample_1',
+            'sport': 'NBA',
+            'home_team': 'Los Angeles Lakers',
+            'away_team': 'Los Angeles Clippers',
+            'commence_time': '2026-02-20T20:00:00Z',
+            'bookmaker': 'DraftKings (Sample)',
+            'home_ml': -240,
+            'away_ml': 198,
+            'home_spread': -6.5,
+            'home_spread_odds': -110,
+            'away_spread': 6.5,
+            'away_spread_odds': -110,
+            'total': 225.5,
+            'over_odds': -110,
+            'under_odds': -110,
+            'bookmaker_count': 1
+        },
+        {
+            'game_id': 'sample_2',
+            'sport': 'NBA',
+            'home_team': 'Denver Nuggets',
+            'away_team': 'Portland Trail Blazers',
+            'commence_time': '2026-02-20T22:00:00Z',
+            'bookmaker': 'DraftKings (Sample)',
+            'home_ml': -142,
+            'away_ml': 120,
+            'home_spread': -3.0,
+            'home_spread_odds': -110,
+            'away_spread': 3.0,
+            'away_spread_odds': -110,
+            'total': 220.5,
+            'over_odds': -110,
+            'under_odds': -110,
+            'bookmaker_count': 1
+        }
+    ],
+    'nfl': [
+        {
+            'game_id': 'sample_1',
+            'sport': 'NFL',
+            'home_team': 'Kansas City Chiefs',
+            'away_team': 'San Francisco 49ers',
+            'commence_time': '2026-02-09T23:30:00Z',
+            'bookmaker': 'DraftKings (Sample)',
+            'home_ml': -130,
+            'away_ml': 110,
+            'home_spread': -2.5,
+            'home_spread_odds': -110,
+            'away_spread': 2.5,
+            'away_spread_odds': -110,
+            'total': 47.5,
+            'over_odds': -110,
+            'under_odds': -110,
+            'bookmaker_count': 1
+        }
+    ]
+}
+
 
 def get_session() -> requests.Session:
     """Create a requests session."""
@@ -44,11 +106,11 @@ def get_session() -> requests.Session:
     return session
 
 
-@st.cache_data(ttl=60)  # Cache for 1 minute (shorter for bookmaker switching)
+@st.cache_data(ttl=120)  # Cache for 2 minutes
 def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 'us', markets: str = 'h2h,spreads,totals') -> pd.DataFrame:
     """
     Internal cached function to fetch odds.
-    Cache key includes api_key, sport, and bookmaker.
+    Returns sample data if API fails (rate limiting).
     """
     sport_key = SPORTS.get(sport.lower())
     if not sport_key:
@@ -67,6 +129,16 @@ def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 
     
     try:
         response = session.get(url, params=params, timeout=15)
+        
+        # Handle rate limiting / unauthorized
+        if response.status_code == 401:
+            st.warning("⚠️ Odds API rate limit reached. Showing sample data. Try again in a few minutes.")
+            return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
+        
+        if response.status_code == 429:
+            st.warning("⚠️ Too many requests to Odds API. Showing sample data. Try again later.")
+            return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
+        
         response.raise_for_status()
         
         data = response.json()
@@ -122,9 +194,16 @@ def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 
             games.append(game_info)
         
         return pd.DataFrame(games)
+        
+    except requests.exceptions.HTTPError as e:
+        if response.status_code == 401:
+            st.warning("⚠️ Odds API key invalid or rate limit reached. Showing sample data.")
+        else:
+            st.warning(f"⚠️ Odds API error: {response.status_code}. Showing sample data.")
+        return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
     except Exception as e:
-        st.error(f"Error fetching odds: {e}")
-        return pd.DataFrame()
+        st.warning(f"⚠️ Error fetching odds: {e}. Showing sample data.")
+        return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
 
 
 @st.cache_data(ttl=300)
@@ -136,10 +215,12 @@ def _fetch_sports(api_key: str) -> pd.DataFrame:
     
     try:
         response = session.get(url, params=params, timeout=10)
+        if response.status_code == 401:
+            return pd.DataFrame([{'key': 'basketball_nba', 'title': 'NBA'}])
         response.raise_for_status()
         return pd.DataFrame(response.json())
     except Exception as e:
-        return pd.DataFrame()
+        return pd.DataFrame([{'key': 'basketball_nba', 'title': 'NBA'}])
 
 
 class OddsAPI:
@@ -161,22 +242,17 @@ class OddsAPI:
     def get_odds(self, sport: str, bookmaker: str = None, regions: str = 'us', markets: str = 'h2h,spreads,totals') -> pd.DataFrame:
         """
         Get odds for a sport from a specific bookmaker.
-        
-        Args:
-            sport: 'nba', 'nfl', 'mlb', 'nhl', etc.
-            bookmaker: 'draftkings', 'fanduel', 'betmgm', 'pinnacle', etc.
-            regions: 'us', 'uk', 'au', 'eu'
-            markets: 'h2h' (moneyline), 'spreads', 'totals'
+        Returns sample data if API fails.
         """
         if not self.is_configured():
-            raise ValueError("Odds API key not configured. Set THEODDS_API_KEY environment variable.")
+            st.warning("⚠️ Odds API key not configured. Showing sample data.")
+            return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
         
         sport_key = SPORTS.get(sport.lower())
         if not sport_key:
-            raise ValueError(f"Unsupported sport: {sport}")
+            st.error(f"Unsupported sport: {sport}")
+            return pd.DataFrame()
         
-        # Pass api_key, sport, and bookmaker to cached function
-        # Changing bookmaker will create a different cache entry
         return _fetch_odds(self.api_key, sport, bookmaker, regions, markets)
     
     def calculate_implied_probability(self, american_odds: float) -> float:
