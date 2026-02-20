@@ -3,6 +3,7 @@ import sys
 import os
 import pandas as pd
 import numpy as np
+import random
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from api.sports_data_live import get_teams, get_players, SPORT_CONFIG
