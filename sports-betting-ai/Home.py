@@ -381,6 +381,8 @@ try:
                 predictions.append({
                     'home_team': game['home_team'],
                     'away_team': game['away_team'],
+                    'home_record': home_rec,
+                    'away_record': away_rec,
                     'home_prob': home_prob,
                     'away_prob': away_prob,
                     'home_ml': home_ml,
@@ -428,9 +430,9 @@ try:
                     st.markdown(f'''
                     <div class="game-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div><div class="team-name">{pred['home_team']}</div><div class="team-record">Home</div></div>
+                            <div><div class="team-name">{pred['home_team']}</div><div class="team-record">{pred['home_record']}</div></div>
                             <div style="text-align: center;"><div style="color: #00d2ff; font-weight: 700;">VS</div></div>
-                            <div style="text-align: right;"><div class="team-name">{pred['away_team']}</div><div class="team-record">Away</div></div>
+                            <div style="text-align: right;"><div class="team-name">{pred['away_team']}</div><div class="team-record">{pred['away_record']}</div></div>
                         </div>
                         <div style="margin-top: 15px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
