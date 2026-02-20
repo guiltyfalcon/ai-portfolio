@@ -1,5 +1,7 @@
 # AI Portfolio 🤖
 
+[![CI/CD](https://github.com/guiltyfalcon/ai-portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/guiltyfalcon/ai-portfolio/actions)
+
 A collection of AI-powered projects demonstrating machine learning, automation, and intelligent applications.
 
 ## 📁 Projects
@@ -40,11 +42,11 @@ A smart question-answering chatbot with conversation history, customizable syste
 
 ---
 
-### 5. 🏆 [Sports Betting AI](./sports-betting-ai/)
-A multi-sport prediction engine using machine learning to identify value bets across NBA, NFL, MLB, and NHL. Integrates with ESPN API and The Odds API to find +EV betting opportunities.
+### 5. 🏆 [Sports Betting AI](./sports-betting-ai/) ⭐ **LIVE**
+A production-grade multi-sport prediction engine using machine learning to identify value bets across NBA, NFL, MLB, NHL, and more. Integrates with ESPN API, The Odds API, BallDontLie, and MySportsFeeds to find +EV betting opportunities.
 
-**Tech:** Python, Streamlit, TensorFlow, scikit-learn, ESPN API, Odds API  
-**Demo:** [Link to live demo](https://sports-betting-ai-demo.streamlit.app) - *coming soon*  
+**Tech:** Python, Streamlit, TensorFlow, scikit-learn, ESPN API, Odds API, BallDontLie API  
+**Demo:** [🚀 Live on Streamlit Cloud](https://guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app)  
 **Code:** [`/sports-betting-ai/`](./sports-betting-ai/)
 
 ---
