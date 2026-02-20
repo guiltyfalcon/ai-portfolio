@@ -2,11 +2,13 @@
 The Odds API Client - Live betting lines and odds
 Requires API key from https://the-odds-api.com
 Enhanced with better error handling and caching
+Includes Yahoo Sports fallback when API quota exceeded
 """
 
 import requests
 import pandas as pd
 import os
+import json
 from typing import Dict, List, Optional
 from datetime import datetime
 import streamlit as st
@@ -106,11 +108,51 @@ def get_session() -> requests.Session:
     return session
 
 
+def get_yahoo_fallback_odds(sport: str) -> pd.DataFrame:
+    """
+    Load odds from Yahoo Sports cache when The Odds API is unavailable.
+    Returns empty DataFrame if no cache available.
+    """
+    try:
+        # Look for Yahoo cache file
+        cache_paths = [
+            os.path.join(os.path.dirname(__file__), 'yahoo_odds_cache.json'),
+            os.path.join(os.path.dirname(__file__), '..', 'data', 'yahoo_odds_cache.json'),
+            '/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json',
+        ]
+        
+        cache_data = None
+        for path in cache_paths:
+            if os.path.exists(path):
+                with open(path, 'r') as f:
+                    cache_data = json.load(f)
+                break
+        
+        if not cache_data or 'sports' not in cache_data:
+            return pd.DataFrame()
+        
+        games = cache_data['sports'].get(sport.lower(), [])
+        if not games:
+            return pd.DataFrame()
+        
+        # Add cache timestamp info
+        cache_time = cache_data.get('timestamp', 'Unknown')
+        for game in games:
+            game['cache_timestamp'] = cache_time
+            game['data_source'] = 'Yahoo Sports (Cached)'
+        
+        return pd.DataFrame(games)
+        
+    except Exception as e:
+        return pd.DataFrame()
+
+
 @st.cache_data(ttl=120)  # Cache for 2 minutes
 def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 'us', markets: str = 'h2h,spreads,totals') -> pd.DataFrame:
     """
     Internal cached function to fetch odds.
-    Returns sample data if API fails (rate limiting).
+    Returns Yahoo cache data if API fails (rate limiting).
+    Returns sample data only if both API and cache fail.
     """
     sport_key = SPORTS.get(sport.lower())
     if not sport_key:
@@ -130,14 +172,25 @@ def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 
     try:
         response = session.get(url, params=params, timeout=15)
         
-        # Handle rate limiting / unauthorized
+        # Handle rate limiting / unauthorized - use Yahoo cache
         if response.status_code == 401:
-            st.warning("⚠️ Odds API rate limit reached. Showing sample data. Try again in a few minutes.")
-            return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
+            st.warning("⚠️ Odds API quota exhausted. Using Yahoo Sports cache (updated every 2 hours).")
+            yahoo_df = get_yahoo_fallback_odds(sport)
+            if not yahoo_df.empty:
+                st.info(f"📊 Loaded {len(yahoo_df)} games from Yahoo Sports cache")
+                return yahoo_df
+            else:
+                st.warning("⚠️ No Yahoo cache available. Showing sample data.")
+                return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
         
         if response.status_code == 429:
-            st.warning("⚠️ Too many requests to Odds API. Showing sample data. Try again later.")
-            return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
+            st.warning("⚠️ Too many requests to Odds API. Using Yahoo Sports cache.")
+            yahoo_df = get_yahoo_fallback_odds(sport)
+            if not yahoo_df.empty:
+                return yahoo_df
+            else:
+                st.warning("⚠️ No Yahoo cache available. Showing sample data.")
+                return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
         
         response.raise_for_status()
         
@@ -197,12 +250,26 @@ def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 
         
     except requests.exceptions.HTTPError as e:
         if response.status_code == 401:
-            st.warning("⚠️ Odds API key invalid or rate limit reached. Showing sample data.")
+            st.warning("⚠️ Odds API key invalid or quota exceeded. Using Yahoo Sports cache.")
+            yahoo_df = get_yahoo_fallback_odds(sport)
+            if not yahoo_df.empty:
+                return yahoo_df
         else:
-            st.warning(f"⚠️ Odds API error: {response.status_code}. Showing sample data.")
+            st.warning(f"⚠️ Odds API error: {response.status_code}. Checking Yahoo cache...")
+            yahoo_df = get_yahoo_fallback_odds(sport)
+            if not yahoo_df.empty:
+                return yahoo_df
+        
+        st.warning("⚠️ Showing sample data.")
         return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
+        
     except Exception as e:
-        st.warning(f"⚠️ Error fetching odds: {e}. Showing sample data.")
+        st.warning(f"⚠️ Error fetching odds: {e}. Trying Yahoo cache...")
+        yahoo_df = get_yahoo_fallback_odds(sport)
+        if not yahoo_df.empty:
+            st.info(f"📊 Loaded {len(yahoo_df)} games from Yahoo Sports cache")
+            return yahoo_df
+        st.warning("⚠️ Showing sample data.")
         return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
 
 
