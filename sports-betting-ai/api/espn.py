@@ -98,6 +98,11 @@ def _fetch_schedule(sport: str, days: int = 7) -> pd.DataFrame:
             if len(competitors) < 2:
                 continue
             
+            # Skip games that have already finished
+            status = event.get('status', {}).get('type', {}).get('description', '').lower()
+            if status in ['final', 'post', 'ended', 'completed']:
+                continue
+            
             home_team = next((c for c in competitors if c.get('homeAway') == 'home'), {})
             away_team = next((c for c in competitors if c.get('homeAway') == 'away'), {})
             
