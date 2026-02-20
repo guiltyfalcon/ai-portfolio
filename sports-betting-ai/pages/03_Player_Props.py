@@ -5,7 +5,15 @@ import pandas as pd
 import numpy as np
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from api.espn_all_sports import ESPNSportsAPI, get_player_data_unified, PROP_CONFIG, STATIC_FALLBACK
+
+# Try MySportsFeeds first, fall back to ESPN/Static
+try:
+    from api.mysportsfeeds import MySportsFeedsAPI, SPORT_CONFIG
+    MYSPORTSFEEDS_AVAILABLE = True
+except:
+    MYSPORTSFEEDS_AVAILABLE = False
+
+from api.espn_all_sports import ESPNSportsAPI, STATIC_FALLBACK, PROP_CONFIG
 
 st.set_page_config(page_title="Player Props 🎯", page_icon="🎯", layout="wide")
 
@@ -40,12 +48,35 @@ st.markdown("""
         height: 100%; border-radius: 10px;
         background: linear-gradient(90deg, #ff6b6b, #feca57);
     }
-    .data-live { color: #00d26a; font-weight: 600; }
-    .data-static { color: #feca57; font-weight: 600; }
+    .status-badge {
+        display: inline-block; padding: 2px 8px; border-radius: 4px;
+        font-size: 0.75rem; font-weight: 600;
+    }
+    .status-live { background: rgba(0,210,106,0.2); color: #00d26a; }
+    .status-static { background: rgba(254,202,87,0.2); color: #feca57; }
+    .status-setup { background: rgba(255,107,107,0.2); color: #ff6b6b; }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">🎯 Player Props</div>', unsafe_allow_html=True)
+
+# Check data source
+api_key = st.secrets.get("MYSPORTSFEEDS_API_KEY", "")
+if MYSPORTSFEEDS_AVAILABLE and api_key:
+    data_source = "MYSPORTSFEEDS"
+    source_label = "📡 MySportsFeeds LIVE"
+    source_class = "status-live"
+    st.caption(f"<span class='status-badge {source_class}'>{source_label}</span> | Real-time player stats for all sports", unsafe_allow_html=True)
+elif MYSPORTSFEEDS_AVAILABLE and not api_key:
+    data_source = "SETUP"
+    source_label = "⚙️ SETUP REQUIRED"
+    source_class = "status-setup"
+    st.caption(f"<span class='status-badge {source_class}'>{source_label}</span> | Add MySportsFeeds API key to secrets", unsafe_allow_html=True)
+else:
+    data_source = "ESPN/STATIC"
+    source_label = "📊 ESPN + Static"
+    source_class = "status-static"
+    st.caption(f"<span class='status-badge {source_class}'>{source_label}</span> | Sample data (Live data coming with MySportsFeeds)", unsafe_allow_html=True)
 
 # Sport selection
 sports = ['NBA', 'NFL', 'MLB', 'NHL']
@@ -56,113 +87,116 @@ with col1:
         'NBA': '🏀 NBA', 'NFL': '🏈 NFL', 'MLB': '⚾ MLB', 'NHL': '🏒 NHL'
     }.get(x, x))
 
-# Get teams from static fallback (for selection)
-teams = list(STATIC_FALLBACK.get(sport, {}).keys())
+# Get teams based on data source
+if data_source == "MYSPORTSFEEDS":
+    teams = SPORT_CONFIG.get(sport.lower(), {}).get('teams', [])
+    props = SPORT_CONFIG.get(sport.lower(), {}).get('props', [])
+else:
+    teams = list(STATIC_FALLBACK.get(sport, {}).keys())
+    props = PROP_CONFIG.get(sport, {}).get('props', [])
 
 with col2:
     selected_team = st.selectbox("Team", teams if teams else ["Loading..."])
 
-# Get props for sport
-props = PROP_CONFIG.get(sport, {}).get('props', [])
-
 with col3:
     prop_type = st.selectbox("Prop", props if props else ["Loading..."])
 
-# Try to get live data first
-data_source = "LIVE"
+# Fetch player data
 players = []
 
-try:
-    api = ESPNSportsAPI(sport)
-    
-    # Get team ID
-    api_teams = api.get_teams()
-    team_id = None
-    for t in api_teams:
-        if t.get('name') == selected_team:
-            team_id = t.get('id')
-            break
-    
-    if team_id:
-        api_players = api.get_team_players(team_id)
-        for player in api_players[:8]:  # Top 8 players
-            stats = api.get_player_stats(player.get('id'))
-            if stats:
-                players.append({
-                    'name': player.get('name'),
-                    'position': player.get('position', ''),
-                    **stats
-                })
-    
-    if not players:
-        raise Exception("No live data")
-        
-except Exception as e:
-    # Fallback to static
-    data_source = "STATIC"
+if data_source == "MYSPORTSFEEDS":
+    try:
+        api = MySportsFeedsAPI(api_key=api_key)
+        df = api.get_players_by_team(sport.lower(), selected_team)
+        if not df.empty:
+            df = api._add_prop_lines(df, sport.lower(), prop_type)
+            players = df.to_dict('records')
+    except Exception as e:
+        st.error(f"MySportsFeeds error: {e}")
+        data_source = "ESPN/STATIC"
+
+if not players and data_source != "MYSPORTSFEEDS":
+    # Use static fallback
     players = STATIC_FALLBACK.get(sport, {}).get(selected_team, [])
 
-# Show data source indicator
-if data_source == "LIVE":
-    st.caption(f"📡 <span class='data-live'>LIVE DATA</span> from ESPN API | {sport} 2025-26 Season", unsafe_allow_html=True)
-else:
-    st.caption(f"📊 <span class='data-static'>STATIC DATA</span> (ESPN API unavailable) | {sport} 2025-26 Season", unsafe_allow_html=True)
-
 if not players:
-    st.warning(f"No player data available for {selected_team}")
+    if data_source == "SETUP":
+        st.error("""
+        ### 🔑 MySportsFeeds API Key Required
+        
+        To get LIVE player props data:
+        
+        1. **Register free at**: [mysportsfeeds.com/register](https://www.mysportsfeeds.com/register/)
+        2. **Get your API key** from your account dashboard
+        3. **Add to Streamlit secrets** in `.streamlit/secrets.toml`:
+        
+        ```toml
+        [secrets]
+        THEODDS_API_KEY = "your-odds-api-key"
+        MYSPORTSFEEDS_API_KEY = "your-mysportsfeeds-key"
+        ```
+        
+        **Free Tier**: 500 API calls/day (plenty for this app!)
+        """)
+    else:
+        st.warning(f"No player data available for {selected_team}")
     st.stop()
 
 st.markdown(f"### 📊 {selected_team} Player Props - {prop_type}")
 
-# Get stat mapping
-stat_map = PROP_CONFIG.get(sport, {}).get('stat_map', {})
-stat_key = stat_map.get(prop_type)
-
-# Calculate and display for each player
+# Display players
 for player in players:
-    player_name = player.get('name', 'Unknown')
-    position = player.get('position', '')
-    
-    # Get base stat
-    if isinstance(stat_key, list):
-        base_stat = sum(player.get(k, 0) for k in stat_key)
+    if data_source == "MYSPORTSFEEDS":
+        player_name = player.get('fullName', 'Unknown')
+        position = player.get('position', '')
+        base_stat = player.get('prop_avg', 0)
+        line = player.get('prop_line', 0)
+        over_prob = player.get('over_prob', 0.5)
     else:
-        base_stat = player.get(stat_key, 0)
+        # Static format
+        player_name = player.get('name', 'Unknown')
+        position = player.get('position', '')
+        
+        # Map prop to stat
+        stat_map = PROP_CONFIG.get(sport, {}).get('stat_map', {}).get(prop_type)
+        if isinstance(stat_map, list):
+            base_stat = sum(player.get(k, 0) for k in stat_map)
+        else:
+            base_stat = player.get(stat_map, 0) if stat_map else 0
+        
+        # Calculate line
+        if sport == 'MLB' and prop_type == 'Hits':
+            line = round(base_stat * 0.95, 3)
+        elif sport == 'NHL':
+            line = round(base_stat * 0.95, 2)
+        else:
+            line = round(base_stat * 0.95 * 2) / 2
+        
+        # Calculate probability
+        diff = base_stat - line
+        variance = max(2, base_stat * 0.15) if base_stat > 0 else 2
+        over_prob = 0.5 + (diff / variance)
+        over_prob = min(0.90, max(0.10, over_prob))
     
     if base_stat == 0:
         continue
     
-    # Calculate line (95% of average, rounded nicely)
-    if sport == 'MLB' and prop_type == 'Hits':
-        line = round(base_stat * 0.95, 3)
-    elif sport == 'NHL':
-        line = round(base_stat * 0.95, 2)
-    else:
-        line = round(base_stat * 0.95 * 2) / 2
-    
-    # Calculate probability
-    diff = base_stat - line
-    variance_factor = max(2, base_stat * 0.15) if base_stat > 0 else 2
-    over_prob = 0.5 + (diff / variance_factor)
-    over_prob = min(0.90, max(0.10, over_prob))
-    
     # Confidence
     confidence = "🔥 HIGH" if abs(over_prob - 0.5) > 0.2 else "⚡ MEDIUM" if abs(over_prob - 0.5) > 0.1 else "📊 LOW"
     
-    # Recent performance simulation
+    # Last 5 simulation
     random.seed(hash(player_name + sport) % 1000)
-    variance = variance_factor * 0.5
-    last_5 = [base_stat + np.random.normal(0, variance) for _ in range(5)]
+    variance_factor = max(2, base_stat * 0.15) if base_stat > 0 else 2
+    last_5 = [base_stat + np.random.normal(0, variance_factor * 0.5) for _ in range(5)]
     over_count = sum(1 for x in last_5 if x > line)
     
-    # Create card
+    # Display card
     with st.container():
         st.markdown(f'<div class="player-card">', unsafe_allow_html=True)
-        
         cols = st.columns([3, 1, 1, 1, 1, 1])
         
         with cols[0]:
-            st.markdown(f"**{player_name}** <span style='color:#888;font-size:0.8rem'>{position}</span>")
+            st.markdown(f"**{player_name}** <span style='color:#888;font-size:0.8rem'>{position}</span>", unsafe_allow_html=True)
         
         with cols[1]:
             if sport == 'MLB' and prop_type == 'Hits':
@@ -205,29 +239,33 @@ for player in players:
 
 st.markdown("---")
 
-# Sport-specific info
+# Sport info
 sport_info = {
-    'NBA': "🏀 **NBA Props:** Points, Rebounds, Assists, PRA | Data from ESPN API",
-    'NFL': "🏈 **NFL Props:** Pass Yds, Pass TDs, Rush Yds, Receptions, Rec Yards | Data from ESPN API",
-    'MLB': "⚾ **MLB Props:** Hits, Home Runs, RBIs | Data from ESPN API",
-    'NHL': "🏒 **NHL Props:** Goals, Assists, Points, Shots | Data from ESPN API"
+    'NBA': "🏀 **NBA Props:** Points, Rebounds, Assists, PRA | 2025-26 Season",
+    'NFL': "🏈 **NFL Props:** Pass Yds, TDs, Rush Yds, Receptions | 2024-25 Season",
+    'MLB': "⚾ **MLB Props:** Hits, HR, RBI | 2025 Season",
+    'NHL': "🏒 **NHL Props:** Goals, Assists, Points, Shots | 2025-26 Season"
 }
-
 st.markdown(sport_info.get(sport, ""))
 
 st.markdown("""
-### 📖 How It Works
+### 📖 Data Sources
 
-**Data Sources:**
-- 📡 **LIVE** - Real-time from ESPN API (free, no key)
-- 📊 **STATIC** - Sample data when API unavailable
+**MySportsFeeds (Recommended)**
+- ✅ Live player statistics
+- ✅ All major sports
+- ✅ 500 free API calls/day
+- 🔑 Requires free API key
 
-**Hit Probability:**
-- Based on season average vs prop line
-- Variance factor for consistency
-- Edge calculation for confidence
+**ESPN + Static (Fallback)**
+- 📊 Sample season data
+- ✅ Works without API key
+- ⚠️ Updated periodically
 
-**All ESPN APIs are FREE - no authentication required!**
+**To enable live data:**
+1. Register at [mysportsfeeds.com/register](https://www.mysportsfeeds.com/register/)
+2. Add key to `.streamlit/secrets.toml`
+3. Restart app
 """)
 
-st.markdown("*Powered by ESPN Public API | Free Tier*")
+st.markdown("*Market-ready with MySportsFeeds integration*")
