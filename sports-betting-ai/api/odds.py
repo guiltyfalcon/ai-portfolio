@@ -264,7 +264,7 @@ def _fetch_odds(api_key: str, sport: str, bookmaker: str = None, regions: str = 
         return pd.DataFrame(SAMPLE_ODDS.get(sport.lower(), []))
         
     except Exception as e:
-        st.warning(f"⚠️ Error fetching odds: {e}. Trying Yahoo cache...")
+        # Silently fall back to Yahoo cache without showing error details
         yahoo_df = get_yahoo_fallback_odds(sport)
         if not yahoo_df.empty:
             st.info(f"📊 Loaded {len(yahoo_df)} games from Yahoo Sports cache")
