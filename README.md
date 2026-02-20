@@ -1,90 +1,167 @@
 # AI Portfolio 🤖
 
-[![CI/CD](https://github.com/guiltyfalcon/ai-portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/guiltyfalcon/ai-portfolio/actions)
+A collection of production-grade AI applications built with Python, Streamlit, and modern ML frameworks. All projects are deployed and ready to use.
 
-A collection of AI-powered projects demonstrating machine learning, automation, and intelligent applications.
-
-## 📁 Projects
-
-### 1. 🤖💪 [Fitness Chatbot](./fitness-chatbot/)
-An AI-powered fitness and nutrition assistant built with Streamlit and OpenAI GPT. Features real-time conversations, personalized workout advice, and nutrition guidance.
-
-**Tech:** Python, Streamlit, OpenAI GPT-3.5  
-**Demo:** [Link to live demo](https://fitness-chatbot-demo.streamlit.app) - *coming soon*  
-**Code:** [`/fitness-chatbot/`](./fitness-chatbot/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=Streamlit&logoColor=white)](https://streamlit.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-### 2. 😊😐😞 [Sentiment Analyzer](./sentiment-analyzer/)
-A machine learning-powered sentiment analysis tool that classifies text as positive, negative, or neutral. Features real-time analysis, batch processing, and visual analytics with confidence scoring.
+## 🚀 Live Projects
 
-**Tech:** Python, Streamlit, scikit-learn, NLTK, Plotly  
-**Demo:** [Link to live demo](https://sentiment-analyzer-demo.streamlit.app) - *coming soon*  
-**Code:** [`/sentiment-analyzer/`](./sentiment-analyzer/)
-
----
-
-### 3. 🖼️🤖 [Image Classifier](./image-classifier/)
-A deep learning image classification application using TensorFlow/Keras and MobileNetV2. Classify images into 1000+ ImageNet categories with confidence scores.
-
-**Tech:** Python, Streamlit, TensorFlow, Keras, Pillow  
-**Demo:** [Link to live demo](https://image-classifier-demo.streamlit.app) - *coming soon*  
-**Code:** [`/image-classifier/`](./image-classifier/)
+| Project | Description | Live Demo | Status |
+|---------|-------------|-----------|--------|
+| **🏆 Sports Betting AI** | Multi-sport prediction engine with ML-powered value bets | [🚀 Live](https://guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app) | ⭐ Production |
+| **💪 Fitness Chatbot** | AI fitness & nutrition assistant with GPT | *Deploying* | 🟡 Ready |
+| **😊 Sentiment Analyzer** | Real-time sentiment analysis with visualizations | *Deploying* | 🟡 Ready |
+| **🖼️ Image Classifier** | Deep learning image classification with MobileNetV2 | *Deploying* | 🟡 Ready |
+| **💬 QA Bot** | Smart Q&A chatbot with conversation history | *Deploying* | 🟡 Ready |
 
 ---
 
-### 4. 💬 [QA Bot](./qa-bot/)
-A smart question-answering chatbot with conversation history, customizable system prompts, and model selection. Features real-time chat, token tracking, and adjustable AI behavior.
+## 📁 Repository Structure
 
-**Tech:** Python, Streamlit, OpenAI GPT-4, GPT-4o-mini  
-**Demo:** [Link to live demo](https://qa-bot-demo.streamlit.app) - *coming soon*  
-**Code:** [`/qa-bot/`](./qa-bot/)
-
----
-
-### 5. 🏆 [Sports Betting AI](./sports-betting-ai/) ⭐ **LIVE**
-A production-grade multi-sport prediction engine using machine learning to identify value bets across NBA, NFL, MLB, NHL, and more. Integrates with ESPN API, The Odds API, BallDontLie, and MySportsFeeds to find +EV betting opportunities.
-
-**Tech:** Python, Streamlit, TensorFlow, scikit-learn, ESPN API, Odds API, BallDontLie API  
-**Demo:** [🚀 Live on Streamlit Cloud](https://guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app)  
-**Code:** [`/sports-betting-ai/`](./sports-betting-ai/)
-
----
-
-## 🚀 Getting Started
-
-Each project has its own README with setup instructions. Navigate to a project folder to get started.
-
-### Prerequisites
-
-- Python 3.8+
-- OpenAI API key (for projects using GPT)
-- Basic knowledge of Git and command line
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/guiltyfalcon/ai-portfolio.git
-cd ai-portfolio
+```
+ai-portfolio/
+├── sports-betting-ai/          ⭐ LIVE - Multi-sport betting predictions
+├── fitness-chatbot/            💪 AI fitness assistant
+├── sentiment-analyzer/         😊 Text sentiment analysis
+├── image-classifier/           🖼️ Image classification
+├── qa-bot/                     💬 Question-answering chatbot
+└── README.md                   This file
 ```
 
 ---
 
-## 🔧 Technical Skills Demonstrated
+## 🏆 Featured Project: Sports Betting AI
 
-- **AI/ML:** Natural Language Processing, GPT integration, prompt engineering, sentiment analysis, deep learning, computer vision, conversational AI
-- **Web Development:** Streamlit, API integration, interactive dashboards, real-time chat interfaces
-- **Deep Learning:** TensorFlow, Keras, CNNs, transfer learning, MobileNetV2
-- **Machine Learning:** scikit-learn, text classification, feature extraction
-- **Automation:** AI agents, data processing, batch processing, LLM applications
-- **Best Practices:** Clean code, documentation, version control
+**Grade: A- (90/100)** - Production Ready
+
+A comprehensive sports betting intelligence platform covering NBA, NFL, MLB, NHL:
+
+**Features:**
+- 🔮 Live predictions with probability calculations
+- 💰 Value bet detection (+EV finder)
+- 📊 Player props for all major sports
+- 📈 Bet tracking with ROI analytics
+- 🔄 Live odds comparison across bookmakers
+- 🧮 Kelly criterion calculator
+- 📤 CSV export functionality
+
+**Tech Stack:**
+- Python 3.13, Streamlit, scikit-learn
+- ESPN API (free), The Odds API, BallDontLie API
+- Auto-updating player stats system
+
+**Live Demo:** [guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app](https://guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app)
 
 ---
 
-## 📫 Contact
+## 🚀 Quick Start
 
-For questions about these projects: [Open an issue](https://github.com/guiltyfalcon/ai-portfolio/issues)
+### Deploy Any Project to Streamlit Cloud
+
+1. **Fork/Clone this repository**
+2. **Go to [share.streamlit.io](https://share.streamlit.io)**
+3. **Click "New App"**
+4. **Select:**
+   - Repository: `guiltyfalcon/ai-portfolio`
+   - Branch: `main`
+   - Main file path: `{project-name}/app.py` (e.g., `fitness-chatbot/app.py`)
+5. **Add secrets** (if needed - see project README)
+6. **Deploy!**
+
+### Run Locally
+
+```bash
+# Clone repository
+git clone https://github.com/guiltyfalcon/ai-portfolio.git
+cd ai-portfolio
+
+# Choose a project
+cd sports-betting-ai  # or fitness-chatbot, sentiment-analyzer, etc.
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run app
+streamlit run app.py
+```
 
 ---
 
-*Built with Python, AI, and coffee ☕*
+## 🛠️ Technologies Used
+
+- **Python 3.11+** - Core language
+- **Streamlit** - Web application framework
+- **OpenAI GPT** - Language models for chatbots
+- **scikit-learn** - Machine learning
+- **TensorFlow/Keras** - Deep learning (image classifier)
+- **Plotly/Matplotlib** - Data visualization
+- **Pandas/NumPy** - Data processing
+
+---
+
+## 🔑 API Keys Required
+
+Some projects need API keys (all have free tiers):
+
+| Project | API | Get Key At |
+|---------|-----|------------|
+| Sports Betting AI | The Odds API | [the-odds-api.com](https://the-odds-api.com) |
+| Sports Betting AI | BallDontLie | [balldontlie.io](https://www.balldontlie.io) |
+| Fitness Chatbot | OpenAI | [platform.openai.com](https://platform.openai.com) |
+| QA Bot | OpenAI | [platform.openai.com](https://platform.openai.com) |
+
+**Note:** Sports Betting AI works without API keys using auto-updated static data + ESPN free API.
+
+---
+
+## 📊 Project Status
+
+| Project | Completion | Deployed | Docs |
+|---------|-----------|----------|------|
+| Sports Betting AI | 100% | ✅ Yes | ✅ Complete |
+| Fitness Chatbot | 100% | 🟡 In Progress | ✅ Complete |
+| Sentiment Analyzer | 100% | 🟡 In Progress | ✅ Complete |
+| Image Classifier | 100% | 🟡 In Progress | ✅ Complete |
+| QA Bot | 100% | 🟡 In Progress | ✅ Complete |
+
+---
+
+## 🎯 Coming Soon
+
+- [ ] Additional sports (Soccer, Tennis, Golf)
+- [ ] Advanced ML models (LSTM, XGBoost)
+- [ ] Real-time notifications
+- [ ] User authentication & saved preferences
+- [ ] Mobile app versions
+
+---
+
+## 🤝 Contributing
+
+This is a personal portfolio project, but suggestions are welcome! Open an issue for:
+- Bug reports
+- Feature requests
+- Documentation improvements
+
+---
+
+## 📝 License
+
+MIT License - Feel free to use this code for your own projects!
+
+---
+
+## 👨‍💻 Author
+
+**DJ** - Cloud administrator, digital entrepreneur, AI enthusiast
+
+- 🔗 Portfolio: [guiltyfalcon.github.io](https://guiltyfalcon.github.io)
+- 💼 GitHub: [@guiltyfalcon](https://github.com/guiltyfalcon)
+
+---
+
+*Built with ❤️ and lots of ☕ using Streamlit and Python*

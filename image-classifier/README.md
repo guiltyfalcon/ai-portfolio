@@ -1,112 +1,72 @@
-# AI Image Classifier 🖼️🤖
+# 🖼️ Image Classifier
 
-A deep learning image classification application using TensorFlow/Keras and a pre-trained MobileNetV2 model. Classify images into 1000+ ImageNet categories.
+Deep learning image classification application using TensorFlow/Keras and MobileNetV2.
 
-## 🎯 Features
+## Features
 
-- **Drag & Drop Interface**: Easy image upload via web UI
-- **Real-time Classification**: Instant predictions with confidence scores
-- **Top-K Predictions**: See top 5 most likely categories
-- **Pre-trained Model**: Uses MobileNetV2 trained on ImageNet
-- **Transfer Learning Script**: Fine-tune on custom datasets
+- 🖼️ Drag-and-drop image upload
+- 🔍 Instant classification into 1000+ categories
+- 📊 Confidence scores with visual bars
+- 🏷️ Top-5 predictions display
+- 📱 Mobile-friendly interface
 
-## 🚀 Demo
+## Demo
 
-**Live Demo:** [Coming soon - Deploying to Streamlit Cloud]
+**Live App:** [Coming Soon - Deploy to Streamlit Cloud]
 
-**Example Output:**
-```
-Image: golden_retriever.jpg
+## Tech Stack
 
-Top Predictions:
-1. Golden Retriever - 98.4% 🐕
-2. Labrador Retriever - 1.1%
-3. Chesapeake Bay Retriever - 0.3%
-4. Flat-Coated Retriever - 0.1%
-5. Curly-Coated Retriever - 0.05%
-```
+- Python 3.11+
+- Streamlit
+- TensorFlow/Keras
+- MobileNetV2 (pre-trained)
+- Pillow (image processing)
 
-## 💻 Installation & Setup
+## Quick Start
+
+### Local Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/guiltyfalcon/ai-portfolio.git
-cd ai-portfolio/image-classifier
-
 # Install dependencies
 pip install -r requirements.txt
 
-# Download pre-trained model (optional - auto-downloads on first run)
-python download_model.py
-
-# Run the app
+# Run app
 streamlit run app.py
 ```
 
-## 🛠️ Tech Stack
+### Deploy to Streamlit Cloud
 
-- **Streamlit** - Web framework for the UI
-- **TensorFlow/Keras** - Deep learning framework
-- **MobileNetV2** - Pre-trained CNN architecture
-- **Pillow** - Image processing
-- **NumPy** - Numerical operations
+1. Go to [share.streamlit.io](https://share.streamlit.io)
+2. Click "New App"
+3. Select repository and branch
+4. Set main file: `image-classifier/app.py`
+5. Deploy!
 
-## 📊 How It Works
+**Note:** First deployment may take 3-5 minutes as TensorFlow downloads.
 
-1. **Image Preprocessing**: Resize to 224x224, normalize pixel values
-2. **Feature Extraction**: MobileNetV2 extracts image features
-3. **Classification**: Dense layer outputs 1000 class probabilities
-4. **Post-processing**: Apply softmax, get top-k predictions
+## How It Works
 
-## 🏋️‍♂️ Example Usage
+1. **Image Upload:** User uploads image via drag-and-drop
+2. **Preprocessing:** Image resized to 224x224 for MobileNetV2
+3. **Inference:** Model predicts image category
+4. **Results:** Top-5 predictions with confidence scores
 
-**Single Image Classification:**
-```python
-from image_classifier import ImageClassifier
+## Model Details
 
-classifier = ImageClassifier()
-results = classifier.predict('path/to/image.jpg')
-print(results)
-# [{'label': 'golden_retriever', 'confidence': 0.984, 'name': 'Golden Retriever'}, ...]
-```
+- **Architecture:** MobileNetV2
+- **Dataset:** ImageNet (1000 categories)
+- **Input Size:** 224x224 pixels
+- **Top-1 Accuracy:** ~72%
+- **Top-5 Accuracy:** ~91%
 
-**Transfer Learning:**
-```python
-# Fine-tune on custom dataset
-classifier.train_custom(
-    train_dir='data/train',
-    val_dir='data/val',
-    epochs=10,
-    learning_rate=0.0001
-)
-```
+## Example Categories
 
-## 📈 Model Performance
-
-- **Base Model**: MobileNetV2 (ImageNet)
-- **Top-1 Accuracy**: 71.3% on ImageNet
-- **Top-5 Accuracy**: 90.1% on ImageNet
-- **Inference Time**: ~50ms per image (CPU)
-- **Model Size**: 14MB
-
-## 🔒 Privacy & Security
-
-- All image processing happens locally
-- No images are uploaded to external servers
-- Model runs entirely on your machine
-
-## 📈 Future Improvements
-
-- [ ] Custom model training UI
-- [ ] Object detection capabilities
-- [ ] Batch image processing
-- [ ] Model quantization for faster inference
-- [ ] Support for custom class labels
-
-## 🤝 Contributing
-
-This is a demonstration project for portfolio purposes. Feel free to fork and expand!
+- Animals (dog breeds, cat breeds, wildlife)
+- Vehicles (cars, airplanes, boats)
+- Objects (furniture, electronics, instruments)
+- Food (pizza, sushi, ice cream)
+- And 900+ more!
 
 ---
 
-*Built as part of an AI portfolio by guiltyfalcon*
+Part of the [AI Portfolio](../)

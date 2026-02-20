@@ -1,47 +1,90 @@
-# QA Bot
+# 💬 QA Bot
 
-A smart question-answering chatbot powered by OpenAI's GPT models.
+Smart question-answering chatbot with conversation history and customizable AI behavior.
 
 ## Features
 
-- Interactive chat interface with conversation history
-- Persistent chat sessions
-- Customizable system prompts
-- Model selection (GPT-4, GPT-3.5)
-- Temperature control for response creativity
-- Token usage tracking
-
-## Setup
-
-1. Install requirements:
-```bash
-pip install -r requirements.txt
-```
-
-2. Set your OpenAI API key:
-```bash
-export OPENAI_API_KEY="your-key-here"
-```
-
-3. Run the app:
-```bash
-streamlit run app.py
-```
-
-## Usage
-
-- Type any question in the chat input
-- Adjust settings in the sidebar (model, temperature, system prompt)
-- Clear chat history with the sidebar button
-- View token usage for each conversation
+- 💬 Real-time chat interface
+- 🧠 GPT-4 / GPT-4o-mini support
+- 📝 Conversation history management
+- ⚙️ Customizable system prompts
+- 🔢 Token usage tracking
+- 🎨 Modern, clean UI
 
 ## Demo
 
-<a href="https://qa-bot-demo.streamlit.app" target="_blank">Live Demo</a> - *coming soon*
+**Live App:** [Coming Soon - Deploy to Streamlit Cloud]
 
-## Technologies
+## Tech Stack
 
-- Python 3.8+
+- Python 3.11+
 - Streamlit
-- OpenAI API
-- Streamlit Chat
+- OpenAI GPT-4 / GPT-4o-mini
+- streamlit-chat (UI component)
+
+## Quick Start
+
+### Local Development
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set OpenAI API key
+export OPENAI_API_KEY='your-key-here'
+
+# Run app
+streamlit run app.py
+```
+
+### Deploy to Streamlit Cloud
+
+1. Go to [share.streamlit.io](https://share.streamlit.io)
+2. Click "New App"
+3. Select repository and branch
+4. Set main file: `qa-bot/app.py`
+5. Add `OPENAI_API_KEY` to secrets
+6. Deploy!
+
+## API Key
+
+Get your OpenAI API key at [platform.openai.com](https://platform.openai.com)
+
+**Note:** Free tier includes $5 credit for new accounts.
+
+## Customization
+
+### System Prompts
+
+Change the AI's behavior in the sidebar:
+
+- **General Assistant:** Helpful, concise answers
+- **Code Expert:** Programming-focused responses
+- **Creative Writer:** Imaginative, detailed replies
+- **Custom:** Define your own
+
+### Model Selection
+
+- **GPT-4:** Best quality, higher cost
+- **GPT-4o-mini:** Fast, cost-effective
+
+## Features in Detail
+
+### Conversation History
+- View full chat history
+- Clear conversations
+- Persistent in session
+
+### Token Tracking
+- Real-time token count
+- Estimate API costs
+- Monitor usage
+
+### Message Interface
+- User messages (right side)
+- AI responses (left side)
+- Timestamps included
+
+---
+
+Part of the [AI Portfolio](../)
