@@ -13,6 +13,7 @@ A collection of production-grade AI applications built with Python, Streamlit, a
 | Project | Description | Live Demo | Status |
 |---------|-------------|-----------|--------|
 | **🏆 Sports Betting AI** | Multi-sport prediction engine with ML-powered value bets | [🚀 Live](https://guiltyfalcon-ai-portfolio-sports-betting-aihome-jhaeqn.streamlit.app) | ⭐ Production |
+| **📰 RPA News Summarizer** | Intelligent RPA engine for automated news aggregation | *Deploying* | 🔴 New Project |
 | **💪 Fitness Chatbot** | AI fitness & nutrition assistant with GPT | *Deploying* | 🟡 Ready |
 | **😊 Sentiment Analyzer** | Real-time sentiment analysis with visualizations | *Deploying* | 🟡 Ready |
 | **🖼️ Image Classifier** | Deep learning image classification with MobileNetV2 | *Deploying* | 🟡 Ready |
@@ -25,6 +26,7 @@ A collection of production-grade AI applications built with Python, Streamlit, a
 ```
 ai-portfolio/
 ├── sports-betting-ai/          ⭐ LIVE - Multi-sport betting predictions
+├── rpa-news-summarizer/        📰 AI RPA news engine (NEW)
 ├── fitness-chatbot/            💪 AI fitness assistant
 ├── sentiment-analyzer/         😊 Text sentiment analysis
 ├── image-classifier/           🖼️ Image classification
@@ -123,6 +125,7 @@ Some projects need API keys (all have free tiers):
 | Project | Completion | Deployed | Docs |
 |---------|-----------|----------|------|
 | Sports Betting AI | 100% | ✅ Yes | ✅ Complete |
+| RPA News Summarizer | 90% | ⌛ Pending | ✅ Complete |
 | Fitness Chatbot | 100% | 🟡 In Progress | ✅ Complete |
 | Sentiment Analyzer | 100% | 🟡 In Progress | ✅ Complete |
 | Image Classifier | 100% | 🟡 In Progress | ✅ Complete |
