@@ -292,6 +292,33 @@ with st.sidebar:
         st.caption("Set THEODDS_API_KEY in secrets for live odds")
     
     st.markdown("✅ ESPN API (Free)")
+    
+    st.markdown("---")
+    st.markdown("### 💎 Support the Project")
+    
+    # Tip/Unlock section
+    is_supporter = st.session_state.get('is_supporter', False)
+    
+    if not is_supporter:
+        st.markdown("#### Unlock Premium Features")
+        st.markdown("""
+        **Free:** Basic predictions, win %, 3-day history
+        
+        **$5+ Supporters Get:**
+        ✅ Value picks highlighted  
+        ✅ Parlay builder + EV calc  
+        ✅ 30-day backtesting  
+        ✅ Priority odds refresh  
+        ✅ Supporter badge
+        """)
+        
+        st.markdown("#### ☕ Buy Me a Coffee")
+        st.link_button("Unlock for $5", "https://buy.stripe.com/YOUR_LINK_HERE", type="primary", use_container_width=True)
+        st.caption("One-time unlock. Lifetime access.")
+    else:
+        st.markdown("✨ **You're a Supporter!**")
+        st.markdown("All premium features unlocked.")
+        st.success("Thank you for your support!")
 
 # Main Content
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -402,32 +429,40 @@ try:
             
             pred_df = pd.DataFrame(predictions)
             
-            # VALUE PICKS
+            # VALUE PICKS (Premium Feature)
             value_picks = pred_df[pred_df['has_edge'] == True]
             if not value_picks.empty:
                 st.markdown("### 💎 Value Picks")
                 
-                for _, pick in value_picks.head(3).iterrows():
-                    edge_pct = max(abs(pick['home_edge']), abs(pick['away_edge'])) * 100
-                    confidence = "HIGH 🔥" if edge_pct > 8 else "MED ⚡"
-                    
-                    best_pick = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
-                    best_odds = pick['home_ml'] if pick['home_edge'] > pick['away_edge'] else pick['away_ml']
-                    
-                    st.markdown(f'''
-                    <div class="value-pick">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h3 style="margin: 0; color: #2ecc71;">{best_pick} ML</h3>
-                                <p style="margin: 5px 0; color: #ffffff;">{pick['home_team']} vs {pick['away_team']}</p>
-                            </div>
-                            <div style="text-align: right;">
-                                <div class="odds-box" style="font-size: 1.5rem;">{format_odds(best_odds)}</div>
-                                <p style="margin: 5px 0; color: #2ecc71; font-weight: 600;">+{edge_pct:.1f}% Edge • {confidence}</p>
+                if not is_supporter:
+                    # Show locked preview
+                    count = len(value_picks)
+                    st.info(f"🔒 {count} value picks detected. Unlock premium to see them.")
+                    if st.button("Unlock for $5 →", type="primary"):
+                        st.markdown("[Complete purchase here](https://buy.stripe.com/YOUR_LINK_HERE)")
+                else:
+                    # Show all value picks for supporters
+                    for _, pick in value_picks.head(3).iterrows():
+                        edge_pct = max(abs(pick['home_edge']), abs(pick['away_edge'])) * 100
+                        confidence = "HIGH 🔥" if edge_pct > 8 else "MED ⚡"
+                        
+                        best_pick = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
+                        best_odds = pick['home_ml'] if pick['home_edge'] > pick['away_edge'] else pick['away_ml']
+                        
+                        st.markdown(f'''
+                        <div class="value-pick">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h3 style="margin: 0; color: #2ecc71;">{best_pick} ML</h3>
+                                    <p style="margin: 5px 0; color: #ffffff;">{pick['home_team']} vs {pick['away_team']}</p>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="odds-box" style="font-size: 1.5rem;">{format_odds(best_odds)}</div>
+                                    <p style="margin: 5px 0; color: #2ecc71; font-weight: 600;">+{edge_pct:.1f}% Edge • {confidence}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    ''', unsafe_allow_html=True)
+                        ''', unsafe_allow_html=True)
             
             # GAME CARDS
             st.markdown("### 📋 All Games")
