@@ -479,7 +479,11 @@ try:
                         yahoo_cache_path = path
                         break
                 
+                # Convert Yahoo cache to odds DataFrame format
+                yahoo_games = []
                 if yahoo_data:
+                    sport_key = sport.lower()
+                    if sport_key in yahoo_data.get('sports', {}):
                         for game in yahoo_data['sports'][sport_key]:
                             yahoo_games.append({
                                 'home_team': game.get('home_team', ''),
@@ -494,10 +498,10 @@ try:
                                 'commence_time': game.get('commence_time'),
                                 'bookmaker': game.get('bookmaker', 'Yahoo Sports')
                             })
-                    
-                    if yahoo_games:
-                        odds = pd.DataFrame(yahoo_games)
-                        yahoo_cache_loaded = True
+                        
+                        if yahoo_games:
+                            odds = pd.DataFrame(yahoo_games)
+                            yahoo_cache_loaded = True
                         
             except Exception as e:
                 st.warning(f"Could not load Yahoo cache: {e}")
