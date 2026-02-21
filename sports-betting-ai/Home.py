@@ -522,10 +522,4 @@ st.markdown("""
     <b>18+ Only</b> • Please Gamble Responsibly
 </div>
 """, unsafe_allow_html=True)
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; color: #5A6070; font-size: 0.75rem; padding: 1rem;">
-    <b>18+ Only</b> • Please Gamble Responsibly
-</div>
-""", unsafe_allow_html=True)
 
