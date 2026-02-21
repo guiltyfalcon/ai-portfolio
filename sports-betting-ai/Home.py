@@ -178,18 +178,21 @@ st.markdown("""
     
     /* Glassmorphism cards */
     .glass-card {
-        background: rgba(21, 26, 38, 0.8);
+        background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 16px;
         padding: 1.5rem;
         margin-bottom: 1rem;
     }
     
-    /* Stats cards */
+    /* Stats cards - Glass */
     .stat-card {
-        background: linear-gradient(145deg, rgba(0, 210, 255, 0.1) 0%, rgba(0, 231, 1, 0.05) 100%);
-        border: 1px solid rgba(0, 210, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 16px;
         padding: 1.5rem;
         text-align: center;
@@ -198,8 +201,9 @@ st.markdown("""
     
     .stat-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        border-color: rgba(0, 210, 255, 0.4);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 210, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 210, 255, 0.1);
     }
     
     .stat-value {
@@ -215,27 +219,36 @@ st.markdown("""
         letter-spacing: 0.05em;
     }
     
-    /* Buttons */
+    /* Buttons - Glass */
     .stButton > button {
-        background: linear-gradient(135deg, #00d2ff 0%, #00a8cc 100%) !important;
-        color: #0B0E14 !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(10px) !important;
+        color: white !important;
         font-weight: 600 !important;
-        border: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 12px !important;
         padding: 0.75rem 1.5rem !important;
         transition: all 0.3s ease !important;
     }
     
     .stButton > button:hover {
+        background: rgba(0, 210, 255, 0.15) !important;
+        border-color: rgba(0, 210, 255, 0.4) !important;
         transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3) !important;
+        box-shadow: 0 8px 24px rgba(0, 210, 255, 0.15) !important;
     }
     
-    /* Secondary button */
+    /* Secondary button - Glass */
     .secondary-btn > button {
-        background: rgba(30, 37, 50, 0.8) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(10px) !important;
         color: white !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+    
+    .secondary-btn > button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
     }
     
     /* Input fields */
@@ -327,18 +340,22 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* Game cards */
+    /* Game cards - Glass */
     .game-card {
-        background: rgba(21, 26, 38, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 16px;
         padding: 1.25rem;
         transition: all 0.3s ease;
     }
     
     .game-card:hover {
+        background: rgba(255, 255, 255, 0.08);
         border-color: rgba(0, 210, 255, 0.3);
         transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 210, 255, 0.1);
     }
     
     /* Odds display */
@@ -350,9 +367,11 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* AI recommendation */
+    /* AI recommendation - Glass */
     .ai-pick {
-        background: linear-gradient(145deg, rgba(0, 210, 255, 0.1) 0%, rgba(0, 231, 1, 0.05) 100%);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(0, 210, 255, 0.2);
         border-radius: 12px;
         padding: 1rem;

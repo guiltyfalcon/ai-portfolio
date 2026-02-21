@@ -57,11 +57,18 @@ st.markdown("""
         background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
     }
     .bet-card {
-        background: rgba(21, 26, 38, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 1rem;
         margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+    .bet-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(0, 210, 255, 0.3);
     }
     .badge-win { background: rgba(0, 231, 1, 0.15); color: #00e701; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
     .badge-loss { background: rgba(255, 77, 77, 0.15); color: #ff4d4d; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
