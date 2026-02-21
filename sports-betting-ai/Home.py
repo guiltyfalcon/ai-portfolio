@@ -516,12 +516,14 @@ def show_dashboard():
     st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
     
-    # Stats Row
-    bets = get_mock_bets()
-    wins = len([b for b in bets if b["status"] == "win"])
-    losses = len([b for b in bets if b["status"] == "loss"])
-    total_profit = sum(b["profit"] for b in bets)
-    win_rate = (wins / len(bets) * 100) if bets else 0
+    # Stats Row - Use user's actual bets from session state
+    bets = st.session_state.bets
+    wins = len([b for b in bets if b.get("status") == "win"])
+    losses = len([b for b in bets if b.get("status") == "loss"])
+    pending = len([b for b in bets if b.get("status") == "pending"])
+    total_profit = sum(b.get("profit", 0) for b in bets)
+    win_rate = (wins / (wins + losses) * 100) if (wins + losses) > 0 else 0
+    active_bets = pending
     
     col1, col2, col3, col4 = st.columns(4)
     
@@ -549,17 +551,38 @@ def show_dashboard():
         st.markdown(f"""
         <div class="stat-card">
             <div class="stat-label">Active Bets</div>
-            <div class="stat-value" style="color: #F97316;">{len(bets)}</div>
-            <div style="color: #8A8F98; font-size: 0.875rem;">Avg Odds: -110</div>
+            <div class="stat-value" style="color: #F97316;">{active_bets}</div>
+            <div style="color: #8A8F98; font-size: 0.875rem;">{len(bets)} Total Bets</div>
         </div>
         """, unsafe_allow_html=True)
     
     with col4:
-        st.markdown("""
+        # Calculate current streak
+        recent_bets = sorted(bets, key=lambda x: x.get('id', 0), reverse=True)
+        streak = 0
+        streak_type = None
+        for bet in recent_bets:
+            if bet.get('status') == 'win':
+                if streak_type is None or streak_type == 'win':
+                    streak_type = 'win'
+                    streak += 1
+                else:
+                    break
+            elif bet.get('status') == 'loss':
+                if streak_type is None or streak_type == 'loss':
+                    streak_type = 'loss'
+                    streak -= 1
+                else:
+                    break
+        
+        streak_display = f"+{streak}" if streak > 0 else str(streak)
+        streak_color = "#00e701" if streak > 0 else ("#ff4d4d" if streak < 0 else "#8A8F98")
+        
+        st.markdown(f"""
         <div class="stat-card">
             <div class="stat-label">Current Streak</div>
-            <div class="stat-value" style="color: #00e701;">+3</div>
-            <div style="color: #8A8F98; font-size: 0.875rem;">Best: +5 | Worst: -2</div>
+            <div class="stat-value" style="color: {streak_color};">{streak_display}</div>
+            <div style="color: #8A8F98; font-size: 0.875rem;">Recent Performance</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -569,10 +592,27 @@ def show_dashboard():
     with col1:
         st.markdown("<h3 style='margin-bottom: 1rem;'>Profit Trend</h3>", unsafe_allow_html=True)
         
-        # Profit chart
+        # Calculate actual cumulative profit from user's bets
+        if bets:
+            sorted_bets = sorted(bets, key=lambda x: x.get('id', 0))
+            daily_profits = []
+            cumulative = 0
+            days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            for i, bet in enumerate(sorted_bets[:7]):
+                cumulative += bet.get('profit', 0)
+                daily_profits.append(cumulative)
+            # Pad with zeros if less than 7 bets
+            while len(daily_profits) < 7:
+                daily_profits.append(cumulative)
+            profit_values = daily_profits[-7:]
+        else:
+            profit_values = [0, 0, 0, 0, 0, 0, 0]
+            days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        
+        # Profit chart using actual data
         profit_data = pd.DataFrame({
-            'Day': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            'Profit': [120, 205, 160, 360, 310, 280, 380]
+            'Day': days,
+            'Profit': profit_values
         })
         
         fig = go.Figure()
@@ -590,19 +630,27 @@ def show_dashboard():
             xaxis=dict(gridcolor='rgba(255,255,255,0.1)'),
             yaxis=dict(gridcolor='rgba(255,255,255,0.1)'),
             margin=dict(l=40, r=40, t=20, b=40),
-            height=250
+            height=250,
+            showlegend=False
         )
         st.plotly_chart(fig, use_container_width=True)
     
     with col2:
         st.markdown("<h3 style='margin-bottom: 1rem;'>Win/Loss Distribution</h3>", unsafe_allow_html=True)
         
+        # Use actual bet data with pending
+        labels = ['Wins', 'Losses', 'Pending']
+        values = [wins, losses, pending]
+        colors = ['#00e701', '#ff4d4d', '#00d2ff']
+        
         # Pie chart
         fig = go.Figure(data=[go.Pie(
-            labels=['Wins', 'Losses', 'Pushes'],
-            values=[wins, losses, 0],
+            labels=labels,
+            values=values,
             hole=0.6,
-            marker_colors=['#00e701', '#ff4d4d', '#00d2ff']
+            marker=dict(colors=colors, line=dict(color='#0B0E14', width=2)),
+            textinfo='label+percent',
+            textfont=dict(color='white', size=12)
         )])
         fig.update_layout(
             paper_bgcolor='rgba(0,0,0,0)',
@@ -651,7 +699,9 @@ def show_dashboard():
     
     for game in games:
         live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
-        score_display = f"{game['score']['home']} - {game['score']['away']}" if game['status'] == 'live' else game['time']
+        score_display = game.get('time', 'TBD')
+        if game['status'] == 'live' and 'score' in game:
+            score_display = f"{game['score']['home']} - {game['score']['away']}"
         
         card_html = f'''
         <div class="game-card">
