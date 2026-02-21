@@ -110,6 +110,37 @@ def fetch_yahoo_games(sport="nba"):
         print(f"Error fetching Yahoo data: {e}")
     return []
 
+def get_available_sports():
+    """Check ESPN API for which sports have active games today"""
+    available = []
+    sport_configs = [
+        ("nba", "🏀 NBA", "basketball/nba"),
+        ("nfl", "🏈 NFL", "football/nfl"),
+        ("mlb", "⚾ MLB", "baseball/mlb"),
+        ("nhl", "🏒 NHL", "hockey/nhl"),
+        ("ncaab", "🏀 NCAAB", "basketball/mens-college-basketball"),
+        ("ncaaf", "🏈 NCAAF", "football/college-football")
+    ]
+    
+    for sport_code, display_name, api_path in sport_configs:
+        try:
+            url = f"https://site.api.espn.com/apis/site/v2/sports/{api_path}/scoreboard"
+            response = requests.get(url, timeout=3)
+            if response.status_code == 200:
+                data = response.json()
+                events = data.get('events', [])
+                # Only add sport if it has games today or upcoming
+                if len(events) > 0:
+                    available.append((sport_code, display_name))
+        except Exception:
+            pass
+    
+    # Fallback: if no sports available, return NBA at minimum
+    if not available:
+        return [("nba", "🏀 NBA")]
+    
+    return available
+
 # Combined fetch with fallback
 def fetch_games_with_fallback(sport="nba"):
     """Try ESPN first, then Yahoo, then mock data"""
@@ -812,9 +843,21 @@ def show_dashboard():
         st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
         st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
     with col_sport:
-        sports = ["🏀 NBA", "🏈 NFL", "⚾ MLB", "🏒 NHL", "🏀 NCAAB", "🏈 NCAAF"]
-        selected_sport = st.selectbox("Select Sport", sports, index=0)
-        st.session_state.selected_sport = selected_sport.split()[-1]  # Store sport code
+        # Get available sports from ESPN API (not mock data)
+        available_sports = get_available_sports()
+        sport_options = [name for _, name in available_sports]
+        sport_codes = [code for code, _ in available_sports]
+        
+        # Default to first available or use session state
+        default_index = 0
+        current_sport = st.session_state.get('selected_sport', 'NBA').lower()
+        if current_sport in sport_codes:
+            default_index = sport_codes.index(current_sport)
+        
+        selected_idx = st.selectbox("Select Sport", range(len(sport_options)), 
+                                     format_func=lambda i: sport_options[i],
+                                     index=default_index)
+        st.session_state.selected_sport = sport_codes[selected_idx].upper()
     
     # Stats Row - Use user's actual bets from session state
     bets = st.session_state.bets
