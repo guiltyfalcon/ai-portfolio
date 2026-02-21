@@ -3,6 +3,21 @@ import numpy as np
 
 st.set_page_config(page_title="Parlay Builder 🎯", page_icon="🎯", layout="wide")
 
+# 💎 PREMIUM CHECK
+is_supporter = st.session_state.get('is_supporter', False)
+if not is_supporter:
+    st.markdown("# 💎 Parlay Builder")
+    st.markdown("---")
+    st.warning("🔒 Premium Feature Locked")
+    st.markdown("""
+        <div style="background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center;">
+            <h3>💎 Unlock Premium</h3>
+            <p>Build smart parlays with EV calculator and analyze payouts.</p>
+            <a href="https://buy.stripe.com/4gM28k5L17246LNfubfjG00" target="_blank" style="background: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">Subscribe — $5/mo</a>
+        </div>
+    """, unsafe_allow_html=True)
+    st.stop()
+
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }

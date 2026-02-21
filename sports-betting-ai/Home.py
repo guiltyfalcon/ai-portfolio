@@ -345,10 +345,24 @@ with st.sidebar:
     
     st.markdown("---")
     
+    # ADMIN OVERRIDE: Auto-unlock for admin
+    if st.session_state.get('user_email') == 'guiltyfalcon@openclaw.com':
+        st.session_state.is_supporter = True
+        st.session_state.is_admin = True
+    
+    # Check subscription status
+    if 'is_supporter' not in st.session_state:
+        if check_subscription_status():
+            st.session_state.is_supporter = True
+    
     # Simple support section - only button, no duplicate unlock features
     is_supporter = st.session_state.get('is_supporter', False)
+    is_admin = st.session_state.get('is_admin', False)
     
-    if is_supporter:
+    if is_admin:
+        st.markdown("### 👑 Admin Access")
+        st.success("All features unlocked (admin)")
+    elif is_supporter:
         st.markdown("### ✨ Premium Active")
         st.success("All features unlocked!")
     else:
