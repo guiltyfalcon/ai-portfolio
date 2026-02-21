@@ -8,10 +8,46 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from api.espn import ESPNAPI
 from api.odds import OddsAPI
 
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from api.espn import ESPNAPI
+from api.odds import OddsAPI
+
 st.set_page_config(page_title="Live Odds 📊", page_icon="📊", layout="wide")
 
-# 💎 PREMIUM CHECK
+# 💎 PREMIUM CHECK - Use session state
 is_supporter = st.session_state.get('is_supporter', False)
+is_admin = st.session_state.get('is_admin', False)
+
+if not is_supporter and not is_admin:
+    st.markdown("# 💎 Live Odds")
+    st.markdown("---")
+    st.warning("🔒 Premium Feature Locked")
+    st.markdown("""
+        <div style="background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center;">
+            <h3>💎 Unlock Premium</h3>
+            <p>Get real-time odds from Vegas, compare lines across sportsbooks.</p>
+            <a href="https://buy.stripe.com/4gM28k5L17246LNfubfjG00" target="_blank" style="background: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">Subscribe — $5/mo</a>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("**Or Login**")
+    email = st.text_input("Email", placeholder="your@email.com")
+    if st.button("Login"):
+        if email == 'guiltyfalcon@openclaw.com':
+            st.session_state.is_admin = True
+            st.session_state.is_supporter = True
+            st.success("Admin access granted!")
+            st.rerun()
+        else:
+            st.info("Email not found. Subscribe to unlock.")
+    st.stop()
 if not is_supporter:
     st.markdown("# 💎 Live Odds")
     st.markdown("---")

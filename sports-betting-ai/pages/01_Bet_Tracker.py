@@ -16,6 +16,42 @@ st.set_page_config(
     layout="wide"
 )
 
+# 💎 PREMIUM CHECK - Use session state
+is_supporter = st.session_state.get('is_supporter', False)
+is_admin = st.session_state.get('is_admin', False)
+
+if not is_supporter and not is_admin:
+    st.markdown("# 💎 Bet Tracker")
+    st.markdown("---")
+    st.warning("🔒 Premium Feature Locked")
+    st.markdown("""
+        <div style="background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center;">
+            <h3>💎 Unlock Premium</h3>
+            <p>Track your bets, calculate ROI, and analyze your performance.</p>
+            <a href="https://buy.stripe.com/4gM28k5L17246LNfubfjG00" target="_blank" style="background: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">Subscribe — $5/mo</a>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Show login option
+    st.markdown("---")
+    st.markdown("**Or Login**")
+    email = st.text_input("Email", placeholder="your@email.com")
+    if st.button("Login"):
+        if email == 'guiltyfalcon@openclaw.com':
+            st.session_state.is_admin = True
+            st.session_state.is_supporter = True
+            st.success("Admin access granted!")
+            st.rerun()
+        else:
+            st.info("Email not found. Subscribe to unlock.")
+    st.stop()
+
+st.set_page_config(
+    page_title="Bet Tracker 💰",
+    page_icon="💰",
+    layout="wide"
+)
+
 # 💎 PREMIUM CHECK
 is_supporter = st.session_state.get('is_supporter', False)
 if not is_supporter:

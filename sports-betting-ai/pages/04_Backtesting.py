@@ -11,7 +11,9 @@ st.set_page_config(page_title="Backtesting 📈", page_icon="📈", layout="wide
 
 # 💎 PREMIUM CHECK
 is_supporter = st.session_state.get('is_supporter', False)
-if not is_supporter:
+is_admin = st.session_state.get('is_admin', False)
+
+if not is_supporter and not is_admin:
     st.markdown("# 💎 Backtesting")
     st.markdown("---")
     st.warning("🔒 Premium Feature Locked")
@@ -22,6 +24,18 @@ if not is_supporter:
             <a href="https://buy.stripe.com/4gM28k5L17246LNfubfjG00" target="_blank" style="background: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 10px;">Subscribe — $5/mo</a>
         </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("**Or Login**")
+    email = st.text_input("Email", placeholder="your@email.com")
+    if st.button("Login"):
+        if email == 'guiltyfalcon@openclaw.com':
+            st.session_state.is_admin = True
+            st.session_state.is_supporter = True
+            st.success("Admin access granted!")
+            st.rerun()
+        else:
+            st.info("Email not found. Subscribe to unlock.")
     st.stop()
 
 st.markdown("""
