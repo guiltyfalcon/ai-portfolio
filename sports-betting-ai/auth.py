@@ -60,42 +60,129 @@ def is_admin():
         return session.get("is_admin", False)
     return False
 
+# User storage (in production, use a database)
+USERS_FILE = ".users.json"
+
+def load_users():
+    """Load users from file"""
+    import json
+    import os
+    if os.path.exists(USERS_FILE):
+        with open(USERS_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_users(users):
+    """Save users to file"""
+    import json
+    with open(USERS_FILE, 'w') as f:
+        json.dump(users, f)
+
+def signup_user(username, email, password):
+    """Register a new user"""
+    users = load_users()
+    
+    # Check if user exists
+    if email in users or username in users:
+        return False, "User already exists"
+    
+    # Create new user
+    users[email] = {
+        'username': username,
+        'email': email,
+        'password_hash': hash_password(password),
+        'created_at': datetime.now().isoformat()
+    }
+    
+    save_users(users)
+    return True, "Account created successfully"
+
 def login_form():
-    """Display login form"""
+    """Display login form with signup option"""
+    
+    # Initialize tab state
+    if 'auth_tab' not in st.session_state:
+        st.session_state.auth_tab = "Login"
+    
     st.markdown("""
     <div style="text-align: center; padding: 40px;">
-        <h1 style="font-size: 3rem; margin-bottom: 10px;">🎯 Sports Betting AI Pro</h1>
-        <p style="color: #a0a0c0; font-size: 1.2rem;">Please log in to access the platform</p>
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">🏀 Sports Betting AI Pro</h1>
+        <p style="color: #a0a0c0; font-size: 1.2rem;">Please log in or sign up to access the platform</p>
     </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
-        with st.form("login_form"):
-            email = st.text_input("Email", placeholder="Enter your email")
-            password = st.text_input("Password", type="password", placeholder="Enter your password")
-            
-            submit = st.form_submit_button("Log In", use_container_width=True)
-            
-            if submit:
-                if not email or not password:
-                    st.error("Please enter both email and password")
-                    return False
+        # Tabs for Login/Signup
+        tab1, tab2 = st.tabs(["🔐 Login", "📝 Sign Up"])
+        
+        with tab1:
+            with st.form("login_form"):
+                email = st.text_input("Email or Username", placeholder="Enter your email")
+                password = st.text_input("Password", type="password", placeholder="Enter your password")
                 
-                # Check credentials (email or username)
-                is_admin_login = (email == ADMIN_EMAIL or email == ADMIN_USERNAME) and hash_password(password) == ADMIN_PASSWORD_HASH
+                submit = st.form_submit_button("Log In", use_container_width=True)
                 
-                if is_admin_login:
-                    # Admin login
-                    session = create_session(ADMIN_USERNAME, is_admin=True)
-                    st.success(f"✅ Welcome back, Admin!")
-                    st.rerun()
-                    return True
-                else:
-                    # Regular user login (could add more users here)
-                    st.error("Invalid email or password")
-                    return False
+                if submit:
+                    if not email or not password:
+                        st.error("Please enter both email and password")
+                        return False
+                    
+                    # Check admin credentials first
+                    is_admin_login = (email == ADMIN_EMAIL or email == ADMIN_USERNAME) and hash_password(password) == ADMIN_PASSWORD_HASH
+                    
+                    if is_admin_login:
+                        session = create_session(ADMIN_USERNAME, is_admin=True)
+                        st.success(f"✅ Welcome back, Admin!")
+                        st.rerun()
+                        return True
+                    
+                    # Check regular user credentials
+                    users = load_users()
+                    user_found = None
+                    for user_email, user_data in users.items():
+                        if (email == user_email or email == user_data.get('username')) and user_data.get('password_hash') == hash_password(password):
+                            user_found = user_data
+                            break
+                    
+                    if user_found:
+                        session = create_session(user_found['username'], is_admin=False)
+                        st.success(f"✅ Welcome back, {user_found['username']}!")
+                        st.rerun()
+                        return True
+                    else:
+                        st.error("Invalid email or password")
+                        return False
+        
+        with tab2:
+            with st.form("signup_form"):
+                new_username = st.text_input("Username", placeholder="Choose a username")
+                new_email = st.text_input("Email", placeholder="Enter your email")
+                new_password = st.text_input("Password", type="password", placeholder="Create a password")
+                confirm_password = st.text_input("Confirm Password", type="password", placeholder="Confirm your password")
+                
+                submit_signup = st.form_submit_button("Create Account", use_container_width=True)
+                
+                if submit_signup:
+                    if not new_username or not new_email or not new_password:
+                        st.error("Please fill in all fields")
+                        return False
+                    
+                    if new_password != confirm_password:
+                        st.error("Passwords do not match")
+                        return False
+                    
+                    if len(new_password) < 6:
+                        st.error("Password must be at least 6 characters")
+                        return False
+                    
+                    success, message = signup_user(new_username, new_email, new_password)
+                    if success:
+                        st.success(f"✅ {message}! Please log in.")
+                    else:
+                        st.error(f"❌ {message}")
+                        return False
     
     return False
 
