@@ -328,53 +328,17 @@ with st.sidebar:
     value_threshold = st.slider("Value Edge %", 1, 20, 5) / 100
     
     st.markdown("---")
-    st.markdown("### 📡 Data Sources")
     
-    odds_api_key = os.getenv('THEODDS_API_KEY')
-    if odds_api_key:
-        st.markdown("✅ The Odds API (Configured)")
-    else:
-        st.markdown("⚠️ The Odds API (No API Key)")
-        st.caption("Set THEODDS_API_KEY in secrets for live odds")
-    
-    st.markdown("✅ ESPN API (Free)")
-    
-    st.markdown("---")
-    st.markdown("### 💎 Support the Project")
-    
-    # Tip/Unlock section
+    # Simple support section - only button, no duplicate unlock features
     is_supporter = st.session_state.get('is_supporter', False)
     
-    if not is_supporter:
-        st.markdown("#### Unlock Premium Features")
-        st.markdown("""
-        **Free:** Basic predictions, win %, 3-day history
-        
-        **$5+ Supporters Get:**
-        ✅ Value picks highlighted  
-        ✅ Parlay builder + EV calc  
-        ✅ 30-day backtesting  
-        ✅ Priority odds refresh  
-        ✅ Supporter badge
-        """)
-        
-        st.markdown("#### ☕ Unlock Premium Features")
-        st.markdown("**Free:** Basic predictions, win %, 3-day history")
-        st.markdown("""
-        **$5/Month — Supporters Get:**
-        ✅ Value picks highlighted  
-        ✅ Parlay builder + EV calc  
-        ✅ 30-day backtesting  
-        ✅ Priority odds refresh  
-        ✅ Supporter badge
-        """)
-        
-        st.link_button("Subscribe — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
-        st.caption("Monthly subscription. Cancel anytime.")
+    if is_supporter:
+        st.markdown("### ✨ Premium Active")
+        st.success("All features unlocked!")
     else:
-        st.markdown("✨ **You're a Supporter!**")
-        st.markdown("All premium features unlocked.")
-        st.success("Thank you for your support!")
+        st.markdown("### 💎 Unlock Premium")
+        st.link_button("Subscribe — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
+        st.caption("Cancel anytime")
 
 # Main Content
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -611,6 +575,3 @@ except Exception as e:
     import traceback
     with st.expander("Debug Info"):
         st.code(traceback.format_exc())
-
-st.markdown("---")
-st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN API | Sports Betting AI Pro</div>', unsafe_allow_html=True)
