@@ -663,8 +663,14 @@ try:
             cols = st.columns(2)
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
-                    # Card container with border - everything inside
-                    st.markdown(f"""
+                    # Build game card HTML with everything inside
+                    home_ml_val = pred.get('home_ml')
+                    away_ml_val = pred.get('away_ml')
+                    
+                    home_odds_display = format_odds(home_ml_val) if home_ml_val is not None and not pd.isna(home_ml_val) else "—"
+                    away_odds_display = format_odds(away_ml_val) if away_ml_val is not None and not pd.isna(away_ml_val) else "—"
+                    
+                    game_card_html = f'''
                     <div style="
                         border: 2px solid rgba(0, 210, 255, 0.4);
                         border-radius: 15px;
@@ -672,53 +678,48 @@ try:
                         margin: 10px 0 20px 0;
                         background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
                         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        color: white;
+                        font-family: sans-serif;
                     ">
-                    """, unsafe_allow_html=True)
-                    
-                    # Teams header
-                    t1, t2, t3 = st.columns([2, 1, 2])
-                    with t1:
-                        st.markdown(f"**{pred['home_team']}**")
-                        st.caption("Home")
-                    with t2:
-                        st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
-                    with t3:
-                        st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
-                        st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
-                    
-                    # Win probability
-                    st.markdown("---")
-                    p1, p2, p3 = st.columns([1, 2, 1])
-                    with p1:
-                        st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
-                    with p2:
-                        st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
-                    with p3:
-                        st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
-                    
-                    # Progress bar
-                    st.progress(float(pred['home_prob']))
-                    
-                    # Odds - FIX: Display actual values properly
-                    st.markdown("---")
-                    o1, o2 = st.columns(2)
-                    with o1:
-                        home_ml_val = pred.get('home_ml')
-                        if home_ml_val is not None and not pd.isna(home_ml_val):
-                            home_odds_str = format_odds(home_ml_val)
-                            st.metric("Home ML", home_odds_str)
-                        else:
-                            st.metric("Home ML", "—")
-                    with o2:
-                        away_ml_val = pred.get('away_ml')
-                        if away_ml_val is not None and not pd.isna(away_ml_val):
-                            away_odds_str = format_odds(away_ml_val)
-                            st.metric("Away ML", away_odds_str)
-                        else:
-                            st.metric("Away ML", "—")
-                    
-                    # Close card container
-                    st.markdown("</div>", unsafe_allow_html=True)
+                        <!-- Teams Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <div style="text-align: left;">
+                                <div style="font-weight: bold; font-size: 1.1rem;">{pred['home_team']}</div>
+                                <div style="font-size: 0.8rem; color: #888;">Home</div>
+                            </div>
+                            <div style="text-align: center; color: #00d2ff; font-weight: bold; padding: 0 10px;">VS</div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold; font-size: 1.1rem;">{pred['away_team']}</div>
+                                <div style="font-size: 0.8rem; color: #888;">Away</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Win Probability -->
+                        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-weight: bold;">{int(round(pred['home_prob']*100))}%</span>
+                                <span style="color: #888;">Win Probability</span>
+                                <span style="font-weight: bold;">{int(round(pred['away_prob']*100))}%</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #00d2ff, #3a7bd5); height: 100%; width: {int(round(pred['home_prob']*100))}%; border-radius: 10px;"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Odds -->
+                        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; margin-top: 15px; display: flex; justify-content: space-between;">
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">Home ML</div>
+                                <div style="font-size: 1.3rem; font-weight: bold; color: #00d2ff;">{home_odds_display}</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 0.8rem; color: #888; margin-bottom: 5px;">Away ML</div>
+                                <div style="font-size: 1.3rem; font-weight: bold; color: #00d2ff;">{away_odds_display}</div>
+                            </div>
+                        </div>
+                    </div>
+                    '''
+                    components.html(game_card_html, height=320, scrolling=False)
                     
                     # Detailed Reasoning (outside card)
                     with st.expander("📊 Predictions"):
