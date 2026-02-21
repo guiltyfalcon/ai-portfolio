@@ -40,7 +40,7 @@ def load_css():
             background-attachment: fixed;
         }
         
-        /* Modern header with glow effect */
+        /* Modern header with breathing glow effect */
         .main-header {
             font-size: 4rem;
             font-weight: 900;
@@ -52,13 +52,24 @@ def load_css():
             text-shadow: 0 0 30px rgba(0,210,255,0.5);
             margin-bottom: 10px;
             letter-spacing: -2px;
-            animation: gradient-shift 3s ease infinite;
+            animation: gradient-shift 3s ease infinite, breathe-glow 2s ease-in-out infinite;
         }
         
         @keyframes gradient-shift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes breathe-glow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(0,210,255,0.4), 0 0 40px rgba(0,210,255,0.2);
+                filter: brightness(1);
+            }
+            50% { 
+                text-shadow: 0 0 40px rgba(0,210,255,0.8), 0 0 80px rgba(0,210,255,0.4);
+                filter: brightness(1.2);
+            }
         }
         
         .sub-header {
@@ -652,90 +663,86 @@ try:
             cols = st.columns(2)
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
-                    # Card container with border
-                    with st.container():
-                        st.markdown("""
-                        <style>
-                        .game-card-container {
-                            border: 2px solid rgba(0, 210, 255, 0.3);
-                            border-radius: 15px;
-                            padding: 20px;
-                            margin: 10px 0;
-                            background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
-                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                    # Card container with border - everything inside
+                    st.markdown(f"""
+                    <div style="
+                        border: 2px solid rgba(0, 210, 255, 0.4);
+                        border-radius: 15px;
+                        padding: 20px;
+                        margin: 10px 0 20px 0;
+                        background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                    ">
+                    """, unsafe_allow_html=True)
+                    
+                    # Teams header
+                    t1, t2, t3 = st.columns([2, 1, 2])
+                    with t1:
+                        st.markdown(f"**{pred['home_team']}**")
+                        st.caption("Home")
+                    with t2:
+                        st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
+                    with t3:
+                        st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
+                        st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
+                    
+                    # Win probability
+                    st.markdown("---")
+                    p1, p2, p3 = st.columns([1, 2, 1])
+                    with p1:
+                        st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
+                    with p2:
+                        st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
+                    with p3:
+                        st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
+                    
+                    # Progress bar
+                    st.progress(float(pred['home_prob']))
+                    
+                    # Odds - FIX: Display actual values properly
+                    st.markdown("---")
+                    o1, o2 = st.columns(2)
+                    with o1:
+                        home_ml_val = pred.get('home_ml')
+                        if home_ml_val is not None and not pd.isna(home_ml_val):
+                            home_odds_str = format_odds(home_ml_val)
+                            st.metric("Home ML", home_odds_str)
+                        else:
+                            st.metric("Home ML", "—")
+                    with o2:
+                        away_ml_val = pred.get('away_ml')
+                        if away_ml_val is not None and not pd.isna(away_ml_val):
+                            away_odds_str = format_odds(away_ml_val)
+                            st.metric("Away ML", away_odds_str)
+                        else:
+                            st.metric("Away ML", "—")
+                    
+                    # Close card container
+                    st.markdown("</div>", unsafe_allow_html=True)
+                    
+                    # Detailed Reasoning (outside card)
+                    with st.expander("📊 Predictions"):
+                        reasoning = generate_game_reasoning(
+                            pred['home_team'], 
+                            pred['away_team'], 
+                            pred['home_prob'], 
+                            pred['away_prob'],
+                            pred.get('home_record', '0-0'),
+                            pred.get('away_record', '0-0'),
+                            sport,
+                            pred.get('home_ml'),
+                            pred.get('away_ml')
+                        )
+                        st.markdown(reasoning)
+                    
+                    # Quick add to bet tracker
+                    if st.button(f"➕ Track This Game", key=f"track_{idx}", use_container_width=True):
+                        st.session_state['track_game'] = {
+                            'home': pred['home_team'],
+                            'away': pred['away_team'],
+                            'sport': sport
                         }
-                        </style>
-                        <div class="game-card-container">
-                        """, unsafe_allow_html=True)
-                        
-                        # Teams header
-                        t1, t2, t3 = st.columns([2, 1, 2])
-                        with t1:
-                            st.markdown(f"**{pred['home_team']}**")
-                            st.caption("Home")
-                        with t2:
-                            st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
-                        with t3:
-                            st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
-                            st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
-                        
-                        # Win probability
-                        st.markdown("---")
-                        p1, p2, p3 = st.columns([1, 2, 1])
-                        with p1:
-                            st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
-                        with p2:
-                            st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
-                        with p3:
-                            st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
-                        
-                        # Progress bar
-                        st.progress(float(pred['home_prob']))
-                        
-                        # Odds - FIX: Display actual values
-                        st.markdown("---")
-                        o1, o2 = st.columns(2)
-                        with o1:
-                            home_ml_val = pred.get('home_ml')
-                            if home_ml_val is not None and not pd.isna(home_ml_val):
-                                home_odds_str = format_odds(home_ml_val)
-                                st.metric("Home ML", home_odds_str)
-                            else:
-                                st.metric("Home ML", "—")
-                        with o2:
-                            away_ml_val = pred.get('away_ml')
-                            if away_ml_val is not None and not pd.isna(away_ml_val):
-                                away_odds_str = format_odds(away_ml_val)
-                                st.metric("Away ML", away_odds_str)
-                            else:
-                                st.metric("Away ML", "—")
-                        
-                        # Close card container
-                        st.markdown("</div>", unsafe_allow_html=True)
-                        
-                        # Detailed Reasoning
-                        with st.expander("📊 Predictions"):
-                            reasoning = generate_game_reasoning(
-                                pred['home_team'], 
-                                pred['away_team'], 
-                                pred['home_prob'], 
-                                pred['away_prob'],
-                                pred.get('home_record', '0-0'),
-                                pred.get('away_record', '0-0'),
-                                sport,
-                                pred.get('home_ml'),
-                                pred.get('away_ml')
-                            )
-                            st.markdown(reasoning)
-                        
-                        # Quick add to bet tracker
-                        if st.button(f"➕ Track This Game", key=f"track_{idx}", use_container_width=True):
-                            st.session_state['track_game'] = {
-                                'home': pred['home_team'],
-                                'away': pred['away_team'],
-                                'sport': sport
-                            }
-                            st.info("Go to Bet Tracker to add your pick!")
+                        st.info("Go to Bet Tracker to add your pick!")
         else:
             st.info("No upcoming games found for this sport.")
 

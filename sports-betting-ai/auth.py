@@ -105,11 +105,39 @@ def login_form():
         st.session_state.auth_tab = "Login"
     
     st.markdown("""
+    <style>
+    @keyframes breathe-glow {
+        0%, 100% { 
+            text-shadow: 0 0 20px rgba(0,210,255,0.4), 0 0 40px rgba(0,210,255,0.2);
+            filter: brightness(1);
+        }
+        50% { 
+            text-shadow: 0 0 40px rgba(0,210,255,0.8), 0 0 80px rgba(0,210,255,0.4);
+            filter: brightness(1.2);
+        }
+    }
+    .login-header {
+        font-size: 3rem;
+        font-weight: 900;
+        text-align: center;
+        background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 50%, #00d2ff 100%);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient-shift 3s ease infinite, breathe-glow 2s ease-in-out infinite;
+        margin-bottom: 10px;
+    }
+    @keyframes gradient-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    </style>
     <div style="text-align: center; padding: 40px;">
-        <h1 style="font-size: 3rem; margin-bottom: 10px;">
+        <div class="login-header">
             <span style="font-size: 50px; vertical-align: middle; margin-right: 10px;">🏀</span>
             Sports Betting AI Pro
-        </h1>
+        </div>
         <p style="color: #a0a0c0; font-size: 1.2rem;">Please log in or sign up to access the platform</p>
     </div>
     """, unsafe_allow_html=True)
