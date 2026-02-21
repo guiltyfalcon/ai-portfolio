@@ -603,42 +603,44 @@ try:
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
                     with st.container():
-                        # Use st.markdown with unsafe_allow_html for proper HTML rendering
-                        game_card_html = f'''<div class="game-card">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div class="team-name">{pred['home_team']}</div>
-                                    <div class="team-record">Home</div>
-                                </div>
-                                <div style="text-align: center;">
-                                    <div style="color: #00d2ff; font-weight: 700;">VS</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div class="team-name">{pred['away_team']}</div>
-                                    <div class="team-record">Away</div>
-                                </div>
-                            </div>
+                        # Use native Streamlit components for reliable rendering
+                        with st.container(border=True):
+                            # Teams header
+                            t1, t2, t3 = st.columns([2, 1, 2])
+                            with t1:
+                                st.markdown(f"**{pred['home_team']}**")
+                                st.caption("Home")
+                            with t2:
+                                st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
+                            with t3:
+                                st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
+                                st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
                             
-                            <div style="margin-top: 15px;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span>{int(round(pred['home_prob']*100))}%</span>
-                                    <span style="color: #a0a0c0;">Win Prob</span>
-                                    <span>{int(round(pred['away_prob']*100))}%</span>
-                                </div>
-                                <div class="prob-bar-bg">
-                                    <div class="prob-bar-fill" style="width: {int(round(pred['home_prob']*100))}%; margin-left: 0;"></div>
-                                </div>
-                            </div>
+                            # Win probability
+                            st.markdown("---")
+                            p1, p2, p3 = st.columns([1, 2, 1])
+                            with p1:
+                                st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
+                            with p2:
+                                st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
+                            with p3:
+                                st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
                             
-                            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                                <div class="odds-box">{format_odds(pred.get('home_ml', None))}</div>
-                                <div class="odds-box">{format_odds(pred.get('away_ml', None))}</div>
-                            </div>
-                        </div>'''
-                        components.html(game_card_html, height=280, scrolling=False)
+                            # Progress bar
+                            st.progress(float(pred['home_prob']))
+                            
+                            # Odds
+                            st.markdown("---")
+                            o1, o2 = st.columns(2)
+                            with o1:
+                                home_odds = format_odds(pred.get('home_ml', None))
+                                st.metric("Home ML", home_odds if home_odds != "N/A" else "—")
+                            with o2:
+                                away_odds = format_odds(pred.get('away_ml', None))
+                                st.metric("Away ML", away_odds if away_odds != "N/A" else "—")
                         
                         # Quick add to bet tracker
-                        if st.button(f"➕ Track This Game", key=f"track_{idx}"):
+                        if st.button(f"➕ Track This Game", key=f"track_{idx}", use_container_width=True):
                             st.session_state['track_game'] = {
                                 'home': pred['home_team'],
                                 'away': pred['away_team'],
