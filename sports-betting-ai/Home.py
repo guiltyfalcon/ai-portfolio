@@ -579,6 +579,30 @@ def show_auth_page():
 
 # Dashboard Page
 def show_dashboard():
+    # Top Navigation Menu
+    with st.container():
+        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        with col1:
+            if st.button("🏠 Home", use_container_width=True):
+                st.rerun()
+        with col2:
+            if st.button("📊 Bet Tracker", use_container_width=True):
+                st.switch_page("pages/Bet_Tracker.py")
+        with col3:
+            if st.button("📈 Live Odds", use_container_width=True):
+                st.switch_page("pages/Live_Odds.py")
+        with col4:
+            if st.button("👤 Player Props", use_container_width=True):
+                st.switch_page("pages/Player_Props.py")
+        with col5:
+            if st.button("🧪 Backtesting", use_container_width=True):
+                st.switch_page("pages/Backtesting.py")
+        with col6:
+            if st.button("🎯 Parlay Builder", use_container_width=True):
+                st.switch_page("pages/Parlay_Builder.py")
+        
+        st.markdown("---")
+    
     st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
     
@@ -824,19 +848,14 @@ def show_sidebar():
             </div>
             """, unsafe_allow_html=True)
         
-        # Navigation
-        pages = {
-            "🏠 Home": "Home",
-            "📊 Bet Tracker": "Bet_Tracker",
-            "📈 Live Odds": "Live_Odds",
-            "👤 Player Props": "Player_Props",
-            "🧪 Backtesting": "Backtesting",
-            "🎯 Parlay Builder": "Parlay_Builder"
-        }
-        
-        for label, page in pages.items():
-            if st.button(label, use_container_width=True, key=f"nav_{page}"):
-                st.switch_page(f"pages/{page}.py")
+        # User info only on sidebar (menu is now on top)
+        if st.session_state.user:
+            st.markdown(f"""
+            <div style="background: rgba(0, 210, 255, 0.1); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;">
+                <p style="color: white; margin: 0; font-weight: 500;">{st.session_state.user['username']}</p>
+                <p style="color: #8A8F98; margin: 0; font-size: 0.75rem;">Pro Member</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;'>", unsafe_allow_html=True)
         
