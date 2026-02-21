@@ -23,7 +23,17 @@ st.set_page_config(
 def fetch_espn_games(sport="nba"):
     """Fetch live games from ESPN API"""
     try:
-        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/{sport}/scoreboard"
+        # Map sport codes to ESPN API paths
+        sport_paths = {
+            "nba": "basketball/nba",
+            "nfl": "football/nfl",
+            "mlb": "baseball/mlb",
+            "nhl": "hockey/nhl",
+            "ncaab": "basketball/mens-college-basketball",
+            "ncaaf": "football/college-football"
+        }
+        sport_path = sport_paths.get(sport.lower(), "basketball/nba")
+        url = f"https://site.api.espn.com/apis/site/v2/sports/{sport_path}/scoreboard"
         response = requests.get(url, timeout=10)
         if response.status_code == 200:
             data = response.json()
@@ -400,7 +410,50 @@ st.markdown("""
 
 # Mock data
 @st.cache_data
-def get_mock_games():
+def get_mock_games(sport="NBA"):
+    mock_games = {
+        "NBA": [
+            {"id": "g1", "sport": "NBA", "home_team": "Lakers", "away_team": "Warriors", "home_odds": -140, "away_odds": 120, "spread": -3.5, "total": 228.5, "time": "7:30 PM ET", "status": "upcoming"},
+            {"id": "g2", "sport": "NBA", "home_team": "Celtics", "away_team": "Heat", "home_odds": -180, "away_odds": 155, "spread": -5.5, "total": 218.5, "time": "8:00 PM ET", "status": "upcoming"},
+            {"id": "g3", "sport": "NBA", "home_team": "Nuggets", "away_team": "Suns", "home_odds": -130, "away_odds": 110, "spread": -2.5, "total": 232.5, "time": "9:00 PM ET", "status": "live"},
+            {"id": "g4", "sport": "NBA", "home_team": "Bucks", "away_team": "76ers", "home_odds": -150, "away_odds": 130, "spread": -4.0, "total": 225.5, "time": "7:00 PM ET", "status": "upcoming"},
+        ],
+        "NFL": [
+            {"id": "n1", "sport": "NFL", "home_team": "Chiefs", "away_team": "Bills", "home_odds": -175, "away_odds": 150, "spread": -3.5, "total": 48.5, "time": "1:00 PM ET", "status": "upcoming"},
+            {"id": "n2", "sport": "NFL", "home_team": "Eagles", "away_team": "Cowboys", "home_odds": -140, "away_odds": 120, "spread": -3.0, "total": 51.5, "time": "4:25 PM ET", "status": "upcoming"},
+            {"id": "n3", "sport": "NFL", "home_team": "Ravens", "away_team": "Steelers", "home_odds": -200, "away_odds": 170, "spread": -4.5, "total": 44.5, "time": "8:20 PM ET", "status": "upcoming"},
+            {"id": "n4", "sport": "NFL", "home_team": "49ers", "away_team": "Packers", "home_odds": -130, "away_odds": 110, "spread": -2.5, "total": 47.5, "time": "4:05 PM ET", "status": "live"},
+        ],
+        "MLB": [
+            {"id": "m1", "sport": "MLB", "home_team": "Yankees", "away_team": "Red Sox", "home_odds": -150, "away_odds": 130, "spread": -1.5, "total": 8.5, "time": "7:05 PM ET", "status": "upcoming"},
+            {"id": "m2", "sport": "MLB", "home_team": "Dodgers", "away_team": "Giants", "home_odds": -180, "away_odds": 155, "spread": -1.5, "total": 7.5, "time": "10:10 PM ET", "status": "upcoming"},
+            {"id": "m3", "sport": "MLB", "home_team": "Astros", "away_team": "Rangers", "home_odds": -140, "away_odds": 120, "spread": -1.5, "total": 9.0, "time": "8:10 PM ET", "status": "live"},
+            {"id": "m4", "sport": "MLB", "home_team": "Braves", "away_team": "Mets", "home_odds": -160, "away_odds": 140, "spread": -1.5, "total": 8.0, "time": "7:20 PM ET", "status": "upcoming"},
+        ],
+        "NHL": [
+            {"id": "h1", "sport": "NHL", "home_team": "Lightning", "away_team": "Maple Leafs", "home_odds": -140, "away_odds": 120, "spread": -1.5, "total": 6.5, "time": "7:00 PM ET", "status": "upcoming"},
+            {"id": "h2", "sport": "NHL", "home_team": "Avalanche", "away_team": "Blues", "home_odds": -170, "away_odds": 145, "spread": -1.5, "total": 6.0, "time": "9:00 PM ET", "status": "upcoming"},
+            {"id": "h3", "sport": "NHL", "home_team": "Bruins", "away_team": "Canadiens", "home_odds": -200, "away_odds": 170, "spread": -1.5, "total": 5.5, "time": "7:00 PM ET", "status": "live"},
+            {"id": "h4", "sport": "NHL", "home_team": "Rangers", "away_team": "Islanders", "home_odds": -130, "away_odds": 110, "spread": -1.5, "total": 6.0, "time": "7:00 PM ET", "status": "upcoming"},
+        ],
+        "NCAAB": [
+            {"id": "c1", "sport": "NCAAB", "home_team": "Duke", "away_team": "UNC", "home_odds": -160, "away_odds": 140, "spread": -4.0, "total": 152.5, "time": "7:00 PM ET", "status": "upcoming"},
+            {"id": "c2", "sport": "NCAAB", "home_team": "Kansas", "away_team": "Texas", "home_odds": -140, "away_odds": 120, "spread": -3.0, "total": 148.5, "time": "8:00 PM ET", "status": "upcoming"},
+            {"id": "c3", "sport": "NCAAB", "home_team": "Kentucky", "away_team": "Florida", "home_odds": -180, "away_odds": 155, "spread": -5.0, "total": 155.5, "time": "9:00 PM ET", "status": "live"},
+            {"id": "c4", "sport": "NCAAB", "home_team": "Purdue", "away_team": "Michigan State", "home_odds": -150, "away_odds": 130, "spread": -3.5, "total": 141.5, "time": "6:30 PM ET", "status": "upcoming"},
+        ],
+        "NCAAF": [
+            {"id": "f1", "sport": "NCAAF", "home_team": "Alabama", "away_team": "Georgia", "home_odds": -150, "away_odds": 130, "spread": -3.5, "total": 54.5, "time": "3:30 PM ET", "status": "upcoming"},
+            {"id": "f2", "sport": "NCAAF", "home_team": "Ohio State", "away_team": "Michigan", "home_odds": -180, "away_odds": 155, "spread": -4.5, "total": 48.5, "time": "12:00 PM ET", "status": "upcoming"},
+            {"id": "f3", "sport": "NCAAF", "home_team": "Texas", "away_team": "Oklahoma", "home_odds": -140, "away_odds": 120, "spread": -3.0, "total": 61.5, "time": "7:00 PM ET", "status": "live"},
+            {"id": "f4", "sport": "NCAAF", "home_team": "USC", "away_team": "Notre Dame", "home_odds": -130, "away_odds": 110, "spread": -2.5, "total": 58.5, "time": "7:30 PM ET", "status": "upcoming"},
+        ],
+    }
+    return mock_games.get(sport.upper(), mock_games["NBA"])
+
+# Old mock games - will be replaced
+@st.cache_data
+def get_mock_games_legacy():
     return [
         {
             "id": "g1",
@@ -819,8 +872,9 @@ def show_dashboard():
     # Live Games
     st.markdown("<h3 style='margin: 2rem 0 1rem;'>🔴 Live & Upcoming Games</h3>", unsafe_allow_html=True)
     
-    # Fetch live games with fallback
-    games, source = fetch_games_with_fallback("nba")
+    # Fetch live games with fallback - use selected sport
+    selected_sport_code = st.session_state.get('selected_sport', 'NBA').lower()
+    games, source = fetch_games_with_fallback(selected_sport_code)
     if source == "Sample Data":
         st.info("⚠️ Showing sample data - ESPN API and Yahoo Sports temporarily unavailable")
     elif source == "Yahoo Sports":
