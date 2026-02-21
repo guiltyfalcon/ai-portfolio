@@ -554,7 +554,14 @@ try:
             # GAME CARDS WITH EXPANDABLE STATS
             st.markdown("### 📋 All Games")
             
-            for idx, pred in pred_df.iterrows():
+            # LIMIT: Free users see only 2 games
+            is_supporter = st.session_state.get('is_supporter', False)
+            display_games = pred_df.head(2) if not is_supporter else pred_df
+            
+            if not is_supporter and len(pred_df) > 2:
+                st.info(f"🔒 Free tier: Showing {len(display_games)} of {len(pred_df)} games. Unlock premium for all {len(pred_df)} games.")
+            
+            for idx, pred in display_games.iterrows():
                 # Determine best pick for this game with detailed reasoning
                 best_pick_team = ""
                 pick_team_short = ""
