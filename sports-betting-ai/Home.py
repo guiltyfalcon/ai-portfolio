@@ -581,27 +581,46 @@ def show_auth_page():
 def show_dashboard():
     # Top Navigation Menu
     with st.container():
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        # Logo and App Name
+        st.markdown("""
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <div style="
+                width: 50px; 
+                height: 50px; 
+                background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+            ">🎯</div>
+            <div>
+                <h2 style="margin: 0; color: white; font-size: 1.5rem;">Sports Betting AI</h2>
+                <p style="margin: 0; color: #8A8F98; font-size: 0.75rem;">Pro Analytics</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Navigation buttons with icons
+        col1, col2, col3, col4, col5 = st.columns(5)
         with col1:
-            if st.button("🏠 Home", use_container_width=True):
-                st.rerun()
-        with col2:
-            if st.button("📊 Bet Tracker", use_container_width=True):
+            if st.button("💰 Bet Tracker", use_container_width=True):
                 st.switch_page("pages/Bet_Tracker.py")
-        with col3:
-            if st.button("📈 Live Odds", use_container_width=True):
+        with col2:
+            if st.button("📊 Live Odds", use_container_width=True):
                 st.switch_page("pages/Live_Odds.py")
-        with col4:
+        with col3:
             if st.button("👤 Player Props", use_container_width=True):
                 st.switch_page("pages/Player_Props.py")
-        with col5:
-            if st.button("🧪 Backtesting", use_container_width=True):
-                st.switch_page("pages/Backtesting.py")
-        with col6:
-            if st.button("🎯 Parlay Builder", use_container_width=True):
+        with col4:
+            if st.button("🔗 Parlay Builder", use_container_width=True):
                 st.switch_page("pages/Parlay_Builder.py")
+        with col5:
+            if st.button("🚪 Logout", use_container_width=True, type="secondary"):
+                logout_user()
+                st.rerun()
         
-        st.markdown("---")
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 1rem 0;'>", unsafe_allow_html=True)
     
     st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
