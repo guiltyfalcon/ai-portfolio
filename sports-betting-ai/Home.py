@@ -462,15 +462,24 @@ try:
         # 2. Fallback to Yahoo cache if OddsAPI failed or returned empty
         if odds.empty:
             try:
-                yahoo_cache_path = '/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json'
-                if os.path.exists(yahoo_cache_path):
-                    with open(yahoo_cache_path, 'r') as f:
-                        yahoo_data = json.load(f)
-                    
-                    # Convert Yahoo cache to odds DataFrame format
-                    yahoo_games = []
-                    sport_key = sport.lower()
-                    if sport_key in yahoo_data.get('sports', {}):
+                # Try multiple possible paths for Yahoo cache
+                yahoo_cache_paths = [
+                    'api/yahoo_odds_cache.json',  # Relative to app root
+                    '/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json',  # Local dev
+                    os.path.join(os.path.dirname(__file__), 'api', 'yahoo_odds_cache.json'),  # Same dir as Home.py
+                ]
+                
+                yahoo_data = None
+                yahoo_cache_path = None
+                
+                for path in yahoo_cache_paths:
+                    if os.path.exists(path):
+                        with open(path, 'r') as f:
+                            yahoo_data = json.load(f)
+                        yahoo_cache_path = path
+                        break
+                
+                if yahoo_data:
                         for game in yahoo_data['sports'][sport_key]:
                             yahoo_games.append({
                                 'home_team': game.get('home_team', ''),
