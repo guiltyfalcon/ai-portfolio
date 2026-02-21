@@ -318,10 +318,58 @@ def format_odds(odds):
         return f"+{int(odds)}"
     return f"{int(odds)}"
 
-# Header with Live Badge
+def generate_game_reasoning(home_team, away_team, home_prob, away_prob, home_rec, away_rec, sport, home_ml=None, away_ml=None):
+    """Generate detailed reasoning for why a team is favored to win"""
+    
+    # Parse records
+    hw, hl = parse_record(home_rec)
+    aw, al = parse_record(away_rec)
+    
+    # Determine favorite
+    if home_prob > away_prob:
+        favorite = home_team
+        underdog = away_team
+        fav_prob = home_prob
+        fav_wins, fav_losses = hw, hl
+        dog_wins, dog_losses = aw, al
+        fav_ml = home_ml
+        is_home = True
+    else:
+        favorite = away_team
+        underdog = home_team
+        fav_prob = away_prob
+        fav_wins, fav_losses = aw, al
+        dog_wins, dog_losses = hw, hl
+        fav_ml = away_ml
+        is_home = False
+    
+    # Build reasoning
+    reasoning = f"""**Why {favorite} is favored to win:**
+
+**Win Probability:** {int(round(fav_prob*100))}% ({int(round((1-fav_prob)*100))}% for {underdog})
+
+**Record Analysis:**
+- {favorite}: {fav_wins}-{fav_losses} ({fav_wins/(fav_wins+fav_losses)*100:.1f}% win rate)
+- {underdog}: {dog_wins}-{dog_losses} ({dog_wins/(dog_wins+dog_losses)*100:.1f}% win rate if games played)
+
+**Home Court Advantage:**
+{favorite} is {'at home' if is_home else 'on the road'}. {'Home teams typically have a 3-4% advantage in win probability.' if is_home else 'Playing away reduces win probability by ~3-4%.'}
+
+**Odds Analysis:**
+{favorite} moneyline: {format_odds(fav_ml)}
+Implied probability from odds: {int(round(american_to_implied(fav_ml)*100)) if fav_ml else 'N/A'}%
+
+**Key Factors:**
+1. **Superior Record:** {favorite} has a better win percentage
+2. **{'Home' if is_home else 'Away'} Advantage:** {'Home court provides momentum and familiar surroundings' if is_home else 'Despite being on the road, their superior record suggests they can overcome the disadvantage'}
+3. **Probability Edge:** The model gives {favorite} a {int(round(fav_prob*100))}% chance to win
+
+**Bottom Line:** Based on record analysis, {'home court advantage' if is_home else 'overall team strength'}, and statistical modeling, {favorite} is the clear favorite to win this matchup."""
+    
+    return reasoning
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
-    st.markdown('<div class="main-header">🎯 BET AI PRO</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">🏀 BET AI PRO</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
     current_time = datetime.now().strftime("%H:%M:%S")
     st.markdown(f'''
@@ -638,6 +686,21 @@ try:
                             with o2:
                                 away_odds = format_odds(pred.get('away_ml', None))
                                 st.metric("Away ML", away_odds if away_odds != "N/A" else "—")
+                        
+                        # Detailed Reasoning
+                        with st.expander("📊 Why will the favorite win?"):
+                            reasoning = generate_game_reasoning(
+                                pred['home_team'], 
+                                pred['away_team'], 
+                                pred['home_prob'], 
+                                pred['away_prob'],
+                                game.get('home_record', '0-0'),
+                                game.get('away_record', '0-0'),
+                                sport,
+                                pred.get('home_ml'),
+                                pred.get('away_ml')
+                            )
+                            st.markdown(reasoning)
                         
                         # Quick add to bet tracker
                         if st.button(f"➕ Track This Game", key=f"track_{idx}", use_container_width=True):
