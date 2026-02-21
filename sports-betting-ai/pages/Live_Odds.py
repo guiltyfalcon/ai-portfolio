@@ -147,9 +147,9 @@ for game in games:
     is_live = game["status"] == "live"
     live_badge = '<span style="background: rgba(0, 231, 1, 0.15); color: #00e701; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; animation: pulse 2s infinite;">● LIVE</span>' if is_live else ""
     score_display = f"{game['score']['home']} - {game['score']['away']}" if is_live else game["time"]
+    bookmaker_spans = ''.join([f'<span style="background: rgba(11, 14, 20, 0.8); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; color: #8A8F98;">{book}</span>' for book in bookmakers])
     
-    st.markdown(f"""
-    <div style="background: rgba(21, 26, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem;">
+    game_html = f'''<div style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);">
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <span style="color: #00d2ff; font-weight: 500;">{game['sport']}</span>
@@ -158,7 +158,7 @@ for game in games:
                     <span style="color: #8A8F98;">{score_display}</span>
                 </div>
             </div>
-            <button style="background: none; border: none; color: #8A8F98; cursor: pointer;">⭐</button>
+            <span style="color: #8A8F98; font-size: 1.25rem;">☆</span>
         </div>
         
         <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 1rem;">
@@ -215,14 +215,15 @@ for game in games:
         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
             <p style="color: #8A8F98; font-size: 0.75rem; margin: 0 0 0.5rem 0;">Available at:</p>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                {''.join([f'<span style="background: rgba(11, 14, 20, 0.8); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; color: #8A8F98;">{book}</span>' for book in bookmakers])}
+                {bookmaker_spans}
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+    </div>'''
+    
+    st.html(game_html)
 
 # Arbitrage Alert
-st.markdown("""
+arbitrage_html = '''
 <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.3); border-radius: 12px; padding: 1rem; margin-top: 1rem;">
     <div style="display: flex; align-items: center; gap: 1rem;">
         <div style="width: 40px; height: 40px; background: rgba(249, 115, 22, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">⚡</div>
@@ -230,7 +231,7 @@ st.markdown("""
             <p style="color: white; font-weight: 600; margin: 0;">Arbitrage Opportunity Detected</p>
             <p style="color: #8A8F98; font-size: 0.875rem; margin: 0;">Lakers vs Warriors - 2.3% guaranteed profit</p>
         </div>
-        <button style="margin-left: auto; background: #F97316; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; cursor: pointer;">View Details</button>
     </div>
 </div>
-""", unsafe_allow_html=True)
+'''
+st.html(arbitrage_html)
