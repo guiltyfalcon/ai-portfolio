@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 import json
 import os
+import plotly.graph_objects as go
 
 # Admin credentials
 ADMIN_USERNAME = "admin"
@@ -183,26 +184,6 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # Navigation
-    st.markdown("### Navigation")
-    
-    pages = {
-        "dashboard": "🏠 Dashboard",
-        "predictions": "📊 Predictions", 
-        "bet_tracker": "💰 Bet Tracker",
-        "live_odds": "📈 Live Odds",
-        "player_props": "👤 Player Props",
-        "parlay_builder": "🔗 Parlay Builder"
-    }
-    
-    for page_id, page_label in pages.items():
-        if st.button(page_label, use_container_width=True, key=f"nav_{page_id}",
-                    type="primary" if st.session_state.current_page == page_id else "secondary"):
-            st.session_state.current_page = page_id
-            st.rerun()
-    
-    st.markdown("---")
-    
     # User info
     if session:
         st.markdown(f"**👤 {session['username']}**")
@@ -303,6 +284,38 @@ if page == "dashboard":
             height=300
         )
         st.plotly_chart(fig, use_container_width=True)
+    
+    # Team Cards Section - Show games
+    st.markdown("---")
+    st.markdown("### 🏆 Today's Games")
+    
+    # Sample game data
+    games = [
+        {"home": "Lakers", "away": "Warriors", "home_odds": -150, "away_odds": +130, "time": "7:00 PM"},
+        {"home": "Celtics", "away": "Heat", "home_odds": -200, "away_odds": +170, "time": "7:30 PM"},
+        {"home": "Nets", "away": "Bucks", "home_odds": +120, "away_odds": -140, "time": "8:00 PM"},
+    ]
+    
+    # Display game cards
+    for game in games:
+        st.markdown(f"""
+        <div class="game-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: center;">
+                    <div style="font-weight: 700; font-size: 1.2rem; color: white;">{game['home']}</div>
+                    <div style="color: #00E701; font-weight: 600;">{game['home_odds']}</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: #8A8F98; font-size: 0.8rem;">{game['time']}</div>
+                    <div style="color: #00D2FF; font-weight: 700; font-size: 1.2rem;">VS</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-weight: 700; font-size: 1.2rem; color: white;">{game['away']}</div>
+                    <div style="color: #00E701; font-weight: 600;">{game['away_odds']}</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 elif page == "predictions":
     st.markdown('<h1 class="main-header" style="font-size: 2.5rem;">Predictions</h1>', unsafe_allow_html=True)
