@@ -193,7 +193,7 @@ with st.sidebar:
     }
     
     for page_id, page_label in pages.items():
-        if st.button(page_label, use_container_width=True, 
+        if st.button(page_label, use_container_width=True, key=f"nav_{page_id}",
                     type="primary" if st.session_state.current_page == page_id else "secondary"):
             st.session_state.current_page = page_id
             st.rerun()
