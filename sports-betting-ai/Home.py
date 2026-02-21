@@ -380,7 +380,7 @@ Implied probability from odds: {int(round(american_to_implied(fav_ml)*100)) if f
     return reasoning
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
-    st.markdown('<div class="main-header" style="display: flex; align-items: center; justify-content: center; gap: 15px;"><span style="font-size: 60px; line-height: 1; filter: drop-shadow(0 0 10px rgba(255,165,0,0.8)); color: #FF6600;">🏀</span> <span>BET AI PRO</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">BET AI PRO</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
     current_time = datetime.now().strftime("%H:%M:%S")
     st.markdown(f'''
