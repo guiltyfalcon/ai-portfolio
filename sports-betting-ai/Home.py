@@ -370,6 +370,17 @@ try:
         
         st.markdown('</div>', unsafe_allow_html=True)
         
+        # Try to get odds FIRST (before checking for value picks)
+        odds = pd.DataFrame()
+        odds_error = None
+        
+        try:
+            odds_api = OddsAPI()
+            odds = odds_api.get_odds(sport.lower())
+        except Exception as e:
+            odds_error = str(e)
+            pass
+        
         # PROMINENT UPGRADE BANNER (if not supporter and value picks exist)
         is_supporter = st.session_state.get('is_supporter', False)
         has_value_picks = False  # Will check after predictions built
@@ -426,23 +437,6 @@ try:
                 st.link_button("🔓 Unlock Premium — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
             st.caption("Monthly subscription • Cancel anytime • Instant access to value picks")
             st.markdown("---")
-        
-        # Try to get odds
-        odds = pd.DataFrame()
-        odds_error = None
-        
-        try:
-            odds_api = OddsAPI()
-            odds = odds_api.get_odds(sport.lower())
-        except Exception as e:
-            odds_error = str(e)
-            pass
-        
-        if odds_error:
-            with st.expander("⚠️ Odds API Issue (Click for details)"):
-                st.warning("Live odds unavailable. Using estimated probabilities.")
-                st.caption(f"Error: {odds_error}")
-                st.info("To get live odds, add THEODDS_API_KEY to your Streamlit secrets.")
         
         # Predictions Section
         st.markdown(f"### {get_sport_emoji(sport)} {sport.upper()} Predictions")
