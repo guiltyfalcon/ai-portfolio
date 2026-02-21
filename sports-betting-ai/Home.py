@@ -555,33 +555,81 @@ try:
             st.markdown("### 📋 All Games")
             
             for idx, pred in pred_df.iterrows():
-                # Determine best pick for this game
+                # Determine best pick for this game with detailed reasoning
                 best_pick_team = ""
-                best_pick_reason = ""
+                pick_team_short = ""
+                pick_explanation = ""
                 if pred['home_prob'] > pred['away_prob']:
                     best_pick_team = pred['home_team']
+                    pick_team_short = pred['home_team'].split()[-1] if ' ' in pred['home_team'] else pred['home_team']
                     prob_diff = (pred['home_prob'] - pred['away_prob']) * 100
-                    if prob_diff > 15:
-                        best_pick_reason = f"🔒 Strong favorite ({prob_diff:.0f}% edge)"
-                    elif pred['home_prob'] > 0.6:
-                        best_pick_reason = "📈 Home advantage + record"
+                    home_wins, home_losses = 0, 0
+                    away_wins, away_losses = 0, 0
+                    
+                    # Parse records
+                    if pred['home_record'] and '-' in str(pred['home_record']):
+                        parts = str(pred['home_record']).split('-')
+                        home_wins = int(parts[0])
+                        home_losses = int(parts[1]) if len(parts) > 1 else 0
+                    if pred['away_record'] and '-' in str(pred['away_record']):
+                        parts = str(pred['away_record']).split('-')
+                        away_wins = int(parts[0])
+                        away_losses = int(parts[1]) if len(parts) > 1 else 0
+                    
+                    # Build explanation
+                    reasons = []
+                    if home_wins > away_wins:
+                        reasons.append(f"better record ({home_wins}-{home_losses} vs {away_wins}-{away_losses})")
+                    if pred['home_prob'] > 0.6:
+                        reasons.append("home court advantage")
+                    if prob_diff > 10:
+                        reasons.append(f"{prob_diff:.0f}% win probability edge")
+                    
+                    if len(reasons) >= 2:
+                        pick_explanation = f"{pick_team_short} are favored to win because they have {reasons[0]} and {reasons[1]}."
+                    elif reasons:
+                        pick_explanation = f"{pick_team_short} are favored to win because of their {reasons[0]}."
                     else:
-                        best_pick_reason = "⚖️ Slight favorite"
+                        pick_explanation = f"{pick_team_short} have a slight edge in this matchup."
+                        
                 else:
                     best_pick_team = pred['away_team']
+                    pick_team_short = pred['away_team'].split()[-1] if ' ' in pred['away_team'] else pred['away_team']
                     prob_diff = (pred['away_prob'] - pred['home_prob']) * 100
-                    if prob_diff > 15:
-                        best_pick_reason = f"💰 Underdog value ({prob_diff:.0f}% edge)"
-                    elif pred['away_prob'] > 0.6:
-                        best_pick_reason = "🚌 Road dominance"
+                    home_wins, home_losses = 0, 0
+                    away_wins, away_losses = 0, 0
+                    
+                    # Parse records
+                    if pred['home_record'] and '-' in str(pred['home_record']):
+                        parts = str(pred['home_record']).split('-')
+                        home_wins = int(parts[0])
+                        home_losses = int(parts[1]) if len(parts) > 1 else 0
+                    if pred['away_record'] and '-' in str(pred['away_record']):
+                        parts = str(pred['away_record']).split('-')
+                        away_wins = int(parts[0])
+                        away_losses = int(parts[1]) if len(parts) > 1 else 0
+                    
+                    # Build explanation
+                    reasons = []
+                    if away_wins > home_wins:
+                        reasons.append(f"better record ({away_wins}-{away_losses} vs {home_wins}-{home_losses})")
+                    if pred['away_prob'] > 0.55:
+                        reasons.append("strong road performance")
+                    if prob_diff > 10:
+                        reasons.append(f"{prob_diff:.0f}% win probability edge")
+                    
+                    if len(reasons) >= 2:
+                        pick_explanation = f"{pick_team_short} are favored to win because they have {reasons[0]} and {reasons[1]}."
+                    elif reasons:
+                        pick_explanation = f"{pick_team_short} are favored to win because of their {reasons[0]}."
                     else:
-                        best_pick_reason = "⚖️ Slight edge"
+                        pick_explanation = f"{pick_team_short} have a slight edge in this matchup."
                 
-                # Main game card
+                # Main game card with explanation
                 with st.container():
                     st.markdown(f'''
-                    <div class="game-card" onclick="toggleGame({idx})">
-                        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                    <div class="game-card" style="margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div><div class="team-name">{pred['home_team']}</div><div class="team-record">{pred['home_record']}</div></div>
                             <div style="text-align: center;"><div style="color: #00d2ff; font-weight: 700;">VS</div></div>
                             <div style="text-align: right;"><div class="team-name">{pred['away_team']}</div><div class="team-record">{pred['away_record']}</div></div>
@@ -595,6 +643,10 @@ try:
                         <div style="display: flex; justify-content: space-between; margin-top: 15px;">
                             <div class="odds-box">{format_odds(pred['home_ml'])}</div>
                             <div class="odds-box">{format_odds(pred['away_ml'])}</div>
+                        </div>
+                        <div style="margin-top: 12px; padding: 10px; background: rgba(46, 204, 113, 0.15); border-radius: 8px; border-left: 3px solid #2ecc71;">
+                            <span style="color: #2ecc71; font-weight: 600;">⭐ Pick: {best_pick_team}</span>
+                            <div style="color: #ddd; font-size: 0.9rem; margin-top: 4px;">{pick_explanation}</div>
                         </div>
                     </div>
                     ''', unsafe_allow_html=True)
