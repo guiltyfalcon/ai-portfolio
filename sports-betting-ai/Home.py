@@ -4,6 +4,7 @@ Fixed navigation, improved error handling, modern UI
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 import sys
@@ -580,7 +581,7 @@ try:
                     best_pick = pick['home_team'] if pick['home_edge'] > pick['away_edge'] else pick['away_team']
                     best_odds = pick['home_ml'] if pick['home_edge'] > pick['away_edge'] else pick['away_ml']
                     
-                    st.markdown(f'''
+                    value_pick_html = f'''
                     <div class="value-pick">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
@@ -593,7 +594,8 @@ try:
                             </div>
                         </div>
                     </div>
-                    ''', unsafe_allow_html=True)
+                    '''
+                    components.html(value_pick_html, height=120, scrolling=False)
             
             # GAME CARDS Section
             st.markdown("### 📋 All Games")
@@ -633,7 +635,7 @@ try:
                                 <div class="odds-box">{format_odds(pred.get('away_ml', None))}</div>
                             </div>
                         </div>'''
-                        st.markdown(game_card_html, unsafe_allow_html=True)
+                        components.html(game_card_html, height=280, scrolling=False)
                         
                         # Quick add to bet tracker
                         if st.button(f"➕ Track This Game", key=f"track_{idx}"):
