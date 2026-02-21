@@ -157,6 +157,9 @@ def login_form():
     
     st.stop()
 
+# Get session for sidebar
+session = st.session_state.get('auth_session')
+
 # Sidebar navigation
 with st.sidebar:
     st.markdown("""
