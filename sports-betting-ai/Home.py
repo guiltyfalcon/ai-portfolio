@@ -558,72 +558,74 @@ try:
                 # Determine best pick for this game with detailed reasoning
                 best_pick_team = ""
                 pick_team_short = ""
-                pick_explanation = ""
+                pick_reasons_list = []
+                
+                # Parse records first
+                home_wins, home_losses, home_otl = 0, 0, 0
+                away_wins, away_losses, away_otl = 0, 0, 0
+                
+                if pred['home_record'] and '-' in str(pred['home_record']):
+                    parts = str(pred['home_record']).split('-')
+                    home_wins = int(parts[0])
+                    if len(parts) >= 2:
+                        home_losses = int(parts[1])
+                    if len(parts) >= 3:
+                        home_otl = int(parts[2])
+                
+                if pred['away_record'] and '-' in str(pred['away_record']):
+                    parts = str(pred['away_record']).split('-')
+                    away_wins = int(parts[0])
+                    if len(parts) >= 2:
+                        away_losses = int(parts[1])
+                    if len(parts) >= 3:
+                        away_otl = int(parts[2])
+                
+                # Calculate win percentages
+                home_total = home_wins + home_losses + home_otl
+                away_total = away_wins + away_losses + away_otl
+                home_win_pct = (home_wins / home_total * 100) if home_total > 0 else 0
+                away_win_pct = (away_wins / away_total * 100) if away_total > 0 else 0
+                
                 if pred['home_prob'] > pred['away_prob']:
                     best_pick_team = pred['home_team']
                     pick_team_short = pred['home_team'].split()[-1] if ' ' in pred['home_team'] else pred['home_team']
                     prob_diff = (pred['home_prob'] - pred['away_prob']) * 100
-                    home_wins, home_losses = 0, 0
-                    away_wins, away_losses = 0, 0
                     
-                    # Parse records
-                    if pred['home_record'] and '-' in str(pred['home_record']):
-                        parts = str(pred['home_record']).split('-')
-                        home_wins = int(parts[0])
-                        home_losses = int(parts[1]) if len(parts) > 1 else 0
-                    if pred['away_record'] and '-' in str(pred['away_record']):
-                        parts = str(pred['away_record']).split('-')
-                        away_wins = int(parts[0])
-                        away_losses = int(parts[1]) if len(parts) > 1 else 0
+                    # Build detailed reasons
+                    pick_reasons_list = []
+                    if home_win_pct > away_win_pct + 5:
+                        pick_reasons_list.append(f"Better overall record ({home_wins}-{home_losses}-{home_otl} vs {away_wins}-{away_losses}-{away_otl}, {home_win_pct:.0f}% vs {away_win_pct:.0f}%)")
+                    if pred['home_prob'] > pred['away_prob'] + 0.1:
+                        pick_reasons_list.append(f"{prob_diff:.0f}% higher win probability")
+                    if 'home' in sport.lower() or sport.lower() in ['nba', 'nfl', 'nhl']:
+                        pick_reasons_list.append("Home court/field advantage")
                     
-                    # Build explanation
-                    reasons = []
-                    if home_wins > away_wins:
-                        reasons.append(f"better record ({home_wins}-{home_losses} vs {away_wins}-{away_losses})")
-                    if pred['home_prob'] > 0.6:
-                        reasons.append("home court advantage")
-                    if prob_diff > 10:
-                        reasons.append(f"{prob_diff:.0f}% win probability edge")
-                    
-                    if len(reasons) >= 2:
-                        pick_explanation = f"{pick_team_short} are favored to win because they have {reasons[0]} and {reasons[1]}."
-                    elif reasons:
-                        pick_explanation = f"{pick_team_short} are favored to win because of their {reasons[0]}."
-                    else:
-                        pick_explanation = f"{pick_team_short} have a slight edge in this matchup."
-                        
                 else:
                     best_pick_team = pred['away_team']
                     pick_team_short = pred['away_team'].split()[-1] if ' ' in pred['away_team'] else pred['away_team']
                     prob_diff = (pred['away_prob'] - pred['home_prob']) * 100
-                    home_wins, home_losses = 0, 0
-                    away_wins, away_losses = 0, 0
                     
-                    # Parse records
-                    if pred['home_record'] and '-' in str(pred['home_record']):
-                        parts = str(pred['home_record']).split('-')
-                        home_wins = int(parts[0])
-                        home_losses = int(parts[1]) if len(parts) > 1 else 0
-                    if pred['away_record'] and '-' in str(pred['away_record']):
-                        parts = str(pred['away_record']).split('-')
-                        away_wins = int(parts[0])
-                        away_losses = int(parts[1]) if len(parts) > 1 else 0
-                    
-                    # Build explanation
-                    reasons = []
-                    if away_wins > home_wins:
-                        reasons.append(f"better record ({away_wins}-{away_losses} vs {home_wins}-{home_losses})")
+                    pick_reasons_list = []
+                    if away_win_pct > home_win_pct + 5:
+                        pick_reasons_list.append(f"Better overall record ({away_wins}-{away_losses}-{away_otl} vs {home_wins}-{home_losses}-{home_otl}, {away_win_pct:.0f}% vs {home_win_pct:.0f}%)")
+                    if pred['away_prob'] > pred['home_prob'] + 0.1:
+                        pick_reasons_list.append(f"{prob_diff:.0f}% higher win probability")
                     if pred['away_prob'] > 0.55:
-                        reasons.append("strong road performance")
-                    if prob_diff > 10:
-                        reasons.append(f"{prob_diff:.0f}% win probability edge")
-                    
-                    if len(reasons) >= 2:
-                        pick_explanation = f"{pick_team_short} are favored to win because they have {reasons[0]} and {reasons[1]}."
-                    elif reasons:
-                        pick_explanation = f"{pick_team_short} are favored to win because of their {reasons[0]}."
-                    else:
-                        pick_explanation = f"{pick_team_short} have a slight edge in this matchup."
+                        pick_reasons_list.append("Strong road performance metrics")
+                
+                # Build explanation based on available reasons
+                if len(pick_reasons_list) >= 2:
+                    pick_explanation = f"{pick_team_short} are favored: {pick_reasons_list[0]} and {pick_reasons_list[1]}."
+                elif pick_reasons_list:
+                    pick_explanation = f"{pick_team_short} are favored: {pick_reasons_list[0]}."
+                else:
+                    pick_explanation = f"{pick_team_short} have a slight edge in this matchup."
+                
+                # Create detailed reasons for dropdown
+                detailed_reasons = pick_reasons_list.copy()
+                if not detailed_reasons:
+                    detailed_reasons = ["Win probability slightly favors this team"]
+                detailed_reasons.append(f"Source: ESPN data ({pred['home_record']} vs {pred['away_record']})")
                 
                 # Main game card with explanation
                 with st.container():
@@ -705,6 +707,11 @@ try:
                         
                         st.divider()
                         
+                        st.markdown(f"**Detailed Analysis**")
+                        for reason in detailed_reasons:
+                            st.markdown(f"• {reason}")
+                        
+                        st.markdown("---")
                         st.markdown(f"**Best Pick: {best_pick_team}**")
                         st.caption(pick_explanation)
         else:
