@@ -706,7 +706,7 @@ try:
                         st.divider()
                         
                         st.markdown(f"**Best Pick: {best_pick_team}**")
-                        st.caption(best_pick_reason)
+                        st.caption(pick_explanation)
         else:
             emoji = get_sport_emoji(sport)
             st.info(f"{emoji} No {sport.upper()} games scheduled for the next {days} day{'s' if days > 1 else ''}.")
