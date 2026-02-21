@@ -93,6 +93,22 @@ def load_css():
             100% { background-position: 0% 50%; }
         }
         
+        /* Hide Streamlit toolbar icons (fork, reddit, etc) */
+        .stToolbar {
+            display: none !important;
+        }
+        
+        /* Hide GitHub fork button */
+        button[kind="header"],
+        .stApp header button {
+            display: none !important;
+        }
+        
+        /* Hide share/overflow menu */
+        #MainMenu, header .st-emotion-cache-1avcm0n {
+            visibility: hidden !important;
+        }
+        
         .sub-header {
             text-align: center;
             color: #a0a0c0;
@@ -535,15 +551,15 @@ try:
                         </div>
                         ''', unsafe_allow_html=True)
             
-            # GAME CARDS
+            # GAME CARDS WITH EXPANDABLE STATS
             st.markdown("### 📋 All Games")
-            cols = st.columns(2)
             
             for idx, pred in pred_df.iterrows():
-                with cols[idx % 2]:
+                # Main game card
+                with st.container():
                     st.markdown(f'''
-                    <div class="game-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="game-card" onclick="toggleGame({idx})">
+                        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
                             <div><div class="team-name">{pred['home_team']}</div><div class="team-record">{pred['home_record']}</div></div>
                             <div style="text-align: center;"><div style="color: #00d2ff; font-weight: 700;">VS</div></div>
                             <div style="text-align: right;"><div class="team-name">{pred['away_team']}</div><div class="team-record">{pred['away_record']}</div></div>
@@ -560,6 +576,50 @@ try:
                         </div>
                     </div>
                     ''', unsafe_allow_html=True)
+                    
+                    # Expandable team stats
+                    with st.expander(f"📊 Team Stats & Players", expanded=False):
+                        col_stats1, col_stats2 = st.columns(2)
+                        
+                        with col_stats1:
+                            st.markdown(f"**{pred['home_team']}**")
+                            # Fetch and display home team stats
+                            home_stats = espn.get_team_stats(sport, pred['home_team'])
+                            if home_stats and home_stats.get('ppg') != 'N/A':
+                                st.metric("PPG", home_stats.get('ppg', 'N/A'))
+                                st.metric("Allowed", home_stats.get('papg', 'N/A'))
+                                st.metric("FG%", f"{home_stats.get('fg_pct', 0)}%")
+                            else:
+                                st.caption("Stats loading...")
+                            
+                            # Top scorer info
+                            st.markdown("**Top Scorer**")
+                            st.caption("Coming from ESPN data feed")
+                        
+                        with col_stats2:
+                            st.markdown(f"**{pred['away_team']}**")
+                            # Fetch and display away team stats
+                            away_stats = espn.get_team_stats(sport, pred['away_team'])
+                            if away_stats and away_stats.get('ppg') != 'N/A':
+                                st.metric("PPG", away_stats.get('ppg', 'N/A'))
+                                st.metric("Allowed", away_stats.get('papg', 'N/A'))
+                                st.metric("FG%", f"{away_stats.get('fg_pct', 0)}%")
+                            else:
+                                st.caption("Stats loading...")
+                            
+                            # Top scorer info
+                            st.markdown("**Top Scorer**")
+                            st.caption("Coming from ESPN data feed")
+                        
+                        st.divider()
+                        
+                        # Recent form
+                        st.markdown("**Recent Form**")
+                        form_col1, form_col2 = st.columns(2)
+                        with form_col1:
+                            st.caption(f"{pred['home_team']}: Last 5 games")
+                        with form_col2:
+                            st.caption(f"{pred['away_team']}: Last 5 games")
         else:
             emoji = get_sport_emoji(sport)
             st.info(f"{emoji} No {sport.upper()} games scheduled for the next {days} day{'s' if days > 1 else ''}.")

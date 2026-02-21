@@ -128,6 +128,131 @@ def _fetch_schedule(sport: str, days: int = 7) -> pd.DataFrame:
         return pd.DataFrame(columns=['id', 'name', 'date', 'home_team', 'away_team', 'home_record', 'away_record'])
 
 
+@st.cache_data(ttl=3600)
+def _fetch_team_stats(sport: str, team_name: str) -> Dict:
+    """Fetch team statistics from ESPN."""
+    endpoint = SPORT_ENDPOINTS.get(sport.lower())
+    if not endpoint:
+        return {}
+    
+    try:
+        # First get team ID by searching teams
+        teams_df = _fetch_teams(sport)
+        if teams_df.empty:
+            return {}
+        
+        team_row = teams_df[teams_df['name'].str.contains(team_name, case=False, na=False)]
+        if team_row.empty:
+            return {}
+        
+        team_id = team_row.iloc[0]['id']
+        team_abbrev = team_row.iloc[0]['abbreviation']
+        
+        # Fetch team stats
+        stats_url = f"{BASE_URL}/{endpoint}/teams/{team_id}/statistics"
+        session = get_session()
+        response = session.get(stats_url, timeout=10)
+        
+        if response.status_code != 200:
+            return _get_default_team_stats(team_name)
+        
+        data = response.json()
+        
+        # Parse stats based on sport
+        stats = _parse_sport_stats(sport, data)
+        stats['team_name'] = team_row.iloc[0]['name']
+        stats['record'] = team_row.iloc[0]['record']
+        
+        return stats
+        
+    except Exception as e:
+        return _get_default_team_stats(team_name)
+
+
+def _parse_sport_stats(sport: str, data: Dict) -> Dict:
+    """Parse stats based on sport type."""
+    stats = {}
+    
+    # Generic stat parsing
+    for category in data.get('splits', {}).get('categories', []):
+        cat_name = category.get('displayName', '').lower()
+        
+        for stat in category.get('stats', []):
+            name = stat.get('displayName', '')
+            value = stat.get('value', 0)
+            
+            # Common stats across sports
+            if 'points' in name.lower() or 'runs' in name.lower() or 'goals' in name.lower():
+                stats['ppg'] = round(value, 1) if isinstance(value, (int, float)) else value
+            elif 'allowed' in name.lower() or 'against' in name.lower():
+                stats['papg'] = round(value, 1) if isinstance(value, (int, float)) else value
+            elif 'field goal' in name.lower() or 'shooting' in name.lower():
+                stats['fg_pct'] = round(value * 100, 1) if value < 1 else round(value, 1)
+            elif 'three' in name.lower() or '3-pt' in name.lower():
+                stats['three_pct'] = round(value * 100, 1) if value < 1 else round(value, 1)
+            elif 'rebound' in name.lower():
+                stats['rpg'] = round(value, 1)
+            elif 'assist' in name.lower():
+                stats['apg'] = round(value, 1)
+    
+    if not stats:
+        return _get_default_team_stats('')
+    
+    return stats
+
+
+def _get_default_team_stats(team_name: str) -> Dict:
+    """Return default team stats when API fails."""
+    return {
+        'team_name': team_name,
+        'record': 'N/A',
+        'ppg': 'N/A',
+        'papg': 'N/A',
+        'fg_pct': 'N/A',
+        'three_pct': 'N/A',
+        'rpg': 'N/A',
+        'apg': 'N/A',
+        'top_scorer': {'name': 'N/A', 'ppg': 'N/A'},
+        'form': 'N/A'
+    }
+
+
+@st.cache_data(ttl=3600)
+def _fetch_player_leaders(sport: str, stat: str = 'points') -> List[Dict]:
+    """Fetch league leaders for a stat category."""
+    endpoint = SPORT_ENDPOINTS.get(sport.lower())
+    if not endpoint:
+        return []
+    
+    try:
+        # ESPN stats leaders endpoint
+        url = f"{BASE_URL}/{endpoint}/leaders"
+        params = {'limit': 5}
+        session = get_session()
+        response = session.get(url, params=params, timeout=10)
+        
+        if response.status_code != 200:
+            return []
+        
+        data = response.json()
+        leaders = []
+        
+        for category in data.get('categories', []):
+            if stat.lower() in category.get('displayName', '').lower():
+                for leader in category.get('leaders', [])[:3]:
+                    athlete = leader.get('athlete', {})
+                    leaders.append({
+                        'name': athlete.get('displayName', 'N/A'),
+                        'team': athlete.get('team', {}).get('name', 'N/A'),
+                        'stat': leader.get('value', 0),
+                        'rank': leader.get('rank', 0)
+                    })
+        
+        return leaders
+    except:
+        return []
+
+
 class ESPNAPI:
     """Client for ESPN's public API endpoints - now with working caching!"""
     
@@ -141,7 +266,11 @@ class ESPNAPI:
     def get_schedule(self, sport: str, days: int = 7) -> pd.DataFrame:
         """Get upcoming games with caching."""
         return _fetch_schedule(sport, days)
-
-
-# Keep backward compatibility
-ESPNClient = ESPNAPI
+    
+    def get_team_stats(self, sport: str, team_name: str) -> Dict:
+        """Get detailed team stats for a specific team."""
+        return _fetch_team_stats(sport, team_name)
+    
+    def get_player_leaders(self, sport: str, stat: str = 'points') -> List[Dict]:
+        """Get league scoring leaders."""
+        return _fetch_player_leaders(sport, stat)
