@@ -836,6 +836,54 @@ def show_dashboard():
         </div>
         '''
         st.html(card_html)
+    
+    # Live Odds Ticker
+    st.markdown("---")
+    
+    # Generate ticker items from games
+    ticker_items = []
+    for game in games:
+        ticker_items.append(f"{game['home_team']} {game['home_odds']} vs {game['away_team']} {game['away_odds']}")
+    
+    ticker_content = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;".join(ticker_items)
+    
+    st.markdown(f"""
+    <style>
+    .ticker-wrap {{
+        width: 100%;
+        overflow: hidden;
+        background: linear-gradient(90deg, rgba(0,210,255,0.1) 0%, rgba(0,231,1,0.1) 100%);
+        padding: 0.75rem 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }}
+    .ticker {{
+        display: inline-block;
+        white-space: nowrap;
+        animation: ticker 30s linear infinite;
+    }}
+    @keyframes ticker {{
+        0% {{ transform: translate3d(0, 0, 0); }}
+        100% {{ transform: translate3d(-50%, 0, 0); }}
+    }}
+    .ticker-item {{
+        display: inline-block;
+        padding: 0 2rem;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }}
+    .ticker-odds {{
+        color: #00d2ff;
+        font-weight: 600;
+    }}
+    </style>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">🔴 LIVE ODDS: &nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Sidebar Navigation
 def show_sidebar():
