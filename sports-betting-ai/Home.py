@@ -579,9 +579,43 @@ def show_auth_page():
 
 # Dashboard Page
 def show_dashboard():
-    # Top Navigation Menu
+    # Top Navigation Menu - Glass Background
     with st.container():
-        # Logo and App Name
+        st.markdown("""
+        <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1rem;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        with st.container(border=False):
+            col1, col2, col3, col4, col5 = st.columns(5)
+            with col1:
+                if st.button("⊕  Bets", use_container_width=True):
+                    st.switch_page("pages/Bet_Tracker.py")
+            with col2:
+                if st.button("◈  Odds", use_container_width=True):
+                    st.switch_page("pages/Live_Odds.py")
+            with col3:
+                if st.button("❖  Props", use_container_width=True):
+                    st.switch_page("pages/Player_Props.py")
+            with col4:
+                if st.button("⛓  Parlay", use_container_width=True):
+                    st.switch_page("pages/Parlay_Builder.py")
+            with col5:
+                if st.button("○  Exit", use_container_width=True, type="secondary"):
+                    logout_user()
+                    st.rerun()
+    
+    # Logo and App Name (Below Menu)
+    with st.container():
         st.markdown("""
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
             <div style="
@@ -600,57 +634,6 @@ def show_dashboard():
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Navigation buttons - Classy minimal design
-        st.markdown("""
-        <style>
-        .nav-container {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .nav-btn {
-            background: rgba(21, 26, 38, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            color: #8A8F98;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .nav-btn:hover {
-            background: rgba(0, 210, 255, 0.1);
-            border-color: rgba(0, 210, 255, 0.3);
-            color: white;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        col1, col2, col3, col4, col5 = st.columns(5)
-        with col1:
-            if st.button("⊕  Bets", use_container_width=True):
-                st.switch_page("pages/Bet_Tracker.py")
-        with col2:
-            if st.button("◈  Odds", use_container_width=True):
-                st.switch_page("pages/Live_Odds.py")
-        with col3:
-            if st.button("❖  Props", use_container_width=True):
-                st.switch_page("pages/Player_Props.py")
-        with col4:
-            if st.button("⛓  Parlay", use_container_width=True):
-                st.switch_page("pages/Parlay_Builder.py")
-        with col5:
-            if st.button("○  Exit", use_container_width=True, type="secondary"):
-                logout_user()
-                st.rerun()
-        
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 0.75rem 0;'>", unsafe_allow_html=True)
     
     # Title row with Sport Selector
     col_title, col_sport = st.columns([3, 1])
