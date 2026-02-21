@@ -603,36 +603,35 @@ def show_dashboard():
     st.markdown("<h3 style='margin: 2rem 0 1rem;'>🔴 Live & Upcoming Games</h3>", unsafe_allow_html=True)
     
     games = get_mock_games()
-    game_cols = st.columns(2)
     
-    for idx, (col, game) in enumerate(zip(game_cols * 2, games)):
-        with col:
-            live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
-            score_display = f"{game['score']['home']} - {game['score']['away']}" if game['status'] == 'live' else game['time']
-            
-            st.markdown(f"""
-            <div class="game-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        {live_badge}
-                        <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <span style="color: white; font-weight: 500;">{game['home_team']}</span>
-                    <span class="odds-box" style="color: #00d2ff;">{game['home_odds']}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: white; font-weight: 500;">{game['away_team']}</span>
-                    <span class="odds-box" style="color: #00d2ff;">{game['away_odds']}</span>
-                </div>
-                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between;">
-                    <span style="color: #8A8F98; font-size: 0.75rem;">Spread: {game['spread']}</span>
-                    <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
+    for game in games:
+        live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
+        score_display = f"{game['score']['home']} - {game['score']['away']}" if game['status'] == 'live' else game['time']
+        
+        card_html = f'''
+        <div class="game-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    {live_badge}
+                    <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="color: white; font-weight: 500;">{game['home_team']}</span>
+                <span class="odds-box" style="color: #00d2ff;">{game['home_odds']}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: white; font-weight: 500;">{game['away_team']}</span>
+                <span class="odds-box" style="color: #00d2ff;">{game['away_odds']}</span>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between;">
+                <span style="color: #8A8F98; font-size: 0.75rem;">Spread: {game['spread']}</span>
+                <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
+            </div>
+        </div>
+        '''
+        st.html(card_html)
 
 # Sidebar Navigation
 def show_sidebar():
