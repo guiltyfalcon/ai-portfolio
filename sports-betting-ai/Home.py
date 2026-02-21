@@ -313,7 +313,7 @@ with st.sidebar:
         """)
         
         st.markdown("#### ☕ Buy Me a Coffee")
-        st.link_button("Unlock for $5", "https://buy.stripe.com/YOUR_LINK_HERE", type="primary", use_container_width=True)
+        st.link_button("Unlock for $5", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
         st.caption("One-time unlock. Lifetime access.")
     else:
         st.markdown("✨ **You're a Supporter!**")
@@ -439,7 +439,7 @@ try:
                     count = len(value_picks)
                     st.info(f"🔒 {count} value picks detected. Unlock premium to see them.")
                     if st.button("Unlock for $5 →", type="primary"):
-                        st.markdown("[Complete purchase here](https://buy.stripe.com/YOUR_LINK_HERE)")
+                        st.markdown("[Complete purchase here](https://buy.stripe.com/4gM28k5L17246LNfubfjG00)")
                 else:
                     # Show all value picks for supporters
                     for _, pick in value_picks.head(3).iterrows():
