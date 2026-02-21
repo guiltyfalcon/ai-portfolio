@@ -507,30 +507,129 @@ def get_mock_games_legacy():
     ]
 
 @st.cache_data
-def get_mock_predictions():
-    return [
-        {
-            "game": "Lakers vs Warriors",
-            "pick": "Lakers +3.5",
-            "confidence": 78,
-            "ev": 5.2,
-            "reasoning": "Lakers have covered in 7 of last 10 home games"
-        },
-        {
-            "game": "Celtics vs Nuggets",
-            "pick": "Over 224.5",
-            "confidence": 72,
-            "ev": 3.8,
-            "reasoning": "Both teams rank top 10 in pace"
-        },
-        {
-            "game": "Chiefs vs 49ers",
-            "pick": "Chiefs ML",
-            "confidence": 68,
-            "ev": 2.5,
-            "reasoning": "Mahomes undefeated in playoff rematches"
-        },
-    ]
+def get_ai_predictions(games):
+    """Generate AI predictions based on game odds and matchups"""
+    if not games:
+        return []
+    
+    predictions = []
+    
+    # Team stats database (simplified)
+    team_stats = {
+        "Lakers": {"home_win_pct": 0.65, "pace": 99.2, "recent_form": "WWLWW"},
+        "Warriors": {"home_win_pct": 0.52, "pace": 102.5, "recent_form": "LWWLW"},
+        "Celtics": {"home_win_pct": 0.78, "pace": 98.5, "recent_form": "WWWWW"},
+        "Heat": {"home_win_pct": 0.58, "pace": 96.8, "recent_form": "LLWLW"},
+        "Nuggets": {"home_win_pct": 0.72, "pace": 97.5, "recent_form": "WWWLL"},
+        "Suns": {"home_win_pct": 0.60, "pace": 100.2, "recent_form": "LWLWW"},
+        "Bucks": {"home_win_pct": 0.68, "pace": 101.5, "recent_form": "WWLWL"},
+        "76ers": {"home_win_pct": 0.55, "pace": 98.0, "recent_form": "WLLWW"},
+        "Chiefs": {"home_win_pct": 0.85, "pace": 68, "recent_form": "WWWWW"},
+        "Bills": {"home_win_pct": 0.72, "pace": 72, "recent_form": "LWWLW"},
+        "Eagles": {"home_win_pct": 0.75, "pace": 69, "recent_form": "WWLWW"},
+        "Cowboys": {"home_win_pct": 0.68, "pace": 70, "recent_form": "WLWLW"},
+        "Ravens": {"home_win_pct": 0.80, "pace": 71, "recent_form": "WWWWW"},
+        "Steelers": {"home_win_pct": 0.60, "pace": 65, "recent_form": "LLLWL"},
+        "49ers": {"home_win_pct": 0.70, "pace": 67, "recent_form": "LWWLW"},
+        "Packers": {"home_win_pct": 0.65, "pace": 70, "recent_form": "WLWWL"},
+    }
+    
+    for game in games[:3]:  # Generate predictions for first 3 games
+        home_team = game['home_team']
+        away_team = game['away_team']
+        home_odds = game['home_odds']
+        away_odds = game['away_odds']
+        total = game['total']
+        sport = game['sport']
+        
+        # Calculate implied probabilities
+        def odds_to_prob(odds):
+            if odds > 0:
+                return 100 / (odds + 100)
+            else:
+                return abs(odds) / (abs(odds) + 100)
+        
+        home_prob = odds_to_prob(home_odds)
+        away_prob = odds_to_prob(away_odds)
+        
+        # Get team stats
+        home_stats = team_stats.get(home_team, {"home_win_pct": 0.55, "recent_form": "WLWLW"})
+        away_stats = team_stats.get(away_team, {"home_win_pct": 0.50, "recent_form": "LWLWL"})
+        
+        # Calculate confidence based on odds disparity and form
+        form_factor = home_stats['recent_form'].count('W') / 5
+        confidence = int((home_prob * 100) + (form_factor * 20) - 10)
+        confidence = max(50, min(95, confidence))  # Clamp between 50-95
+        
+        # Determine EV (Expected Value)
+        prob_edge = abs(home_prob - 0.5)
+        ev = round(prob_edge * 10, 1)
+        
+        # Generate recommendation based on analysis
+        picks = []
+        
+        # Moneyline pick
+        if home_odds < -150:
+            picks.append(f"{home_team} to cover")
+        elif away_odds > 0:
+            picks.append(f"{away_team} ML value play")
+        else:
+            picks.append(f"{home_team} ML")
+        
+        # Total pick based on pace
+        if sport == "NBA":
+            if total > 230:
+                picks.append(f"Under {total}")
+            elif total < 220:
+                picks.append(f"Over {total}")
+            else:
+                picks.append(f"{home_team} first half")
+        elif sport == "NFL":
+            if total > 50:
+                picks.append(f"Under {total}")
+            elif total < 44:
+                picks.append(f"Over {total}")
+            else:
+                picks.append(f"Both teams to score")
+        else:
+            picks.append(f"{home_team} to win")
+        
+        pick = picks[0]
+        
+        # Generate reasoning
+        reasons = []
+        if home_odds < -120:
+            reasons.append(f"{home_team} favored by market")
+        elif away_odds > 0:
+            reasons.append(f"{away_team} offers value at plus money")
+        
+        if home_stats['recent_form'].count('W') >= 3:
+            reasons.append(f"{home_team} has won {home_stats['recent_form'].count('W')} of last 5")
+        
+        if abs(home_odds - away_odds) > 50:
+            reasons.append("Significant odds disparity detected")
+        
+        if sport == "NBA":
+            if total > 225:
+                reasons.append("High total suggests fast-paced matchup")
+            elif total < 215:
+                reasons.append("Low total favors defensive battle")
+        
+        reasoning = " | ".join(reasons[:2]) if reasons else f"Analyzing {home_team} vs {away_team} matchup data"
+        
+        predictions.append({
+            "game": f"{home_team} vs {away_team}",
+            "sport": sport,
+            "pick": pick,
+            "confidence": confidence,
+            "ev": ev,
+            "reasoning": reasoning,
+            "home_odds": home_odds,
+            "away_odds": away_odds,
+            "total": total
+        })
+    
+    return predictions
 
 @st.cache_data
 def get_mock_bets():
@@ -847,8 +946,17 @@ def show_dashboard():
     # AI Predictions
     st.markdown("<h3 style='margin: 2rem 0 1rem;'>🤖 AI Predictions</h3>", unsafe_allow_html=True)
     
-    predictions = get_mock_predictions()
-    cols = st.columns(len(predictions))
+    # Fetch games first (needed for AI predictions)
+    selected_sport_code = st.session_state.get('selected_sport', 'NBA').lower()
+    games, source = fetch_games_with_fallback(selected_sport_code)
+    
+    # Generate AI predictions based on actual games
+    predictions = get_ai_predictions(games)
+    
+    if not predictions:
+        st.info("No AI predictions available for today's games")
+    
+    cols = st.columns(min(len(predictions), 3))
     
     for idx, (col, pred) in enumerate(zip(cols, predictions)):
         with col:
@@ -860,7 +968,7 @@ def show_dashboard():
                 </div>
                 <p style="color: #8A8F98; font-size: 0.875rem; margin-bottom: 0.75rem;">{pred['reasoning']}</p>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #8A8F98; font-size: 0.75rem;">🎯 {pred['confidence']}% confidence</span>
+                    <span style="color: #8A8F98; font-size: 0.75rem;">Confidence: {pred['confidence']}%</span>
                     <span style="color: #00e701; font-size: 0.75rem;">+{pred['ev']}% EV</span>
                 </div>
                 <div class="confidence-bar" style="margin-top: 0.5rem;">
@@ -869,12 +977,9 @@ def show_dashboard():
             </div>
             """, unsafe_allow_html=True)
     
-    # Live Games
+    # Live Games (games already fetched above for predictions)
     st.markdown("<h3 style='margin: 2rem 0 1rem;'>🔴 Live & Upcoming Games</h3>", unsafe_allow_html=True)
     
-    # Fetch live games with fallback - use selected sport
-    selected_sport_code = st.session_state.get('selected_sport', 'NBA').lower()
-    games, source = fetch_games_with_fallback(selected_sport_code)
     if source == "Sample Data":
         st.info("⚠️ Showing sample data - ESPN API and Yahoo Sports temporarily unavailable")
     elif source == "Yahoo Sports":
@@ -921,43 +1026,15 @@ def show_dashboard():
     
     ticker_content = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;".join(ticker_items)
     
-    st.markdown(f"""
-    <style>
-    .ticker-wrap {{
-        width: 100%;
-        overflow: hidden;
-        background: linear-gradient(90deg, rgba(0,210,255,0.1) 0%, rgba(0,231,1,0.1) 100%);
-        padding: 0.75rem 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }}
-    .ticker {{
-        display: inline-block;
-        white-space: nowrap;
-        animation: ticker 30s linear infinite;
-    }}
-    @keyframes ticker {{
-        0% {{ transform: translate3d(0, 0, 0); }}
-        100% {{ transform: translate3d(-50%, 0, 0); }}
-    }}
-    .ticker-item {{
-        display: inline-block;
-        padding: 0 2rem;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 500;
-    }}
-    .ticker-odds {{
-        color: #00d2ff;
-        font-weight: 600;
-    }}
-    </style>
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <span class="ticker-item">🔴 LIVE ODDS: &nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;{ticker_content}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Live Odds Ticker - using st.container to avoid CSS parsing issues
+    with st.container():
+        st.markdown("---")
+        st.caption("LIVE ODDS TICKER")
+        
+        ticker_cols = st.columns(len(games))
+        for idx, (col, game) in enumerate(zip(ticker_cols, games)):
+            with col:
+                st.markdown(f"**{game['home_team']}** {game['home_odds']} vs **{game['away_team']}** {game['away_odds']}")
 
 # Sidebar Navigation
 def show_sidebar():
