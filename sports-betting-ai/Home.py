@@ -555,6 +555,28 @@ try:
             st.markdown("### 📋 All Games")
             
             for idx, pred in pred_df.iterrows():
+                # Determine best pick for this game
+                best_pick_team = ""
+                best_pick_reason = ""
+                if pred['home_prob'] > pred['away_prob']:
+                    best_pick_team = pred['home_team']
+                    prob_diff = (pred['home_prob'] - pred['away_prob']) * 100
+                    if prob_diff > 15:
+                        best_pick_reason = f"🔒 Strong favorite ({prob_diff:.0f}% edge)"
+                    elif pred['home_prob'] > 0.6:
+                        best_pick_reason = "📈 Home advantage + record"
+                    else:
+                        best_pick_reason = "⚖️ Slight favorite"
+                else:
+                    best_pick_team = pred['away_team']
+                    prob_diff = (pred['away_prob'] - pred['home_prob']) * 100
+                    if prob_diff > 15:
+                        best_pick_reason = f"💰 Underdog value ({prob_diff:.0f}% edge)"
+                    elif pred['away_prob'] > 0.6:
+                        best_pick_reason = "🚌 Road dominance"
+                    else:
+                        best_pick_reason = "⚖️ Slight edge"
+                
                 # Main game card
                 with st.container():
                     st.markdown(f'''
@@ -620,6 +642,9 @@ try:
                             st.caption(f"{pred['home_team']}: Last 5 games")
                         with form_col2:
                             st.caption(f"{pred['away_team']}: Last 5 games")
+                        
+                        st.markdown(f"**Best Pick: {best_pick_team}**")
+                        st.caption(best_pick_reason)
         else:
             emoji = get_sport_emoji(sport)
             st.info(f"{emoji} No {sport.upper()} games scheduled for the next {days} day{'s' if days > 1 else ''}.")
@@ -629,3 +654,24 @@ except Exception as e:
     import traceback
     with st.expander("Debug Info"):
         st.code(traceback.format_exc())
+
+# GAMBLING DISCLAIMER - Always at the bottom
+st.markdown("---")
+st.markdown("""
+    <div style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); border-radius: 10px; padding: 20px; margin-top: 30px; text-align: center;">
+        <h4 style="color: #ff6b6b; margin-bottom: 10px;">⚠️ Important Notice</h4>
+        <p style="color: #ddd; margin: 0;">
+            <strong>This app is purely for entertainment purposes only.</strong>
+            <br>
+            Please gamble responsibly. 18+ only.
+            <br><br>
+            <small style="color: #888;">
+                Past performance does not guarantee future results. 
+                Betting involves risk. Only bet what you can afford to lose.
+            </small>
+        </p>
+    </div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+st.caption(f"© 2026 Sports Betting AI | Built with OpenClaw 🍡")
