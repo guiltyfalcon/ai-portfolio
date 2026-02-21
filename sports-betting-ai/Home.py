@@ -361,10 +361,10 @@ with st.sidebar:
     
     if is_admin:
         st.markdown("### 👑 Admin Access")
-        st.success("All features unlocked (admin)")
+        st.markdown("✅ **All features unlocked (admin)**")
     elif is_supporter:
         st.markdown("### ✨ Premium Active")
-        st.success("All features unlocked!")
+        st.markdown("✅ **All features unlocked!**")
     else:
         st.markdown("### 💎 Unlock Premium")
         st.link_button("Subscribe — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
