@@ -1,13 +1,24 @@
 import streamlit as st
 import numpy as np
+import sys
+
+# Authentication check
+sys.path.insert(0, '/Users/djryan/.openclaw/workspace/user_upload')
+from auth import check_session, login_form, logout, is_admin
+
+session = check_session()
+if not session:
+    st.set_page_config(page_title="Login - Parlay Builder", page_icon="🔒")
+    login_form()
+    st.stop()
 
 st.set_page_config(page_title="Parlay Builder 🎯", page_icon="🎯", layout="wide")
 
 # 💎 PREMIUM CHECK
 is_supporter = st.session_state.get('is_supporter', False)
-is_admin = st.session_state.get('is_admin', False)
+is_admin_user = is_admin()  # Use proper auth check
 
-if not is_supporter and not is_admin:
+if not is_supporter and not is_admin_user:
     st.markdown("# 💎 Parlay Builder")
     st.markdown("---")
     st.warning("🔒 Premium Feature Locked")

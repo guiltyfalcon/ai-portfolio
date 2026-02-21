@@ -5,14 +5,24 @@ import pandas as pd
 import numpy as np
 import random
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from api.sports_data_live import get_teams, get_players, SPORT_CONFIG
+# Authentication check
+sys.path.insert(0, '/Users/djryan/.openclaw/workspace/user_upload')
+from auth import check_session, login_form, logout, is_admin
+
+session = check_session()
+if not session:
+    st.set_page_config(page_title="Login - Player Props", page_icon="🔒")
+    login_form()
+    st.stop()
 
 st.set_page_config(page_title="Player Props 🎯", page_icon="🎯", layout="wide")
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from api.sports_data_live import get_teams, get_players, SPORT_CONFIG
+
 # 💎 PREMIUM CHECK
 is_supporter = st.session_state.get('is_supporter', False)
-is_admin = st.session_state.get('is_admin', False)
+is_admin_user = is_admin()  # Use proper auth check
 
 if not is_supporter and not is_admin:
     st.markdown("# 💎 Player Props")

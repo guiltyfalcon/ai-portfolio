@@ -4,15 +4,17 @@ import plotly.graph_objects as go
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from api.espn import ESPNAPI
-from api.odds import OddsAPI
+# Authentication check
+sys.path.insert(0, '/Users/djryan/.openclaw/workspace/user_upload')
+from auth import check_session, login_form, logout, is_admin
 
-import streamlit as st
-import pandas as pd
-import plotly.graph_objects as go
-import sys
-import os
+session = check_session()
+if not session:
+    st.set_page_config(page_title="Login - Live Odds", page_icon="🔒")
+    login_form()
+    st.stop()
+
+st.set_page_config(page_title="Live Odds", layout="wide")
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from api.espn import ESPNAPI
