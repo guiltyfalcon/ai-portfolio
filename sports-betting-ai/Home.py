@@ -72,9 +72,15 @@ def load_css():
             }
         }
         
-        @keyframes card-glow {
-            0%, 100% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 210, 255, 0.3), inset 0 0 20px rgba(0, 210, 255, 0.1); }
-            50% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 210, 255, 0.6), inset 0 0 30px rgba(0, 210, 255, 0.2); }
+        @keyframes card-breathe {
+            0%, 100% { 
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 210, 255, 0.3), inset 0 0 20px rgba(0, 210, 255, 0.1);
+                border-color: rgba(0, 210, 255, 0.6);
+            }
+            50% { 
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 210, 255, 0.6), inset 0 0 30px rgba(0, 210, 255, 0.2);
+                border-color: rgba(0, 210, 255, 0.9);
+            }
         }
         
         .sub-header {
@@ -676,7 +682,7 @@ try:
                     away_odds_display = format_odds(away_ml_val) if away_ml_val is not None and not pd.isna(away_ml_val) else "—"
                     
                     game_card_html = f'''
-                    <div class="game-card" style="
+                    <div class="game-card-breathe" style="
                         border: 2px solid rgba(0, 210, 255, 0.6);
                         border-radius: 15px;
                         padding: 20px;
@@ -688,6 +694,7 @@ try:
                             inset 0 0 20px rgba(0, 210, 255, 0.1);
                         color: white;
                         font-family: sans-serif;
+                        animation: card-breathe 2s ease-in-out infinite;
                     ">
                         <!-- Teams Header -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
