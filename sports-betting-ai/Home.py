@@ -720,20 +720,14 @@ except Exception as e:
 # GAMBLING DISCLAIMER - Always at the bottom
 st.markdown("---")
 st.markdown("""
-    <div style="background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3); border-radius: 10px; padding: 20px; margin-top: 30px; text-align: center;">
-        <h4 style="color: #ff6b6b; margin-bottom: 10px;">⚠️ Important Notice</h4>
-        <p style="color: #ddd; margin: 0;">
-            <strong>This app is purely for entertainment purposes only.</strong>
-            <br>
-            Please gamble responsibly. 18+ only.
-            <br><br>
-            <small style="color: #888;">
-                Past performance does not guarantee future results. 
-                Betting involves risk. Only bet what you can afford to lose.
-            </small>
+    <div style="background: rgba(255,0,0,0.05); border: 1px solid rgba(255,0,0,0.2); border-radius: 8px; padding: 12px; margin-top: 20px; text-align: center;">
+        <p style="color: #aaa; margin: 0; font-size: 0.85rem;">
+            <strong style="color: #ff6b6b;">⚠️ For entertainment only.</strong> 
+            Please gamble responsibly. 18+.<br>
+            <small style="color: #666;">Past performance ≠ future results. Only bet what you can afford to lose.</small>
         </p>
     </div>
 """, unsafe_allow_html=True)
 
 st.markdown("---")
-st.caption(f"© 2026 Sports Betting AI | Built with OpenClaw 🍡")
+st.caption("© 2026 Sports Betting AI")
