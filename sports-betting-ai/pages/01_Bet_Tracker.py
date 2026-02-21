@@ -165,11 +165,17 @@ with tab3:
         # Display as table
         bet_data = []
         for _, bet in all_bets.iterrows():
+            # Determine opponent
+            pick = bet.get('pick', '')
+            home_team = bet.get('home_team', '')
+            away_team = bet.get('away_team', '')
+            opponent = away_team if pick == home_team else home_team
+            
             bet_data.append({
                 'Date': bet.get('date', ''),
                 'Sport': bet.get('sport', ''),
-                'Pick': bet.get('pick', ''),
-                'Opponent': bet.get('away_team', '') if bet.get('pick') == bet.get('home_team') else bet.get('home_team', ''),
+                'Pick': pick,
+                'Opponent': opponent,
                 'Type': bet.get('bet_type', 'Moneyline'),
                 'Odds': bet.get('odds', -110),
                 'Stake': f"${bet.get('stake', 0):.2f}",

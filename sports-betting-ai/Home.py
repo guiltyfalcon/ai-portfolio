@@ -635,10 +635,21 @@ try:
                             game_odds = pd.DataFrame([row])
                             break
                 
-                # Debug: Show matching results
-                if idx == 0 and not game_odds.empty:
-                    st.write(f"✅ Found odds for {game['home_team']} vs {game['away_team']}")
-                    st.write(f"   Home ML: {game_odds.iloc[0].get('home_ml')}, Away ML: {game_odds.iloc[0].get('away_ml')}")
+                # Debug: Show matching results for first few games
+                if idx < 3:
+                    with st.expander(f"🔍 Debug: {game['home_team']} vs {game['away_team']}"):
+                        st.write(f"ESPN Home: '{home_team_str}'")
+                        st.write(f"ESPN Away: '{away_team_str}'")
+                        st.write(f"Odds data available: {len(odds)} games")
+                        if not odds.empty:
+                            st.write("First few odds entries:")
+                            st.dataframe(odds[['home_team', 'away_team', 'home_ml', 'away_ml']].head(3))
+                        if not game_odds.empty:
+                            st.success(f"✅ Found odds!")
+                            st.write(f"Home ML: {game_odds.iloc[0].get('home_ml')}")
+                            st.write(f"Away ML: {game_odds.iloc[0].get('away_ml')}")
+                        else:
+                            st.error("❌ No odds found for this game")
                 
                 if not game_odds.empty:
                     gm = game_odds.iloc[0]
