@@ -587,6 +587,13 @@ try:
         elif yahoo_cache_loaded:
             st.success("✅ Using Yahoo Sports odds (cached)")
             st.caption(f"Last updated: {yahoo_data.get('timestamp', 'Unknown')}")
+            
+            # Debug: Show odds data
+            with st.expander("🔍 Debug: Odds Data"):
+                st.write(f"Number of games with odds: {len(odds)}")
+                if not odds.empty:
+                    st.write("Sample odds data:")
+                    st.dataframe(odds[['home_team', 'away_team', 'home_ml', 'away_ml']].head())
         
         # Predictions Section
         st.markdown(f"### {get_sport_emoji(sport)} {sport.upper()} Predictions")
@@ -603,13 +610,35 @@ try:
                 home_prob = calculate_win_prob(hw, hl, 0.04)
                 away_prob = 1 - home_prob
                 
-                # Get odds for this game
+                # Get odds for this game - try flexible matching
                 game_odds = pd.DataFrame()
                 if not odds.empty:
-                    game_odds = odds[
-                        (odds['home_team'].str.contains(str(game['home_team']), case=False, na=False)) | 
-                        (odds['away_team'].str.contains(str(game['away_team']), case=False, na=False))
-                    ]
+                    home_team_str = str(game['home_team']).lower()
+                    away_team_str = str(game['away_team']).lower()
+                    
+                    # Try to match by checking if either team name contains the other
+                    for idx, row in odds.iterrows():
+                        odds_home = str(row.get('home_team', '')).lower()
+                        odds_away = str(row.get('away_team', '')).lower()
+                        
+                        # Check if home team matches
+                        home_match = (home_team_str in odds_home or odds_home in home_team_str or 
+                                     any(word in odds_home for word in home_team_str.split()) or
+                                     any(word in home_team_str for word in odds_home.split()))
+                        
+                        # Check if away team matches  
+                        away_match = (away_team_str in odds_away or odds_away in away_team_str or
+                                     any(word in odds_away for word in away_team_str.split()) or
+                                     any(word in away_team_str for word in odds_away.split()))
+                        
+                        if home_match and away_match:
+                            game_odds = pd.DataFrame([row])
+                            break
+                
+                # Debug: Show matching results
+                if idx == 0 and not game_odds.empty:
+                    st.write(f"✅ Found odds for {game['home_team']} vs {game['away_team']}")
+                    st.write(f"   Home ML: {game_odds.iloc[0].get('home_ml')}, Away ML: {game_odds.iloc[0].get('away_ml')}")
                 
                 if not game_odds.empty:
                     gm = game_odds.iloc[0]
