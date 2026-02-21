@@ -225,8 +225,16 @@ def parse_record(record):
     try:
         if pd.isna(record) or record in ['N/A', '0-0', None, '']:
             return 0, 0
-        wins, losses = map(int, str(record).split('-'))
-        return wins, losses
+        parts = str(record).split('-')
+        if len(parts) == 3:
+            # NHL format: wins-losses-OTL
+            wins, losses, otl = map(int, parts)
+            return wins, losses + otl  # Count OTL as losses for win%
+        elif len(parts) == 2:
+            wins, losses = map(int, parts)
+            return wins, losses
+        else:
+            return 0, 0
     except:
         return 0, 0
 
