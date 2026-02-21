@@ -652,8 +652,15 @@ def show_dashboard():
         
         st.markdown("<hr style='border-color: rgba(255,255,255,0.08); margin: 0.75rem 0;'>", unsafe_allow_html=True)
     
-    st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
+    # Title row with Sport Selector
+    col_title, col_sport = st.columns([3, 1])
+    with col_title:
+        st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
+    with col_sport:
+        sports = ["🏀 NBA", "🏈 NFL", "⚾ MLB", "🏒 NHL", "🏀 NCAAB", "🏈 NCAAF"]
+        selected_sport = st.selectbox("Select Sport", sports, index=0)
+        st.session_state.selected_sport = selected_sport.split()[-1]  # Store sport code
     
     # Stats Row - Use user's actual bets from session state
     bets = st.session_state.bets
