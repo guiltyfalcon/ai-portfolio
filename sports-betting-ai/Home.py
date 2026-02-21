@@ -9,6 +9,46 @@ from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import requests
+
+# Page config MUST be first
+st.set_page_config(
+    page_title="Sports Betting AI Pro",
+    page_icon="🎯",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# ESPN API Function
+def fetch_espn_games(sport="nba"):
+    """Fetch live games from ESPN API"""
+    try:
+        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/{sport}/scoreboard"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            games = []
+            for event in data.get('events', [])[:4]:  # Get first 4 games
+                home_team = event['competitions'][0]['competitors'][0]['team']['displayName']
+                away_team = event['competitions'][0]['competitors'][1]['team']['displayName']
+                status = event.get('status', {}).get('type', {}).get('state', 'pre')
+                
+                games.append({
+                    'id': event['id'],
+                    'sport': sport.upper(),
+                    'home_team': home_team,
+                    'away_team': away_team,
+                    'home_odds': -140,
+                    'away_odds': 120,
+                    'spread': -3.5,
+                    'total': 228.5,
+                    'time': event.get('status', {}).get('shortDetail', 'TBD'),
+                    'status': 'live' if status == 'in' else 'upcoming'
+                })
+            return games
+    except Exception as e:
+        print(f"Error fetching ESPN data: {e}")
+    return []
 
 # Page config MUST be first
 st.set_page_config(
@@ -602,7 +642,12 @@ def show_dashboard():
     # Live Games
     st.markdown("<h3 style='margin: 2rem 0 1rem;'>🔴 Live & Upcoming Games</h3>", unsafe_allow_html=True)
     
-    games = get_mock_games()
+    # Fetch live games from ESPN API
+    games = fetch_espn_games("nba")
+    if not games:
+        # Fallback to mock data if API fails
+        games = get_mock_games()
+        st.info("⚠️ Showing sample data - ESPN API temporarily unavailable")
     
     for game in games:
         live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
