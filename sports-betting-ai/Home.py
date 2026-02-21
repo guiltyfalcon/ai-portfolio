@@ -5,6 +5,39 @@ from datetime import datetime
 import json
 import os
 import plotly.graph_objects as go
+import requests
+
+# ESPN API Function
+def fetch_espn_games(sport="nba"):
+    """Fetch games from ESPN API"""
+    try:
+        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/{sport}/scoreboard"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            games = []
+            for event in data.get('events', []):
+                home_team = event['competitions'][0]['competitors'][0]['team']['displayName']
+                away_team = event['competitions'][0]['competitors'][1]['team']['displayName']
+                games.append({
+                    'home': home_team,
+                    'away': away_team,
+                    'time': event.get('status', {}).get('shortDetail', 'TBD'),
+                    'home_odds': -110,
+                    'away_odds': -110
+                })
+            return games
+    except Exception as e:
+        print(f"Error fetching ESPN data: {e}")
+    return []
+
+def get_sample_games():
+    """Return sample games if APIs fail"""
+    return [
+        {"home": "Lakers", "away": "Warriors", "home_odds": -150, "away_odds": +130, "time": "7:00 PM"},
+        {"home": "Celtics", "away": "Heat", "home_odds": -200, "away_odds": +170, "time": "7:30 PM"},
+        {"home": "Nets", "away": "Bucks", "home_odds": +120, "away_odds": -140, "time": "8:00 PM"},
+    ]
 
 # Admin credentials
 ADMIN_USERNAME = "admin"
@@ -285,16 +318,14 @@ if page == "dashboard":
         )
         st.plotly_chart(fig, use_container_width=True)
     
-    # Team Cards Section - Show games
+    # Team Cards Section - Show games with ESPN API
     st.markdown("---")
     st.markdown("### 🏆 Today's Games")
     
-    # Sample game data
-    games = [
-        {"home": "Lakers", "away": "Warriors", "home_odds": -150, "away_odds": +130, "time": "7:00 PM"},
-        {"home": "Celtics", "away": "Heat", "home_odds": -200, "away_odds": +170, "time": "7:30 PM"},
-        {"home": "Nets", "away": "Bucks", "home_odds": +120, "away_odds": -140, "time": "8:00 PM"},
-    ]
+    # Fetch games from ESPN API
+    games = fetch_espn_games("nba")
+    if not games:
+        games = get_sample_games()
     
     # Display game cards
     for game in games:
