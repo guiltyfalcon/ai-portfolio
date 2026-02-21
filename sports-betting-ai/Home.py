@@ -10,6 +10,30 @@ import sys
 import os
 from datetime import datetime
 
+# WEBHOCK HANDLING: Check for payment success
+# In production, this would verify webhook signature
+# For now, we check query params or local flag file
+def check_payment_status():
+    """Check if user has paid via Stripe webhook or query params"""
+    # Check URL query params (Stripe redirects with ?success=1)
+    query_params = st.query_params
+    if query_params.get("success") == "1" or query_params.get("paid") == "true":
+        st.session_state.is_supporter = True
+        return True
+    
+    # Check local flag file (for webhook integration)
+    flag_file = os.path.expanduser("~/.openclaw/sports_bet_paid.txt")
+    if os.path.exists(flag_file):
+        st.session_state.is_supporter = True
+        return True
+    
+    # Check session state
+    return st.session_state.get("is_supporter", False)
+
+# Initialize session state
+if "is_supporter" not in st.session_state:
+    st.session_state.is_supporter = check_payment_status()
+
 # Page config MUST be first Streamlit command
 st.set_page_config(
     page_title="Sports Betting AI Pro",
@@ -349,6 +373,63 @@ try:
             st.markdown(f'''<div class="stat-box"><div class="stat-number">{datetime.now().strftime("%H:%M")}</div><div style="color: #a0a0c0;">Updated</div></div>''', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
+        
+        # PROMINENT UPGRADE BANNER (if not supporter and value picks exist)
+        is_supporter = st.session_state.get('is_supporter', False)
+        has_value_picks = False  # Will check after predictions built
+        
+        # PRE-CHECK: Build predictions silently to check for value picks
+        preview_predictions = []
+        for _, game in schedule.head(8).iterrows():
+            home_rec = game.get('home_record', '0-0')
+            away_rec = game.get('away_record', '0-0')
+            hw, hl = parse_record(home_rec)
+            aw, al = parse_record(away_rec)
+            
+            home_prob = calculate_win_prob(hw, hl, 0.04)
+            away_prob = 1 - home_prob
+            
+            # Check if this would be a value pick
+            game_odds = pd.DataFrame()
+            if not odds.empty:
+                game_odds = odds[
+                    (odds['home_team'].str.contains(str(game['home_team']), case=False, na=False)) |
+                    (odds['away_team'].str.contains(str(game['away_team']), case=False, na=False))
+                ]
+            
+            if not game_odds.empty:
+                gm = game_odds.iloc[0]
+                home_ml = gm.get('home_ml')
+                away_ml = gm.get('away_ml')
+                
+                if pd.notna(home_ml) and pd.notna(away_ml):
+                    home_implied = american_to_implied(home_ml)
+                    away_implied = american_to_implied(away_ml)
+                    home_edge = home_prob - home_implied
+                    away_edge = away_prob - away_implied
+                    if abs(home_edge) > value_threshold or abs(away_edge) > value_threshold:
+                        has_value_picks = True
+        
+        # SHOW UPGRADE BANNER
+        if not is_supporter and has_value_picks:
+            st.markdown('''
+            <div style="background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%); 
+                        padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;">
+                <h2 style="color: white; margin: 0 0 10px 0;">🔒 Premium Value Picks Locked</h2>
+                <p style="color: white; font-size: 1.1rem; margin: 0 0 15px 0;">
+                    High-confidence picks detected! Unlock for $5 one-time.
+                </p>
+                <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0;">
+                    ✅ Value Picks  •  ✅ 30-Day Backtesting  •  ✅ Parlay Builder
+                </p>
+            </div>
+            ''', unsafe_allow_html=True)
+            
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+            with col_btn2:
+                st.link_button("🔓 Unlock Premium for $5", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
+            st.caption("One-time unlock • Lifetime access • Instant activation")
+            st.markdown("---")
         
         # Try to get odds
         odds = pd.DataFrame()
