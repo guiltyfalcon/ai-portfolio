@@ -8,31 +8,53 @@ import pandas as pd
 import numpy as np
 import sys
 import os
-from datetime import datetime
+import json
+from datetime import datetime, timedelta
 
-# WEBHOCK HANDLING: Check for payment success
-# In production, this would verify webhook signature
-# For now, we check query params or local flag file
-def check_payment_status():
-    """Check if user has paid via Stripe webhook or query params"""
-    # Check URL query params (Stripe redirects with ?success=1)
-    query_params = st.query_params
-    if query_params.get("success") == "1" or query_params.get("paid") == "true":
-        st.session_state.is_supporter = True
+# SUBSCRIPTION CHECKING: Verify active $5/month subscription
+def check_subscription_status():
+    """Check if user has active monthly subscription"""
+    
+    # Check query params for immediate post-payment
+    if st.query_params.get("success") == "1":
+        st.session_state.just_paid = True
         return True
     
-    # Check local flag file (for webhook integration)
-    flag_file = os.path.expanduser("~/.openclaw/sports_bet_paid.txt")
-    if os.path.exists(flag_file):
-        st.session_state.is_supporter = True
-        return True
+    # Check local subscription files
+    users_dir = os.path.expanduser("~/.openclaw/sports_bet_users")
+    if not os.path.exists(users_dir):
+        return False
     
-    # Check session state
-    return st.session_state.get("is_supporter", False)
+    for filename in os.listdir(users_dir):
+        if filename.endswith('.json'):
+            filepath = os.path.join(users_dir, filename)
+            try:
+                with open(filepath, 'r') as f:
+                    sub = json.load(f)
+                
+                # Active subscription
+                if sub.get('status') == 'active' and not sub.get('is_cancelled', False):
+                    return True
+                
+                # Cancelled but still within paid period
+                if sub.get('is_cancelled') and sub.get('premium_until'):
+                    import time
+                    if time.time() < sub['premium_until']:
+                        st.session_state.subscription_ending = True
+                        return True
+                        
+            except Exception:
+                pass
+    
+    return False
 
 # Initialize session state
 if "is_supporter" not in st.session_state:
-    st.session_state.is_supporter = check_payment_status()
+    st.session_state.is_supporter = check_subscription_status()
+if "subscription_ending" not in st.session_state:
+    st.session_state.subscription_ending = False
+if "just_paid" not in st.session_state:
+    st.session_state.just_paid = False
 
 # Page config MUST be first Streamlit command
 st.set_page_config(
@@ -336,9 +358,19 @@ with st.sidebar:
         ✅ Supporter badge
         """)
         
-        st.markdown("#### ☕ Buy Me a Coffee")
-        st.link_button("Unlock for $5", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
-        st.caption("One-time unlock. Lifetime access.")
+        st.markdown("#### ☕ Unlock Premium Features")
+        st.markdown("**Free:** Basic predictions, win %, 3-day history")
+        st.markdown("""
+        **$5/Month — Supporters Get:**
+        ✅ Value picks highlighted  
+        ✅ Parlay builder + EV calc  
+        ✅ 30-day backtesting  
+        ✅ Priority odds refresh  
+        ✅ Supporter badge
+        """)
+        
+        st.link_button("Subscribe — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
+        st.caption("Monthly subscription. Cancel anytime.")
     else:
         st.markdown("✨ **You're a Supporter!**")
         st.markdown("All premium features unlocked.")
@@ -417,7 +449,7 @@ try:
                         padding: 20px; border-radius: 15px; margin: 20px 0; text-align: center;">
                 <h2 style="color: white; margin: 0 0 10px 0;">🔒 Premium Value Picks Locked</h2>
                 <p style="color: white; font-size: 1.1rem; margin: 0 0 15px 0;">
-                    High-confidence picks detected! Unlock for $5 one-time.
+                    High-confidence picks detected! Unlock for $5/month.
                 </p>
                 <p style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin: 0;">
                     ✅ Value Picks  •  ✅ 30-Day Backtesting  •  ✅ Parlay Builder
@@ -427,8 +459,8 @@ try:
             
             col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
             with col_btn2:
-                st.link_button("🔓 Unlock Premium for $5", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
-            st.caption("One-time unlock • Lifetime access • Instant activation")
+                st.link_button("🔓 Unlock Premium — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
+            st.caption("Monthly subscription • Cancel anytime • Instant access to value picks")
             st.markdown("---")
         
         # Try to get odds
