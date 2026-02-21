@@ -455,7 +455,8 @@ try:
                     </div>
                     ''', unsafe_allow_html=True)
         else:
-            st.info("No upcoming games found for this sport.")
+            emoji = get_sport_emoji(sport)
+            st.info(f"{emoji} No {sport.upper()} games scheduled for the next {days} day{'s' if days > 1 else ''}.")
 
 except Exception as e:
     st.error(f"Error loading data: {e}")
