@@ -601,47 +601,57 @@ try:
                     
                     # Expandable team stats
                     with st.expander(f"📊 Team Stats & Players", expanded=False):
+                        # Get actual records from prediction data
+                        home_rec = pred['home_record']
+                        away_rec = pred['away_record']
+                        
                         col_stats1, col_stats2 = st.columns(2)
                         
                         with col_stats1:
                             st.markdown(f"**{pred['home_team']}**")
-                            # Fetch and display home team stats
-                            home_stats = espn.get_team_stats(sport, pred['home_team'])
-                            if home_stats and home_stats.get('ppg') != 'N/A':
-                                st.metric("PPG", home_stats.get('ppg', 'N/A'))
-                                st.metric("Allowed", home_stats.get('papg', 'N/A'))
-                                st.metric("FG%", f"{home_stats.get('fg_pct', 0)}%")
+                            # Parse record for display
+                            if home_rec and home_rec != 'N/A':
+                                parts = str(home_rec).split('-')
+                                if len(parts) >= 2:
+                                    wins, losses = int(parts[0]), int(parts[1])
+                                    total = wins + losses
+                                    win_pct = (wins / total * 100) if total > 0 else 0
+                                    
+                                    col_w, col_l, col_p = st.columns(3)
+                                    col_w.metric("Wins", wins)
+                                    col_l.metric("Losses", losses)
+                                    col_p.metric("Win%", f"{win_pct:.0f}%")
                             else:
-                                st.caption("Stats loading...")
+                                st.caption("Record: N/A")
                             
-                            # Top scorer info
-                            st.markdown("**Top Scorer**")
-                            st.caption("Coming from ESPN data feed")
+                            # Prediction
+                            st.markdown("**Our Prediction**")
+                            prob = pred['home_prob'] * 100
+                            st.progress(prob / 100, text=f"{prob:.0f}% Win Probability")
                         
                         with col_stats2:
                             st.markdown(f"**{pred['away_team']}**")
-                            # Fetch and display away team stats
-                            away_stats = espn.get_team_stats(sport, pred['away_team'])
-                            if away_stats and away_stats.get('ppg') != 'N/A':
-                                st.metric("PPG", away_stats.get('ppg', 'N/A'))
-                                st.metric("Allowed", away_stats.get('papg', 'N/A'))
-                                st.metric("FG%", f"{away_stats.get('fg_pct', 0)}%")
+                            # Parse record for display
+                            if away_rec and away_rec != 'N/A':
+                                parts = str(away_rec).split('-')
+                                if len(parts) >= 2:
+                                    wins, losses = int(parts[0]), int(parts[1])
+                                    total = wins + losses
+                                    win_pct = (wins / total * 100) if total > 0 else 0
+                                    
+                                    col_w, col_l, col_p = st.columns(3)
+                                    col_w.metric("Wins", wins)
+                                    col_l.metric("Losses", losses)
+                                    col_p.metric("Win%", f"{win_pct:.0f}%")
                             else:
-                                st.caption("Stats loading...")
+                                st.caption("Record: N/A")
                             
-                            # Top scorer info
-                            st.markdown("**Top Scorer**")
-                            st.caption("Coming from ESPN data feed")
+                            # Prediction
+                            st.markdown("**Our Prediction**")
+                            prob = pred['away_prob'] * 100
+                            st.progress(prob / 100, text=f"{prob:.0f}% Win Probability")
                         
                         st.divider()
-                        
-                        # Recent form
-                        st.markdown("**Recent Form**")
-                        form_col1, form_col2 = st.columns(2)
-                        with form_col1:
-                            st.caption(f"{pred['home_team']}: Last 5 games")
-                        with form_col2:
-                            st.caption(f"{pred['away_team']}: Last 5 games")
                         
                         st.markdown(f"**Best Pick: {best_pick_team}**")
                         st.caption(best_pick_reason)

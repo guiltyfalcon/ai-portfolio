@@ -130,40 +130,62 @@ def _fetch_schedule(sport: str, days: int = 7) -> pd.DataFrame:
 
 @st.cache_data(ttl=3600)
 def _fetch_team_stats(sport: str, team_name: str) -> Dict:
-    """Fetch team statistics from ESPN."""
-    endpoint = SPORT_ENDPOINTS.get(sport.lower())
-    if not endpoint:
-        return {}
-    
+    """Fetch team statistics from ESPN - using available data."""
     try:
-        # First get team ID by searching teams
+        # Get basic team info which includes record
         teams_df = _fetch_teams(sport)
         if teams_df.empty:
-            return {}
+            return _get_default_team_stats(team_name)
         
         team_row = teams_df[teams_df['name'].str.contains(team_name, case=False, na=False)]
         if team_row.empty:
-            return {}
-        
-        team_id = team_row.iloc[0]['id']
-        team_abbrev = team_row.iloc[0]['abbreviation']
-        
-        # Fetch team stats
-        stats_url = f"{BASE_URL}/{endpoint}/teams/{team_id}/statistics"
-        session = get_session()
-        response = session.get(stats_url, timeout=10)
-        
-        if response.status_code != 200:
             return _get_default_team_stats(team_name)
         
-        data = response.json()
+        # Get the record and calculate basic stats
+        record = team_row.iloc[0]['record']
         
-        # Parse stats based on sport
-        stats = _parse_sport_stats(sport, data)
-        stats['team_name'] = team_row.iloc[0]['name']
-        stats['record'] = team_row.iloc[0]['record']
+        # Parse record (e.g., "35-15" or "28-27-2" for NHL)
+        if '-' in str(record):
+            parts = str(record).split('-')
+            if len(parts) >= 2:
+                wins = int(parts[0])
+                losses = int(parts[1])
+                total_games = wins + losses
+                
+                # Calculate win percentage
+                win_pct = wins / total_games if total_games > 0 else 0
+                
+                return {
+                    'team_name': team_row.iloc[0]['name'],
+                    'record': record,
+                    'wins': wins,
+                    'losses': losses,
+                    'win_pct': f"{win_pct*100:.1f}%",
+                    'ppg': 'N/A',  # Not available from ESPN basic API
+                    'papg': 'N/A',
+                    'fg_pct': 'N/A',
+                    'three_pct': 'N/A',
+                    'rpg': 'N/A',
+                    'apg': 'N/A',
+                    'form': f"{wins}-{losses} ({win_pct*100:.0f}%)",
+                    'top_scorer': {'name': 'View ESPN', 'ppg': 'Full Stats'}
+                }
         
-        return stats
+        return {
+            'team_name': team_row.iloc[0]['name'],
+            'record': record,
+            'wins': 0,
+            'losses': 0,
+            'win_pct': 'N/A',
+            'ppg': 'N/A',
+            'papg': 'N/A',
+            'fg_pct': 'N/A',
+            'three_pct': 'N/A',
+            'rpg': 'N/A',
+            'apg': 'N/A',
+            'form': record,
+            'top_scorer': {'name': 'N/A', 'ppg': 'N/A'}
+        }
         
     except Exception as e:
         return _get_default_team_stats(team_name)
