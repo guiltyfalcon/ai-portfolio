@@ -604,7 +604,7 @@ try:
                 with cols[idx % 2]:
                     with st.container():
                         # Use native Streamlit components for reliable rendering
-                        with st.container(border=True):
+                        with st.container():
                             # Teams header
                             t1, t2, t3 = st.columns([2, 1, 2])
                             with t1:
@@ -658,4 +658,4 @@ except Exception as e:
 
 # Footer
 st.markdown("---")
-st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN API | Sports Betting AI Pro</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN API | Sports Betting AI Pro v2.1</div>', unsafe_allow_html=True)
