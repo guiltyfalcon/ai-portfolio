@@ -9,6 +9,44 @@ st.set_page_config(page_title="Parlay Builder - Sports Betting AI Pro", page_ico
 if 'authenticated' not in st.session_state or not st.session_state.authenticated:
     st.switch_page("Home.py")
 
+# Shared Navigation Function
+def show_page_nav():
+    with st.sidebar:
+        st.markdown("""
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="
+                width: 40px; 
+                height: 40px; 
+                margin: 0 auto 0.5rem;
+                background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25rem;
+            ">🎯</div>
+            <h4 style="margin: 0; color: white; font-size: 1rem;">Sports Betting AI</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("⊕  Dashboard", use_container_width=True):
+            st.switch_page("Home.py")
+        if st.button("◈  Odds", use_container_width=True):
+            st.switch_page("pages/Live_Odds.py")
+        if st.button("❖  Props", use_container_width=True):
+            st.switch_page("pages/Player_Props.py")
+        if st.button("⛓  Parlay", use_container_width=True):
+            st.switch_page("pages/Parlay_Builder.py")
+        
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 1rem 0;'>", unsafe_allow_html=True)
+        
+        if st.button("○  Logout", use_container_width=True):
+            st.session_state.authenticated = False
+            st.session_state.user = None
+            st.rerun()
+
+show_page_nav()
+
 # Initialize session state
 if 'parlay_legs' not in st.session_state:
     st.session_state.parlay_legs = []
