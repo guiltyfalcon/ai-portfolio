@@ -147,31 +147,33 @@ with tab3:
         filter_sport = st.selectbox("Sport", ["All", "NBA", "NFL", "MLB", "NHL"])
     
     # Get all bets
-    all_bets = tracker.get_all_bets()
+    all_bets = tracker.load_bets()
     
     # Apply filters
     if filter_status != "All":
-        status_map = {"Active": "active", "Won": "won", "Lost": "lost"}
-        all_bets = [b for b in all_bets if b['status'] == status_map.get(filter_status, b['status'])]
+        status_map = {"Active": "pending", "Won": "won", "Lost": "lost"}
+        if 'status' in all_bets.columns:
+            all_bets = all_bets[all_bets['status'] == status_map.get(filter_status, all_bets['status'])]
     
     if filter_sport != "All":
-        all_bets = [b for b in all_bets if b['sport'] == filter_sport]
+        if 'sport' in all_bets.columns:
+            all_bets = all_bets[all_bets['sport'] == filter_sport]
     
-    if not all_bets:
+    if all_bets.empty:
         st.info("No bets found matching your filters")
     else:
         # Display as table
         bet_data = []
-        for bet in all_bets:
+        for _, bet in all_bets.iterrows():
             bet_data.append({
-                'Date': bet['date'],
-                'Sport': bet['sport'],
-                'Pick': bet['team'],
-                'Opponent': bet['opponent'],
-                'Type': bet['bet_type'],
-                'Odds': bet['odds'],
-                'Stake': f"${bet['stake']:.2f}",
-                'Result': bet['status'].upper(),
+                'Date': bet.get('date', ''),
+                'Sport': bet.get('sport', ''),
+                'Pick': bet.get('pick', ''),
+                'Opponent': bet.get('away_team', '') if bet.get('pick') == bet.get('home_team') else bet.get('home_team', ''),
+                'Type': bet.get('bet_type', 'Moneyline'),
+                'Odds': bet.get('odds', -110),
+                'Stake': f"${bet.get('stake', 0):.2f}",
+                'Result': bet.get('status', 'pending').upper(),
                 'P/L': f"${bet.get('profit', 0):.2f}"
             })
         
