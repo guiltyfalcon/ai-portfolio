@@ -72,6 +72,11 @@ def load_css():
             }
         }
         
+        @keyframes card-glow {
+            0%, 100% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 210, 255, 0.3), inset 0 0 20px rgba(0, 210, 255, 0.1); }
+            50% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 210, 255, 0.6), inset 0 0 30px rgba(0, 210, 255, 0.2); }
+        }
+        
         .sub-header {
             text-align: center;
             color: #a0a0c0;
@@ -671,13 +676,16 @@ try:
                     away_odds_display = format_odds(away_ml_val) if away_ml_val is not None and not pd.isna(away_ml_val) else "—"
                     
                     game_card_html = f'''
-                    <div style="
-                        border: 2px solid rgba(0, 210, 255, 0.4);
+                    <div class="game-card" style="
+                        border: 2px solid rgba(0, 210, 255, 0.6);
                         border-radius: 15px;
                         padding: 20px;
                         margin: 10px 0 20px 0;
                         background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        box-shadow: 
+                            0 4px 15px rgba(0, 0, 0, 0.3),
+                            0 0 20px rgba(0, 210, 255, 0.3),
+                            inset 0 0 20px rgba(0, 210, 255, 0.1);
                         color: white;
                         font-family: sans-serif;
                     ">
@@ -755,4 +763,4 @@ except Exception as e:
 
 # Footer
 st.markdown("---")
-st.markdown('<div style="text-align: center; color: #666;">Powered by ESPN API | Sports Betting AI Pro v2.1</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center; color: #888; font-size: 0.75rem; padding: 10px;"><b>18+ Only</b> • Please Gamble Responsibly</div>', unsafe_allow_html=True)
