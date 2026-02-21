@@ -565,18 +565,18 @@ try:
                             
                             <div style="margin-top: 15px;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                    <span>{pred['home_prob']*100:.0f}%</span>
+                                    <span>{int(round(pred['home_prob']*100))}%</span>
                                     <span style="color: #a0a0c0;">Win Prob</span>
-                                    <span>{pred['away_prob']*100:.0f}%</span>
+                                    <span>{int(round(pred['away_prob']*100))}%</span>
                                 </div>
                                 <div class="prob-bar-bg">
-                                    <div class="prob-bar-fill" style="width: {pred['home_prob']*100}%; margin-left: 0;"></div>
+                                    <div class="prob-bar-fill" style="width: {int(round(pred['home_prob']*100))}%; margin-left: 0;"></div>
                                 </div>
                             </div>
                             
                             <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                                <div class="odds-box">{format_odds(pred['home_ml'])}</div>
-                                <div class="odds-box">{format_odds(pred['away_ml'])}</div>
+                                <div class="odds-box">{format_odds(pred.get('home_ml', None))}</div>
+                                <div class="odds-box">{format_odds(pred.get('away_ml', None))}</div>
                             </div>
                         </div>
                         ''', unsafe_allow_html=True)
