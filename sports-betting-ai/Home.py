@@ -369,7 +369,7 @@ Implied probability from odds: {int(round(american_to_implied(fav_ml)*100)) if f
     return reasoning
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
-    st.markdown('<div class="main-header"><img src="https://cdn-icons-png.flaticon.com/512/33/33736.png" style="width: 60px; height: 60px; vertical-align: middle; margin-right: 10px;"> BET AI PRO</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header"><span style="font-size: 60px; vertical-align: middle; margin-right: 10px;">🏀</span> BET AI PRO</div>', unsafe_allow_html=True)
     st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
     current_time = datetime.now().strftime("%H:%M:%S")
     st.markdown(f'''
@@ -652,42 +652,66 @@ try:
             cols = st.columns(2)
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
+                    # Card container with border
                     with st.container():
-                        # Use native Streamlit components for reliable rendering
-                        with st.container():
-                            # Teams header
-                            t1, t2, t3 = st.columns([2, 1, 2])
-                            with t1:
-                                st.markdown(f"**{pred['home_team']}**")
-                                st.caption("Home")
-                            with t2:
-                                st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
-                            with t3:
-                                st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
-                                st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
-                            
-                            # Win probability
-                            st.markdown("---")
-                            p1, p2, p3 = st.columns([1, 2, 1])
-                            with p1:
-                                st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
-                            with p2:
-                                st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
-                            with p3:
-                                st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
-                            
-                            # Progress bar
-                            st.progress(float(pred['home_prob']))
-                            
-                            # Odds
-                            st.markdown("---")
-                            o1, o2 = st.columns(2)
-                            with o1:
-                                home_odds = format_odds(pred.get('home_ml', None))
-                                st.metric("Home ML", home_odds if home_odds != "N/A" else "—")
-                            with o2:
-                                away_odds = format_odds(pred.get('away_ml', None))
-                                st.metric("Away ML", away_odds if away_odds != "N/A" else "—")
+                        st.markdown("""
+                        <style>
+                        .game-card-container {
+                            border: 2px solid rgba(0, 210, 255, 0.3);
+                            border-radius: 15px;
+                            padding: 20px;
+                            margin: 10px 0;
+                            background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+                            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                        }
+                        </style>
+                        <div class="game-card-container">
+                        """, unsafe_allow_html=True)
+                        
+                        # Teams header
+                        t1, t2, t3 = st.columns([2, 1, 2])
+                        with t1:
+                            st.markdown(f"**{pred['home_team']}**")
+                            st.caption("Home")
+                        with t2:
+                            st.markdown("<div style='text-align: center; color: #00d2ff; font-weight: bold;'>VS</div>", unsafe_allow_html=True)
+                        with t3:
+                            st.markdown(f"<div style='text-align: right;'><b>{pred['away_team']}</b></div>", unsafe_allow_html=True)
+                            st.markdown("<div style='text-align: right;'><small>Away</small></div>", unsafe_allow_html=True)
+                        
+                        # Win probability
+                        st.markdown("---")
+                        p1, p2, p3 = st.columns([1, 2, 1])
+                        with p1:
+                            st.markdown(f"**{int(round(pred['home_prob']*100))}%**")
+                        with p2:
+                            st.markdown("<div style='text-align: center; color: #888;'>Win Probability</div>", unsafe_allow_html=True)
+                        with p3:
+                            st.markdown(f"<div style='text-align: right;'><b>{int(round(pred['away_prob']*100))}%</b></div>", unsafe_allow_html=True)
+                        
+                        # Progress bar
+                        st.progress(float(pred['home_prob']))
+                        
+                        # Odds - FIX: Display actual values
+                        st.markdown("---")
+                        o1, o2 = st.columns(2)
+                        with o1:
+                            home_ml_val = pred.get('home_ml')
+                            if home_ml_val is not None and not pd.isna(home_ml_val):
+                                home_odds_str = format_odds(home_ml_val)
+                                st.metric("Home ML", home_odds_str)
+                            else:
+                                st.metric("Home ML", "—")
+                        with o2:
+                            away_ml_val = pred.get('away_ml')
+                            if away_ml_val is not None and not pd.isna(away_ml_val):
+                                away_odds_str = format_odds(away_ml_val)
+                                st.metric("Away ML", away_odds_str)
+                            else:
+                                st.metric("Away ML", "—")
+                        
+                        # Close card container
+                        st.markdown("</div>", unsafe_allow_html=True)
                         
                         # Detailed Reasoning
                         with st.expander("📊 Predictions"):

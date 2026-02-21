@@ -107,7 +107,7 @@ def login_form():
     st.markdown("""
     <div style="text-align: center; padding: 40px;">
         <h1 style="font-size: 3rem; margin-bottom: 10px;">
-            <img src="https://cdn-icons-png.flaticon.com/512/33/33736.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
+            <span style="font-size: 50px; vertical-align: middle; margin-right: 10px;">🏀</span>
             Sports Betting AI Pro
         </h1>
         <p style="color: #a0a0c0; font-size: 1.2rem;">Please log in or sign up to access the platform</p>
