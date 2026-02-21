@@ -5,6 +5,14 @@ from datetime import datetime
 import json
 import os
 
+# Initialize session state
+if 'auth_session' not in st.session_state:
+    st.session_state.auth_session = None
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "dashboard"
+if 'auth_tab' not in st.session_state:
+    st.session_state.auth_tab = "Login"
+
 # Admin credentials
 ADMIN_USERNAME = "admin"
 ADMIN_EMAIL = "admin@betai.pro"
