@@ -135,7 +135,7 @@ def login_form():
     </style>
     <div style="text-align: center; padding: 40px;">
         <div class="login-header">
-            <span style="font-size: 50px; vertical-align: middle; margin-right: 10px;">🏀</span>
+            <span style="font-size: 50px; vertical-align: middle; margin-right: 10px; filter: drop-shadow(0 0 10px rgba(255,165,0,0.8)); color: #FF6600;">🏀</span>
             Sports Betting AI Pro
         </div>
         <p style="color: #a0a0c0; font-size: 1.2rem;">Please log in or sign up to access the platform</p>
