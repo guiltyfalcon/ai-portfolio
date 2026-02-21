@@ -6,6 +6,7 @@ import json
 import os
 import requests
 import pandas as pd
+import plotly.graph_objects as go
 
 # Initialize session state
 if 'auth_session' not in st.session_state:
