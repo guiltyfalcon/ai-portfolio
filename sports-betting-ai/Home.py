@@ -447,8 +447,11 @@ try:
         
         st.markdown('</div>', unsafe_allow_html=True)
         
-        # Try to get odds (may fail without API key)
+        # Try to get odds from multiple sources
         odds = pd.DataFrame()
+        yahoo_cache_loaded = False
+        
+        # 1. Try OddsAPI first
         try:
             odds_api = OddsAPI()
             odds = odds_api.get_odds(sport.lower())
@@ -456,12 +459,50 @@ try:
             odds_error = str(e)
             pass
         
-        # Show odds warning if needed
-        if odds_error:
+        # 2. Fallback to Yahoo cache if OddsAPI failed or returned empty
+        if odds.empty:
+            try:
+                yahoo_cache_path = '/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json'
+                if os.path.exists(yahoo_cache_path):
+                    with open(yahoo_cache_path, 'r') as f:
+                        yahoo_data = json.load(f)
+                    
+                    # Convert Yahoo cache to odds DataFrame format
+                    yahoo_games = []
+                    sport_key = sport.lower()
+                    if sport_key in yahoo_data.get('sports', {}):
+                        for game in yahoo_data['sports'][sport_key]:
+                            yahoo_games.append({
+                                'home_team': game.get('home_team', ''),
+                                'away_team': game.get('away_team', ''),
+                                'home_ml': game.get('home_ml'),
+                                'away_ml': game.get('away_ml'),
+                                'home_spread': game.get('home_spread'),
+                                'away_spread': game.get('away_spread'),
+                                'total': game.get('total'),
+                                'over_odds': game.get('over_odds'),
+                                'under_odds': game.get('under_odds'),
+                                'commence_time': game.get('commence_time'),
+                                'bookmaker': game.get('bookmaker', 'Yahoo Sports')
+                            })
+                    
+                    if yahoo_games:
+                        odds = pd.DataFrame(yahoo_games)
+                        yahoo_cache_loaded = True
+                        
+            except Exception as e:
+                st.warning(f"Could not load Yahoo cache: {e}")
+                pass
+        
+        # Show odds source info
+        if odds_error and not yahoo_cache_loaded:
             with st.expander("⚠️ Odds API Issue (Click for details)"):
-                st.warning("Live odds unavailable. Using estimated probabilities.")
+                st.warning("Live odds unavailable. Using estimated probabilities only.")
                 st.caption(f"Error: {odds_error}")
                 st.info("To get live odds, add THEODDS_API_KEY to your Streamlit secrets.")
+        elif yahoo_cache_loaded:
+            st.success("✅ Using Yahoo Sports odds (cached)")
+            st.caption(f"Last updated: {yahoo_data.get('timestamp', 'Unknown')}")
         
         # Predictions Section
         st.markdown(f"### {get_sport_emoji(sport)} {sport.upper()} Predictions")
