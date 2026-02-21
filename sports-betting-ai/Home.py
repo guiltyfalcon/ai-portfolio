@@ -935,15 +935,6 @@ def show_sidebar():
             </div>
             """, unsafe_allow_html=True)
         
-        # User info only on sidebar (menu is now on top)
-        if st.session_state.user:
-            st.markdown(f"""
-            <div style="background: rgba(0, 210, 255, 0.1); border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem;">
-                <p style="color: white; margin: 0; font-weight: 500;">{st.session_state.user['username']}</p>
-                <p style="color: #8A8F98; margin: 0; font-size: 0.75rem;">Pro Member</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
         st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;'>", unsafe_allow_html=True)
         
         if st.button("🚪 Logout", use_container_width=True):
