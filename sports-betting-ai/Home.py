@@ -4,6 +4,8 @@ import time
 from datetime import datetime
 import json
 import os
+import requests
+import pandas as pd
 
 # Initialize session state
 if 'auth_session' not in st.session_state:
@@ -12,11 +14,64 @@ if 'current_page' not in st.session_state:
     st.session_state.current_page = "dashboard"
 if 'auth_tab' not in st.session_state:
     st.session_state.auth_tab = "Login"
+if 'selected_team' not in st.session_state:
+    st.session_state.selected_team = "All"
 
 # Admin credentials
 ADMIN_USERNAME = "admin"
 ADMIN_EMAIL = "admin@betai.pro"
 ADMIN_PASSWORD_HASH = hashlib.sha256("admin123".encode()).hexdigest()
+
+# API Functions
+def fetch_espn_games(sport="nba"):
+    """Fetch games from ESPN API"""
+    try:
+        url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/{sport}/scoreboard"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            games = []
+            for event in data.get('events', []):
+                home_team = event['competitions'][0]['competitors'][0]['team']['displayName']
+                away_team = event['competitions'][0]['competitors'][1]['team']['displayName']
+                games.append({
+                    'home': home_team,
+                    'away': away_team,
+                    'time': event.get('status', {}).get('shortDetail', 'TBD'),
+                    'home_odds': -110,
+                    'away_odds': -110
+                })
+            return games
+    except Exception as e:
+        print(f"Error fetching ESPN data: {e}")
+    return []
+
+def get_sample_games():
+    """Return sample games if APIs fail"""
+    return [
+        {"home": "Lakers", "away": "Warriors", "home_odds": -150, "away_odds": +130, "time": "7:00 PM"},
+        {"home": "Celtics", "away": "Heat", "home_odds": -200, "away_odds": +170, "time": "7:30 PM"},
+        {"home": "Nets", "away": "Bucks", "home_odds": +120, "away_odds": -140, "time": "8:00 PM"},
+        {"home": "Suns", "away": "Mavericks", "home_odds": -110, "away_odds": -110, "time": "8:30 PM"},
+        {"home": "Knicks", "away": "76ers", "home_odds": +140, "away_odds": -160, "time": "9:00 PM"},
+    ]
+
+# Team selector function
+def render_team_selector():
+    """Render team selector that's always accessible"""
+    teams = ["All", "Lakers", "Warriors", "Celtics", "Heat", "Nets", "Bucks", "Suns", "Mavericks", "Knicks", "76ers"]
+    
+    col1, col2, col3 = st.columns([2, 3, 2])
+    with col2:
+        selected = st.selectbox(
+            "🏀 Select Team",
+            teams,
+            index=teams.index(st.session_state.selected_team) if st.session_state.selected_team in teams else 0,
+            key="team_selector"
+        )
+        if selected != st.session_state.selected_team:
+            st.session_state.selected_team = selected
+            st.rerun()
 
 # Session management
 SESSION_DURATION = 24 * 60 * 60  # 24 hours
@@ -205,6 +260,23 @@ if page == "dashboard":
     st.markdown('<h1 class="main-header" style="font-size: 2.5rem;">Dashboard</h1>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Your betting dashboard overview</p>', unsafe_allow_html=True)
     
+    # Team Selector - Always accessible at top
+    st.markdown("---")
+    teams = ["All", "Lakers", "Warriors", "Celtics", "Heat", "Nets", "Bucks", "Suns", "Mavericks", "Knicks", "76ers"]
+    
+    col1, col2, col3 = st.columns([2, 3, 2])
+    with col2:
+        selected = st.selectbox(
+            "🏀 Select Team to Filter Games",
+            teams,
+            index=teams.index(st.session_state.selected_team) if st.session_state.selected_team in teams else 0,
+            key="team_selector"
+        )
+        if selected != st.session_state.selected_team:
+            st.session_state.selected_team = selected
+            st.rerun()
+    st.markdown("---")
+    
     # Stats cards
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -293,22 +365,26 @@ if page == "dashboard":
         )
         st.plotly_chart(fig, use_container_width=True)
     
-    # Team Cards Section - Free users get 2, Admin gets all
+    # Team Selector - Always accessible
     st.markdown("---")
+    render_team_selector()
+    
+    # Team Cards Section - Free users get 2, Admin gets all
     st.markdown("### 🏆 Today's Games")
     
-    # Sample game data
-    games = [
-        {"home": "Lakers", "away": "Warriors", "home_odds": -150, "away_odds": +130, "time": "7:00 PM"},
-        {"home": "Celtics", "away": "Heat", "home_odds": -200, "away_odds": +170, "time": "7:30 PM"},
-        {"home": "Nets", "away": "Bucks", "home_odds": +120, "away_odds": -140, "time": "8:00 PM"},
-        {"home": "Suns", "away": "Mavericks", "home_odds": -110, "away_odds": -110, "time": "8:30 PM"},
-        {"home": "Knicks", "away": "76ers", "home_odds": +140, "away_odds": -160, "time": "9:00 PM"},
-    ]
+    # Try to fetch real games from ESPN API
+    games = fetch_espn_games("nba")
+    if not games:
+        games = get_sample_games()
+    
+    # Filter by selected team
+    selected_team = st.session_state.selected_team
+    if selected_team != "All":
+        games = [g for g in games if selected_team in g['home'] or selected_team in g['away']]
     
     # Determine how many games to show (free = 2, admin = all)
     user_session = st.session_state.get('auth_session', {})
-    is_paid_user = user_session.get('is_admin', False)  # Admin gets all
+    is_paid_user = user_session.get('is_admin', False)
     
     if is_paid_user:
         display_games = games
