@@ -313,24 +313,7 @@ def format_odds(odds):
         return f"+{int(odds)}"
     return f"{int(odds)}"
 
-# Header
-col1, col2, col3 = st.columns([1, 3, 1])
-with col2:
-    st.markdown('<div class="main-header">🎯 BET AI PRO</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
-    current_time = datetime.now().strftime("%H:%M:%S")
-    st.markdown(f'''
-    <div style="text-align: center; margin-top: -10px;">
-        <span class="live-badge">
-            <span class="live-dot"></span>
-            LIVE • {current_time}
-        </span>
-    </div>
-    ''', unsafe_allow_html=True)
-
-st.markdown("---")
-
-# Sidebar
+# SIDEBAR MUST COME BEFORE ANY MAIN CONTENT
 with st.sidebar:
     st.markdown("### ⚙️ Settings")
     
@@ -369,6 +352,23 @@ with st.sidebar:
         st.markdown("### 💎 Unlock Premium")
         st.link_button("Subscribe — $5/mo", "https://buy.stripe.com/4gM28k5L17246LNfubfjG00", type="primary", use_container_width=True)
         st.caption("Cancel anytime")
+
+# Header (AFTER sidebar)
+col1, col2, col3 = st.columns([1, 3, 1])
+with col2:
+    st.markdown('<div class="main-header">🎯 BET AI PRO</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sub-header">Machine Learning Sports Predictions</div>', unsafe_allow_html=True)
+    current_time = datetime.now().strftime("%H:%M:%S")
+    st.markdown(f'''
+    <div style="text-align: center; margin-top: -10px;">
+        <span class="live-badge">
+            <span class="live-dot"></span>
+            LIVE • {current_time}
+        </span>
+    </div>
+    ''', unsafe_allow_html=True)
+
+st.markdown("---")
 
 # Main Content
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
