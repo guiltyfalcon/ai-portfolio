@@ -266,60 +266,7 @@ if page == "dashboard":
     
     st.markdown("---")
     
-    # Charts section
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### 📈 Profit Trend")
-        dates = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        profits = [120, 85, -45, 200, 150, -30, 180]
-        
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(
-            x=dates, y=profits,
-            mode='lines+markers',
-            line=dict(color='#00D2FF', width=3),
-            marker=dict(size=8, color='#00D2FF'),
-            fill='tozeroy',
-            fillcolor='rgba(0, 210, 255, 0.1)'
-        ))
-        fig.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            xaxis=dict(gridcolor='rgba(255,255,255,0.1)', showgrid=True),
-            yaxis=dict(gridcolor='rgba(255,255,255,0.1)', showgrid=True),
-            margin=dict(l=40, r=40, t=40, b=40),
-            height=300
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    
-    with col2:
-        st.markdown("### 🎯 Win/Loss Distribution")
-        labels = ['Wins', 'Losses', 'Pushes']
-        values = [45, 20, 5]
-        colors = ['#00E701', '#FF4D4D', '#00D2FF']
-        
-        fig = go.Figure(data=[go.Pie(
-            labels=labels,
-            values=values,
-            hole=0.6,
-            marker=dict(colors=colors, line=dict(color='#0B0E14', width=2)),
-            textinfo='percent',
-            textfont=dict(color='white', size=12)
-        )])
-        fig.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='white'),
-            showlegend=True,
-            legend=dict(orientation='h', yanchor='bottom', y=-0.1, xanchor='center', x=0.5, font=dict(color='white')),
-            margin=dict(l=40, r=40, t=40, b=60),
-            height=300
-        )
-        st.plotly_chart(fig, use_container_width=True)
-    
     # Team Cards Section - Show games with ESPN API
-    st.markdown("---")
     st.markdown("### 🏆 Today's Games")
     
     # Fetch games from ESPN API
