@@ -601,8 +601,8 @@ try:
             for idx, pred in pred_df.iterrows():
                 with cols[idx % 2]:
                     with st.container():
-                        st.markdown(f'''
-                        <div class="game-card">
+                        # Use st.markdown with unsafe_allow_html for proper HTML rendering
+                        game_card_html = f'''<div class="game-card">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
                                     <div class="team-name">{pred['home_team']}</div>
@@ -632,8 +632,8 @@ try:
                                 <div class="odds-box">{format_odds(pred.get('home_ml', None))}</div>
                                 <div class="odds-box">{format_odds(pred.get('away_ml', None))}</div>
                             </div>
-                        </div>
-                        ''', unsafe_allow_html=True)
+                        </div>'''
+                        st.markdown(game_card_html, unsafe_allow_html=True)
                         
                         # Quick add to bet tracker
                         if st.button(f"➕ Track This Game", key=f"track_{idx}"):
