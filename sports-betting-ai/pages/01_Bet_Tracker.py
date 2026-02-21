@@ -53,7 +53,7 @@ with tab1:
     st.subheader("Active Bets")
     
     # Get active bets
-    active_bets = tracker.get_active_bets()
+    active_bets = tracker.get_pending_bets()
     
     if not active_bets:
         st.info("No active bets. Add a bet to start tracking!")
