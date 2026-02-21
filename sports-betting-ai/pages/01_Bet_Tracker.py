@@ -55,28 +55,29 @@ with tab1:
     # Get active bets
     active_bets = tracker.get_pending_bets()
     
-    if not active_bets:
+    if active_bets.empty:
         st.info("No active bets. Add a bet to start tracking!")
     else:
-        for bet in active_bets:
+        for _, bet in active_bets.iterrows():
             with st.container():
                 col1, col2, col3, col4 = st.columns([3, 2, 2, 1])
                 with col1:
-                    st.write(f"**{bet['team']}** vs {bet['opponent']}")
-                    st.caption(f"{bet['sport']} • {bet['bet_type']}")
+                    st.write(f"**{bet['pick']}** vs {bet['away_team'] if bet['pick'] == bet['home_team'] else bet['home_team']}")
+                    st.caption(f"{bet['sport']} • {bet.get('bet_type', 'Moneyline')}")
                 with col2:
                     st.write(f"Odds: {bet['odds']}")
                     st.write(f"Stake: ${bet['stake']}")
                 with col3:
-                    st.write(f"Potential: ${bet['potential_win']:.2f}")
+                    potential = bet['stake'] * (bet['odds'] / 100) if bet['odds'] > 0 else bet['stake'] * (100 / abs(bet['odds']))
+                    st.write(f"Potential: ${potential:.2f}")
                     if bet.get('model_confidence'):
                         st.caption(f"Model: {bet['model_confidence']}%")
                 with col4:
                     if st.button("✓", key=f"win_{bet['id']}"):
-                        tracker.settle_bet(bet['id'], 'win')
+                        tracker.update_result(int(bet['id']), 'win')
                         st.rerun()
                     if st.button("✗", key=f"loss_{bet['id']}"):
-                        tracker.settle_bet(bet['id'], 'loss')
+                        tracker.update_result(int(bet['id']), 'loss')
                         st.rerun()
                 st.markdown("---")
 
