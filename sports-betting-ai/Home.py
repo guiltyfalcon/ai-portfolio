@@ -882,20 +882,30 @@ def show_dashboard():
         st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
     with col_refresh:
         if st.button(" 🔄 Refresh Odds", use_container_width=True):
-            with st.spinner("Fetching fresh odds..."):
-                import subprocess
-                api_path = Path(__file__).parent / "api"
-                result = subprocess.run(
-                    ["python3", "yahoo_scraper.py"],
-                    cwd=str(api_path),
-                    capture_output=True,
-                    text=True
-                )
-                if result.returncode == 0:
-                    st.success("✅ Odds updated! Refreshing...")
-                    st.rerun()
-                else:
-                    st.error(f"❌ Update failed: {result.stderr[:200]}")
+            # Check if running on Streamlit Cloud
+            is_cloud = "/mount/src" in str(Path(__file__).absolute())
+            
+            if is_cloud:
+                st.info("ℹ️ Running on Streamlit Cloud - odds auto-update every 2 hours via cron. Manual refresh not available in cloud environment.")
+            else:
+                with st.spinner("Fetching fresh odds..."):
+                    import subprocess
+                    api_path = Path(__file__).parent / "api"
+                    try:
+                        result = subprocess.run(
+                            ["python3", "yahoo_scraper.py"],
+                            cwd=str(api_path),
+                            capture_output=True,
+                            text=True,
+                            timeout=60
+                        )
+                        if result.returncode == 0:
+                            st.success("✅ Odds updated! Refreshing...")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Scraper failed: {result.stderr[:200]}")
+                    except Exception as e:
+                        st.error(f"❌ Update failed: {str(e)[:200]}")
     with col_sport:
         # Get available sports from ESPN API (not mock data)
         available_sports = get_available_sports()
