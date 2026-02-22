@@ -10,6 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import requests
+from pathlib import Path
 
 # Page config MUST be first
 st.set_page_config(
@@ -874,11 +875,27 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
     
-    # Title row with Sport Selector
-    col_title, col_sport = st.columns([3, 1])
+    # Title row with Sport Selector and Refresh
+    col_title, col_sport, col_refresh = st.columns([3, 1, 1])
     with col_title:
         st.markdown("<h1 style='margin-bottom: 0.5rem;'>Dashboard</h1>", unsafe_allow_html=True)
         st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
+    with col_refresh:
+        if st.button(" 🔄 Refresh Odds", use_container_width=True):
+            with st.spinner("Fetching fresh odds..."):
+                import subprocess
+                api_path = Path(__file__).parent / "api"
+                result = subprocess.run(
+                    ["python3", "yahoo_scraper.py"],
+                    cwd=str(api_path),
+                    capture_output=True,
+                    text=True
+                )
+                if result.returncode == 0:
+                    st.success("✅ Odds updated! Refreshing...")
+                    st.rerun()
+                else:
+                    st.error(f"❌ Update failed: {result.stderr[:200]}")
     with col_sport:
         # Get available sports from ESPN API (not mock data)
         available_sports = get_available_sports()
