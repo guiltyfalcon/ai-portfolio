@@ -830,212 +830,148 @@ def get_detailed_prediction_reasoning(game):
     else:
         win_prob = round(100 / (fav_odds + 100) * 100)
     
-    # Rich team database with arena names, division records, player stats
-    nba_team_data = {
-        "Oklahoma City Thunder": {
-            "arena": "Paycom Center", "home_record": "26-7", "away_record": "19-14", 
-            "last_5": "WWWLW", "recent_form_desc": "coming off a dominant stretch",
-            "division_record": "12-3", "conference": "West", "division": "Northwest",
-            "star_players": [
-                {"name": "Shai Gilgeous-Alexander", "ppg": 32.1, "apg": 6.2, "rpg": 5.5}
-            ],
-            "injured": []
-        },
-        "Cleveland Cavaliers": {
-            "arena": "Rocket Mortgage FieldHouse", "home_record": "24-9", "away_record": "20-13",
-            "last_5": "LWWWW", "recent_form_desc": "bouncing back strong after a rare loss",
-            "division_record": "10-5", "conference": "East", "division": "Central",
-            "star_players": [
-                {"name": "Donovan Mitchell", "ppg": 28.4, "apg": 5.1, "rpg": 4.2}
-            ],
-            "injured": []
-        },
-        "Orlando Magic": {
-            "arena": "Kia Center", "home_record": "18-15", "away_record": "15-18",
-            "last_5": "WLLWL", "recent_form_desc": "coming off a tough stretch with injuries mounting",
-            "division_record": "8-6", "conference": "East", "division": "Southeast",
-            "star_players": [
-                {"name": "Paolo Banchero", "ppg": 25.1, "apg": 4.8, "rpg": 7.2}
-            ],
-            "injured": ["Franz Wagner (ankle - out)", "Wendell Carter Jr. (hand - questionable)"]
-        },
-        "Phoenix Suns": {
-            "arena": "Footprint Center", "home_record": "21-12", "away_record": "16-17",
-            "last_5": "LWLWW", "recent_form_desc": "finding rhythm at home after inconsistent road play",
-            "division_record": "8-6", "conference": "West", "division": "Pacific",
-            "star_players": [
-                {"name": "Kevin Durant", "ppg": 27.5, "apg": 5.1, "rpg": 6.8},
-                {"name": "Grayson Allen", "ppg": 12.4, "apg": 3.2, "rpg": 3.5}
-            ],
-            "injured": ["Devin Booker (hip strain - out)", "Bradley Beal (hamstring - probable)"]
-        },
-        "Boston Celtics": {
-            "arena": "TD Garden", "home_record": "28-5", "away_record": "22-11",
-            "last_5": "WWWWW", "recent_form_desc": "on a dominant five-game winning streak",
-            "division_record": "12-2", "conference": "East", "division": "Atlantic",
-            "star_players": [
-                {"name": "Jayson Tatum", "ppg": 27.8, "apg": 5.9, "rpg": 8.5}
-            ],
-            "injured": []
-        },
-        "Miami Heat": {
-            "arena": "Kaseya Center", "home_record": "19-14", "away_record": "14-19",
-            "last_5": "LWWLW", "recent_form_desc": "showing flashes of championship form",
-            "division_record": "9-4", "conference": "East", "division": "Southeast",
-            "star_players": [
-                {"name": "Jimmy Butler", "ppg": 21.5, "apg": 5.8, "rpg": 5.3}
-            ],
-            "injured": ["Bam Adebayo (knee - day-to-day)"]
-        },
-        "Milwaukee Bucks": {
-            "arena": "Fiserv Forum", "home_record": "22-11", "away_record": "17-16",
-            "last_5": "WLWWL", "recent_form_desc": "battling through inconsistency",
-            "division_record": "11-4", "conference": "East", "division": "Central",
-            "star_players": [
-                {"name": "Giannis Antetokounmpo", "ppg": 30.2, "apg": 6.4, "rpg": 11.8}
-            ],
-            "injured": []
-        },
-        "Denver Nuggets": {
-            "arena": "Ball Arena", "home_record": "24-8", "away_record": "18-15",
-            "last_5": "WLWWW", "recent_form_desc": "starting to dominate at altitude again",
-            "division_record": "11-3", "conference": "West", "division": "Northwest",
-            "star_players": [
-                {"name": "Nikola Jokic", "ppg": 29.1, "apg": 10.2, "rpg": 12.8}
-            ],
-            "injured": []
-        },
-        "Los Angeles Lakers": {
-            "arena": "Crypto.com Arena", "home_record": "21-12", "away_record": "15-17",
-            "last_5": "LWWLW", "recent_form_desc": "struggling to find consistency",
-            "division_record": "9-5", "conference": "West", "division": "Pacific",
-            "star_players": [
-                {"name": "LeBron James", "ppg": 25.2, "apg": 6.8, "rpg": 7.4},
-                {"name": "Anthony Davis", "ppg": 25.8, "apg": 3.2, "rpg": 11.5}
-            ],
-            "injured": ["D'Angelo Russell (foot - out)"]
-        },
-        "Golden State Warriors": {
-            "arena": "Chase Center", "home_record": "18-15", "away_record": "14-18",
-            "last_5": "WLWWL", "recent_form_desc": "trying to climb back into playoff contention",
-            "division_record": "7-7", "conference": "West", "division": "Pacific",
-            "star_players": [
-                {"name": "Stephen Curry", "ppg": 26.8, "apg": 4.9, "rpg": 4.4}
-            ],
-            "injured": ["Draymond Green (suspension)"]
-        },
-        "Dallas Mavericks": {
-            "arena": "American Airlines Center", "home_record": "21-12", "away_record": "14-18",
-            "last_5": "LWWLW", "recent_form_desc": "relying heavily on MVP-caliber production",
-            "division_record": "10-4", "conference": "West", "division": "Southwest",
-            "star_players": [
-                {"name": "Luka Dončić", "ppg": 33.9, "apg": 9.8, "rpg": 9.2}
-            ],
-            "injured": ["Kyrie Irving (foot - questionable)"]
-        },
-        "LA Clippers": {
-            "arena": "Intuit Dome", "home_record": "20-13", "away_record": "15-16",
-            "last_5": "WWLWW", "recent_form_desc": "playing their best basketball of the season",
-            "division_record": "8-6", "conference": "West", "division": "Pacific",
-            "star_players": [
-                {"name": "Kawhi Leonard", "ppg": 23.5, "apg": 3.6, "rpg": 6.2}
-            ],
-            "injured": []
-        }
+    # COMPREHENSIVE TEAM DATABASE - All Sports
+    TEAM_DATABASE = {
+        # NBA - All 30 Teams
+        "Oklahoma City Thunder": {"sport": "nba", "arena": "Paycom Center", "conference": "West", "division": "Northwest", "star": "Shai Gilgeous-Alexander", "ppg": 32.1, "recent_form": "coming off a dominant stretch"},
+        "Denver Nuggets": {"sport": "nba", "arena": "Ball Arena", "conference": "West", "division": "Northwest", "star": "Nikola Jokic", "ppg": 29.1, "recent_form": "starting to dominate at altitude again"},
+        "Minnesota Timberwolves": {"sport": "nba", "arena": "Target Center", "conference": "West", "division": "Northwest", "star": "Anthony Edwards", "ppg": 27.2, "recent_form": "battling through a tough stretch"},
+        "Portland Trail Blazers": {"sport": "nba", "arena": "Moda Center", "conference": "West", "division": "Northwest", "star": "Jerami Grant", "ppg": 21.8, "recent_form": "rebuilding with young talent"},
+        "Utah Jazz": {"sport": "nba", "arena": "Delta Center", "conference": "West", "division": "Northwest", "star": "Lauri Markkanen", "ppg": 23.4, "recent_form": "competitive but inconsistent"},
+        "Boston Celtics": {"sport": "nba", "arena": "TD Garden", "conference": "East", "division": "Atlantic", "star": "Jayson Tatum", "ppg": 27.8, "recent_form": "on a dominant five-game winning streak"},
+        "Philadelphia 76ers": {"sport": "nba", "arena": "Wells Fargo Center", "conference": "East", "division": "Atlantic", "star": "Joel Embiid", "ppg": 0, "recent_form": "struggling without their MVP"},
+        "New York Knicks": {"sport": "nba", "arena": "Madison Square Garden", "conference": "East", "division": "Atlantic", "star": "Jalen Brunson", "ppg": 26.4, "recent_form": "surging up the East standings"},
+        "Brooklyn Nets": {"sport": "nba", "arena": "Barclays Center", "conference": "East", "division": "Atlantic", "star": "Mikal Bridges", "ppg": 21.2, "recent_form": "in transition mode"},
+        "Toronto Raptors": {"sport": "nba", "arena": "Scotiabank Arena", "conference": "East", "division": "Atlantic", "star": "Scottie Barnes", "ppg": 19.8, "recent_form": "rebuilding phase"},
+        "Milwaukee Bucks": {"sport": "nba", "arena": "Fiserv Forum", "conference": "East", "division": "Central", "star": "Giannis Antetokounmpo", "ppg": 30.2, "recent_form": "battling through inconsistency"},
+        "Cleveland Cavaliers": {"sport": "nba", "arena": "Rocket Mortgage FieldHouse", "conference": "East", "division": "Central", "star": "Donovan Mitchell", "ppg": 28.4, "recent_form": "bouncing back strong after a rare loss"},
+        "Indiana Pacers": {"sport": "nba", "arena": "Gainbridge Fieldhouse", "conference": "East", "division": "Central", "star": "Tyrese Haliburton", "ppg": 20.9, "recent_form": "high-powered offense clicking"},
+        "Chicago Bulls": {"sport": "nba", "arena": "United Center", "conference": "East", "division": "Central", "star": "DeMar DeRozan", "ppg": 22.3, "recent_form": "trying to stay in playoff race"},
+        "Detroit Pistons": {"sport": "nba", "arena": "Little Caesars Arena", "conference": "East", "division": "Central", "star": "Cade Cunningham", "ppg": 22.1, "recent_form": "showing flashes of future potential"},
+        "Miami Heat": {"sport": "nba", "arena": "Kaseya Center", "conference": "East", "division": "Southeast", "star": "Jimmy Butler", "ppg": 21.5, "recent_form": "showing flashes of championship form"},
+        "Orlando Magic": {"sport": "nba", "arena": "Kia Center", "conference": "East", "division": "Southeast", "star": "Paolo Banchero", "ppg": 25.1, "recent_form": "coming off a tough stretch with injuries mounting"},
+        "Atlanta Hawks": {"sport": "nba", "arena": "State Farm Arena", "conference": "East", "division": "Southeast", "star": "Trae Young", "ppg": 26.7, "recent_form": "offense firing but defense lagging"},
+        "Charlotte Hornets": {"sport": "nba", "arena": "Spectrum Center", "conference": "East", "division": "Southeast", "star": "LaMelo Ball", "ppg": 23.9, "recent_form": "competitive but coming up short"},
+        "Washington Wizards": {"sport": "nba", "arena": "Capital One Arena", "conference": "East", "division": "Southeast", "star": "Jordan Poole", "ppg": 17.4, "recent_form": "in full rebuild mode"},
+        "Phoenix Suns": {"sport": "nba", "arena": "Footprint Center", "conference": "West", "division": "Pacific", "star": "Kevin Durant", "ppg": 27.5, "recent_form": "finding rhythm at home after inconsistent road play"},
+        "LA Clippers": {"sport": "nba", "arena": "Intuit Dome", "conference": "West", "division": "Pacific", "star": "Kawhi Leonard", "ppg": 23.5, "recent_form": "playing their best basketball of the season"},
+        "Los Angeles Lakers": {"sport": "nba", "arena": "Crypto.com Arena", "conference": "West", "division": "Pacific", "star": "LeBron James", "ppg": 25.2, "recent_form": "struggling to find consistency"},
+        "Golden State Warriors": {"sport": "nba", "arena": "Chase Center", "conference": "West", "division": "Pacific", "star": "Stephen Curry", "ppg": 26.8, "recent_form": "trying to climb back into playoff contention"},
+        "Sacramento Kings": {"sport": "nba", "arena": "Golden 1 Center", "conference": "West", "division": "Pacific", "star": "De'Aaron Fox", "ppg": 27.1, "recent_form": "fighting for playoff positioning"},
+        "Dallas Mavericks": {"sport": "nba", "arena": "American Airlines Center", "conference": "West", "division": "Southwest", "star": "Luka Dončić", "ppg": 33.9, "recent_form": "relying heavily on MVP-caliber production"},
+        "Memphis Grizzlies": {"sport": "nba", "arena": "FedExForum", "conference": "West", "division": "Southwest", "star": "Ja Morant", "ppg": 0, "recent_form": "adjusting without their star"},
+        "New Orleans Pelicans": {"sport": "nba", "arena": "Smoothie King Center", "conference": "West", "division": "Southwest", "star": "Zion Williamson", "ppg": 24.8, "recent_form": "when healthy, a tough out"},
+        "Houston Rockets": {"sport": "nba", "arena": "Toyota Center", "conference": "West", "division": "Southwest", "star": "Alperen Şengün", "ppg": 21.2, "recent_form": "young core making strides"},
+        "San Antonio Spurs": {"sport": "nba", "arena": "Frost Bank Center", "conference": "West", "division": "Southwest", "star": "Victor Wembanyama", "ppg": 24.5, "recent_form": "building around their generational talent"},
+        
+        # NFC Teams
+        "San Francisco 49ers": {"sport": "nfl", "stadium": "Levi's Stadium", "conference": "NFC", "division": "West", "star": "Brock Purdy", "recent_form": "Super Bowl aspirations"},
+        "Seattle Seahawks": {"sport": "nfl", "stadium": "Lumen Field", "conference": "NFC", "division": "West", "star": "Geno Smith", "recent_form": "fighting for playoff spot"},
+        "Los Angeles Rams": {"sport": "nfl", "stadium": "SoFi Stadium", "conference": "NFC", "division": "West", "star": "Matthew Stafford", "recent_form": "defending their title"},
+        "Arizona Cardinals": {"sport": "nfl", "stadium": "State Farm Stadium", "conference": "NFC", "division": "West", "star": "Kyler Murray", "recent_form": "rebuilding with young core"},
+        "Dallas Cowboys": {"sport": "nfl", "stadium": "AT&T Stadium", "conference": "NFC", "division": "East", "star": "Dak Prescott", "recent_form": "looking to break through"},
+        "Philadelphia Eagles": {"sport": "nfl", "stadium": "Lincoln Financial Field", "conference": "NFC", "division": "East", "star": "Jalen Hurts", "recent_form": " NFC powerhouse"},
+        "New York Giants": {"sport": "nfl", "stadium": "MetLife Stadium", "conference": "NFC", "division": "East", "star": "Daniel Jones", "recent_form": "searching for consistency"},
+        "Washington Commanders": {"sport": "nfl", "stadium": "FedEx Field", "conference": "NFC", "division": "East", "star": "Sam Howell", "recent_form": "new era beginning"},
+        "Detroit Lions": {"sport": "nfl", "stadium": "Ford Field", "conference": "NFC", "division": "North", "star": "Jared Goff", "recent_form": "finally breaking through"},
+        "Green Bay Packers": {"sport": "nfl", "stadium": "Lambeau Field", "conference": "NFC", "division": "North", "star": "Jordan Love", "recent_form": "post-Rodgers transition"},
+        "Minnesota Vikings": {"sport": "nfl", "stadium": "U.S. Bank Stadium", "conference": "NFC", "division": "North", "star": "Kirk Cousins", "recent_form": "competitive but inconsistent"},
+        "Chicago Bears": {"sport": "nfl", "stadium": "Soldier Field", "conference": "NFC", "division": "North", "star": "Justin Fields", "recent_form": "building around QB"},
+        "Tampa Bay Buccaneers": {"sport": "nfl", "stadium": "Raymond James Stadium", "conference": "NFC", "division": "South", "star": "Baker Mayfield", "recent_form": "defending division title"},
+        "New Orleans Saints": {"sport": "nfl", "stadium": "Caesars Superdome", "conference": "NFC", "division": "South", "star": "Derek Carr", "recent_form": "looking to reclaim division"},
+        "Atlanta Falcons": {"sport": "nfl", "stadium": "Mercedes-Benz Stadium", "conference": "NFC", "division": "South", "star": "Desmond Ridder", "recent_form": "young QB developing"},
+        "Carolina Panthers": {"sport": "nfl", "stadium": "Bank of America Stadium", "conference": "NFC", "division": "South", "star": "Bryce Young", "recent_form": "rebuilding with rookie QB"},
+        
+        # AFC Teams
+        "Kansas City Chiefs": {"sport": "nfl", "stadium": "Arrowhead Stadium", "conference": "AFC", "division": "West", "star": "Patrick Mahomes", "recent_form": "defending champs"},
+        "Las Vegas Raiders": {"sport": "nfl", "stadium": "Allegiant Stadium", "conference": "AFC", "division": "West", "star": "Jimmy Garoppolo", "recent_form": "new regime in place"},
+        "Los Angeles Chargers": {"sport": "nfl", "stadium": "SoFi Stadium", "conference": "AFC", "division": "West", "star": "Justin Herbert", "recent_form": "talented but underperforming"},
+        "Denver Broncos": {"sport": "nfl", "stadium": "Empower Field", "conference": "AFC", "division": "West", "star": "Russell Wilson", "recent_form": "looking for answers"},
+        "Buffalo Bills": {"sport": "nfl", "stadium": "Highmark Stadium", "conference": "AFC", "division": "East", "star": "Josh Allen", "recent_form": "Super Bowl favorites"},
+        "Miami Dolphins": {"sport": "nfl", "stadium": "Hard Rock Stadium", "conference": "AFC", "division": "East", "star": "Tua Tagovailoa", "recent_form": "high-powered offense"},
+        "New England Patriots": {"sport": "nfl", "stadium": "Gillette Stadium", "conference": "AFC", "division": "East", "star": "Mac Jones", "recent_form": "post-Brady rebuild"},
+        "New York Jets": {"sport": "nfl", "stadium": "MetLife Stadium", "conference": "AFC", "division": "East", "star": "Aaron Rodgers", "recent_form": "hype vs reality"},
+        "Baltimore Ravens": {"sport": "nfl", "stadium": "M&T Bank Stadium", "conference": "AFC", "division": "North", "star": "Lamar Jackson", "recent_form": "MVP candidate"},
+        "Cincinnati Bengals": {"sport": "nfl", "stadium": "Paycor Stadium", "conference": "AFC", "division": "North", "star": "Joe Burrow", "recent_form": "injury-plagued"},
+        "Cleveland Browns": {"sport": "nfl", "stadium": "Cleveland Browns Stadium", "conference": "AFC", "division": "North", "star": "Deshaun Watson", "recent_form": "underachieving"},
+        "Pittsburgh Steelers": {"sport": "nfl", "stadium": "Acrisure Stadium", "conference": "AFC", "division": "North", "star": "Kenny Pickett", "recent_form": "defense keeping them competitive"},
+        "Jacksonville Jaguars": {"sport": "nfl", "stadium": "TIAA Bank Field", "conference": "AFC", "division": "South", "star": "Trevor Lawrence", "recent_form": "expected to take next step"},
+        "Tennessee Titans": {"sport": "nfl", "stadium": "Nissan Stadium", "conference": "AFC", "division": "South", "star": "Ryan Tannehill", "recent_form": "rebuilding"},
+        "Indianapolis Colts": {"sport": "nfl", "stadium": "Lucas Oil Stadium", "conference": "AFC", "division": "South", "star": "Anthony Richardson", "recent_form": "rookie QB era"},
+        "Houston Texans": {"sport": "nfl", "stadium": "NRG Stadium", "conference": "AFC", "division": "South", "star": "C.J. Stroud", "recent_form": "surprising everyone"},
     }
     
-    # Get team data (use live data from game first, fallback to static DB)
-    home_db = nba_team_data.get(home_team, {
-        "arena": "Home Arena", "home_record": home_record, "away_record": "N/A",
-        "last_5": home_last_5, "recent_form_desc": "entering this matchup",
-        "division_record": "N/A", "conference": "Unknown", "division": "Unknown",
-        "star_players": [{"name": "Top Scorer", "ppg": 20.0, "apg": 4.0, "rpg": 5.0}],
-        "injured": home_injuries.split('; ') if home_injuries else []
-    })
+    # Get team data
+    home_db = TEAM_DATABASE.get(home_team, {"sport": sport.lower(), "arena": "Home Venue", "star": "Key Player", "ppg": 20, "recent_form": "entering this matchup"})
+    away_db = TEAM_DATABASE.get(away_team, {"sport": sport.lower(), "arena": "Away Venue", "star": "Key Player", "ppg": 18, "recent_form": "looking to bounce back"})
     
-    away_db = nba_team_data.get(away_team, {
-        "arena": "Away Arena", "home_record": "N/A", "away_record": away_record,
-        "last_5": away_last_5, "recent_form_desc": "entering this matchup",
-        "division_record": "N/A", "conference": "Unknown", "division": "Unknown",
-        "star_players": [{"name": "Top Scorer", "ppg": 18.0, "apg": 4.0, "rpg": 5.0}],
-        "injured": away_injuries.split('; ') if away_injuries else []
-    })
+    # Determine venue type by sport
+    venue_type = "arena" if sport.lower() == "nba" else "stadium"
+    home_venue = home_db.get(venue_type, home_db.get("arena", "home"))
     
-    # Build detailed reasoning like the Orlando example
+    # Build reasoning
     factors = []
     
-    # 1. Context Setting - Recent Form Narrative
-    home_wins_last5 = home_last_5.count('W') if home_last_5 else 0
-    away_wins_last5 = away_last_5.count('W') if away_last_5 else 0
+    # 1. Context narrative
+    context = f"<b>{home_team}</b> {home_db.get('recent_form', 'enters this game')} while <b>{away_team}</b> {away_db.get('recent_form', 'looks to get back on track')}."
     
-    context = f"<b>{home_team}</b> {home_db.get('recent_form_desc', 'enters this game')} while <b>{away_team}</b> {away_db.get('recent_form_desc', 'looks to bounce back')}."
-    
-    # 2. Home Court Advantage with Arena Name
-    if home_win_pct > 0.6:
-        home_pct_str = f"{int(home_win_pct * 100)}%"
+    # 2. Home advantage
+    if home_win_pct > 0.58:
+        pct_str = f"{int(home_win_pct * 100)}%"
         factors.append(
-            f"• <b>Home Court Dominance:</b> {home_team} are a much stronger team at {home_db.get('arena', 'home')}, "
-            f"holding a {home_record} home record (winning {home_pct_str} of home games) compared to their {away_record} play on the road. "
-            f"This venue has been a fortress for them this season."
+            f"• <b>Home Field Advantage:</b> {home_team} are formidable at {home_venue}, "
+            f"boasting a {home_record} record and winning {pct_str} of home games. "
+            f"Their home dominance is a significant factor."
         )
     elif home_win_pct > 0.5:
         factors.append(
-            f"• <b>Home Court Edge:</b> {home_team} have played well at {home_db.get('arena', 'home')} with a {home_record} record, "
-            f"while {away_team} have struggled away from home at {away_record}."
+            f"• <b>Home Edge:</b> {home_team} have been solid at {home_venue} with a {home_record} record, "
+            f"while {away_team} are {away_record} on the road."
         )
     
-    # 3. Star Power vs. Injuries Analysis
-    home_stars = home_db.get('star_players', [])
-    away_stars = away_db.get('star_players', [])
-    home_injured_list = home_db.get('injured', [])
-    away_injured_list = away_db.get('injured', [])
+    # 3. Star power / Key players
+    home_star = home_db.get("star", "their star player")
+    away_star = away_db.get("star", "their key player")
+    home_ppg = home_db.get("ppg", 20)
+    away_ppg = away_db.get("ppg", 18)
     
-    # Calculate available firepower
-    home_top_scorer = home_stars[0] if home_stars else {"name": "Top Player", "ppg": 20}
-    away_top_scorer = away_stars[0] if away_stars else {"name": "Key Player", "ppg": 18}
+    if home_ppg > away_ppg + 5:
+        factors.append(
+            f"• <b>Star Power:</b> {home_star} leads {home_team}, averaging {home_ppg} PPG, "
+            f"giving them a clear offensive advantage over {away_star} ({away_ppg} PPG)."
+        )
+    elif away_ppg > home_ppg + 5:
+        factors.append(
+            f"• <b>Star Power Edge:</b> {away_star} ({away_ppg} PPG) provides {away_team} "
+            f"with elite scoring ability that {home_team} will struggle to contain."
+        )
     
-    if home_injured_list and not away_injured_list:
-        # Home team banged up, away team healthy
-        injured_names = ", ".join([i.split(' (')[0] for i in home_injured_list[:2]])
-        factors.append(
-            f"• <b>Star Power vs. Injuries:</b> Although {home_top_scorer['name']} leads {home_team} "
-            f"(averaging {home_top_scorer['ppg']} PPG), they are missing {injured_names}. "
-            f"{away_team} still have {away_top_scorer['name']} at full strength "
-            f"(averaging {away_top_scorer['ppg']} PPG) and are better positioned to capitalize on {home_team}'s depleted roster."
-        )
-    elif away_injured_list and not home_injured_list:
-        # Away team banged up, home team healthy  
-        injured_names = ", ".join([i.split(' (')[0] for i in away_injured_list[:2]])
-        factors.append(
-            f"• <b>Health Advantage:</b> While {away_team} are missing {injured_names}, "
-            f"{home_team} are at full strength with {home_top_scorer['name']} "
-            f"(averaging {home_top_scorer['ppg']} PPG) leading the charge. This gives them a significant edge."
-        )
-    elif home_injured_list and away_injured_list:
-        # Both teams injured
-        home_inj = home_injured_list[0].split(' (')[0] if home_injured_list else "key players"
-        away_inj = away_injured_list[0].split(' (')[0] if away_injured_list else "key players"
-        factors.append(
-            f"• <b>Battle of Banged-Up Rosters:</b> Both teams are dealing with injuries — "
-            f"{home_team} without {home_inj} vs. {away_team} missing {away_inj}. "
-            f"Depth and rotations will be tested."
-        )
+    # 4. Recent form
+    home_wins = home_last_5.count('W') if home_last_5 else 0
+    away_wins = away_last_5.count('W') if away_last_5 else 0
+    if home_wins >= 4:
+        factors.append(f"• <b>Momentum:</b> {home_team} are hot, going {home_last_5} in their last 5 games.")
+    elif away_wins >= 4:
+        factors.append(f"• <b>Road Warriors:</b> Despite being away, {away_team} are {away_last_5} in their last 5.")
+    
+    # 5. Division context
+    home_div = home_db.get('division', '')
+    if home_div and sport.lower() in ['nba', 'nfl']:
+        factors.append(f"• <b>Divisional Play:</b> This {home_div} division matchup carries extra weight.")
+    
+    # 6. Odds summary
+    if spread_val <= 3:
+        factors.append(f"• <b>Even Matchup:</b> Oddsmakers see this as tight — {favorite} favored by just {spread_val} points ({win_prob}% win probability).")
     else:
-        # Both healthy - focus on star matchup
-        if home_top_scorer['ppg'] > away_top_scorer['ppg'] + 4:
-            factors.append(
-                f"• <b>Star Power Advantage:</b> {home_top_scorer['name']} is averaging {home_top_scorer['ppg']} PPG, "
-                f"giving {home_team} a clear offensive edge over {away_top_scorer['name']} "
-                f"({away_top_scorer['ppg']} PPG for {away_team})."
-            )
-        elif away_top_scorer['ppg'] > home_top_scorer['ppg'] + 4:
-            factors.append(
-                f"• <b>Star Power Edge:</b> {away_top_scorer['name']} ({away_top_scorer['ppg']} PPG) "
-                f"can take over games, especially with {home_top_scorer['name']} at {home_top_scorer['ppg']} PPG."
-            )
+        factors.append(f"• <b>Favorite Status:</b> {favorite} are {spread_val}-point favorites with {win_prob}% implied win probability.")
     
-    # 4. Division/Matchup History
-    home_div = home_db.get('division_record', '')
+    # Format output
+    if factors:
+        reasoning = f"<p style='margin-bottom: 0.5rem; color: #e0e0e0;'>{context}</p>" + "<br>".join(factors[:5])
+    else:
+        reasoning = f"<p>{context}</p><br>• <b>Matchup Analysis:</b> Two competitive teams face off with {favorite} holding a slight edge.</p>"
+    
+    return reasoning
     if home_div != 'N/A' and home_div:
         factors.append(
             f"• <b>Divisional Play:</b> {home_team} are {home_div} against {home_db.get('division', 'divisional')} opponents "
