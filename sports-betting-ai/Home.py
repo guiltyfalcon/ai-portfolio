@@ -424,12 +424,32 @@ st.markdown("""
     }
     
     /* Ticker */
+    .ticker-container {
+        width: 100%;
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        padding: 0.5rem 0;
+    }
+    .ticker-track {
+        display: flex;
+        width: max-content;
+        animation: ticker-scroll 30s linear infinite;
+    }
+    .ticker-container:hover .ticker-track {
+        animation-play-state: paused;
+    }
+    @keyframes ticker-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
     .ticker-item {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         padding: 0.5rem 1rem;
         white-space: nowrap;
+        flex-shrink: 0;
     }
     
     /* Hide Streamlit branding */
@@ -1086,17 +1106,24 @@ def show_dashboard():
     for game in games:
         ticker_items.append(f"{game['home_team']} {game['home_odds']} vs {game['away_team']} {game['away_odds']}")
     
-    ticker_content = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;".join(ticker_items)
+    # Duplicate for seamless loop
+    ticker_content = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🏀&nbsp;&nbsp;&nbsp;&nbsp;".join(ticker_items * 6)
     
     # Live Odds Ticker - using st.container to avoid CSS parsing issues
     with st.container():
         st.markdown("---")
         st.caption("LIVE ODDS TICKER")
         
-        ticker_cols = st.columns(len(games))
-        for idx, (col, game) in enumerate(zip(ticker_cols, games)):
-            with col:
-                st.markdown(f"**{game['home_team']}** {game['home_odds']} vs **{game['away_team']}** {game['away_odds']}")
+        # Animated marquee ticker
+        ticker_html = f'''
+        <div class="ticker-container">
+            <div class="ticker-track">
+                <div class="ticker-item" style="color: #00e701; font-weight: 600;">{ticker_content}</div>
+                <div class="ticker-item" style="color: #00e701; font-weight: 600;">{ticker_content}</div>
+            </div>
+        </div>
+        '''
+        st.components.v1.html(ticker_html, height=50)
 
 # Sidebar Navigation
 def show_sidebar():
