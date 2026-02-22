@@ -775,13 +775,44 @@ def scrape_all_odds(days_ahead: int = 1) -> Dict:
                 home_team = game.get('home_team', '')
                 away_team = game.get('away_team', '')
                 
-                # Find team data
+                # Find team data with improved matching
                 def find_team(team_name, data_dict):
+                    if not team_name:
+                        return {}
+                    
+                    team_lower = team_name.lower().strip()
+                    
+                    # Direct match
                     if team_name in data_dict:
                         return data_dict[team_name]
+                    
+                    # Exact lowercase match
                     for key in data_dict:
-                        if team_name.lower() in key.lower() or key.lower() in team_name.lower():
+                        if key.lower().strip() == team_lower:
                             return data_dict[key]
+                    
+                    # Yahoo uses city names, ESPN uses full names
+                    # Try matching if team_name is contained in the ESPN name
+                    for key in data_dict:
+                        key_lower = key.lower().strip()
+                        # "Oklahoma City" should match "Oklahoma City Thunder"
+                        if team_lower in key_lower:
+                            return data_dict[key]
+                        # Also try reverse - "Thunder" in "Oklahoma City Thunder"
+                        for word in key_lower.split():
+                            if len(word) > 3 and word == team_lower:
+                                return data_dict[key]
+                    
+                    # Try matching just the city part
+                    for key in data_dict:
+                        key_lower = key.lower().strip()
+                        words = key_lower.split()
+                        if len(words) >= 2:
+                            # ESPN: "Oklahoma City Thunder" -> try "Oklahoma City"
+                            city_part = ' '.join(words[:-1])  # Remove last word (nickname)
+                            if team_lower == city_part:
+                                return data_dict[key]
+                    
                     return {}
                 
                 # Add standings
