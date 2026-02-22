@@ -10,6 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import requests
+import json
 from pathlib import Path
 
 # Page config MUST be first
@@ -142,10 +143,44 @@ def get_available_sports():
     
     return available
 
+def load_cached_odds(sport="nba"):
+    """Load odds from the cached JSON file updated by cron"""
+    try:
+        cache_path = Path(__file__).parent / "api" / "yahoo_odds_cache.json"
+        if cache_path.exists():
+            with open(cache_path, 'r') as f:
+                data = json.load(f)
+                sport_data = data.get('sports', {}).get(sport.lower(), [])
+                if sport_data:
+                    games = []
+                    for game in sport_data[:8]:  # Limit to 8 games
+                        games.append({
+                            'id': game['game_id'],
+                            'sport': game['sport'],
+                            'home_team': game['home_team'],
+                            'away_team': game['away_team'],
+                            'home_odds': game.get('home_ml', -140),
+                            'away_odds': game.get('away_ml', 120),
+                            'spread': game.get('home_spread', -3.5),
+                            'total': game.get('total', 228.5),
+                            'time': game['commence_time'],
+                            'status': 'upcoming',
+                            'source': 'cached'
+                        })
+                    return games
+    except Exception as e:
+        print(f"Cache load error: {e}")
+    return []
+
 # Combined fetch with fallback
 def fetch_games_with_fallback(sport="nba"):
-    """Try ESPN first, then Yahoo, then mock data"""
-    # Try ESPN API first
+    """Try cached odds first, then ESPN API, then Yahoo scraping, then mock data"""
+    # Try cached odds first (updated every 2 hours by cron)
+    games = load_cached_odds(sport)
+    if games:
+        return games, "Cached Odds"
+    
+    # Try ESPN API
     games = fetch_espn_games(sport)
     if games:
         return games, "ESPN API"
@@ -882,24 +917,11 @@ def show_dashboard():
         st.markdown("<p style='color: #8A8F98; margin-bottom: 2rem;'>Track your performance and AI predictions</p>", unsafe_allow_html=True)
     with col_refresh:
         if st.button(" 🔄 Refresh Odds", use_container_width=True):
-            with st.spinner("Fetching fresh odds..."):
-                import subprocess
-                api_path = Path(__file__).parent / "api"
-                try:
-                    result = subprocess.run(
-                        ["python3", "yahoo_scraper.py"],
-                        cwd=str(api_path),
-                        capture_output=True,
-                        text=True,
-                        timeout=60
-                    )
-                    if result.returncode == 0:
-                        st.success("✅ Odds updated! Refreshing...")
-                        st.rerun()
-                    else:
-                        st.error(f"❌ Update failed: {result.stderr[:200]}")
-                except Exception as e:
-                    st.error(f"❌ Update failed: {str(e)[:200]}")
+            with st.spinner("Reloading fresh odds..."):
+                # Clear all cached data to force re-read from file
+                st.cache_data.clear()
+                st.success("✅ Odds refreshed!")
+                st.rerun()
     with col_sport:
         # Get available sports from ESPN API (not mock data)
         available_sports = get_available_sports()
