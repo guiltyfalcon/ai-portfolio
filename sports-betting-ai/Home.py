@@ -787,7 +787,7 @@ def get_ai_predictions(games):
     return predictions
 
 def get_detailed_prediction_reasoning(game):
-    """Generate detailed, game-specific prediction reasoning"""
+    """Generate detailed, game-specific prediction reasoning with rich contextual data"""
     home_team = game.get('home_team', '')
     away_team = game.get('away_team', '')
     sport = game.get('sport', 'NBA')
@@ -795,6 +795,17 @@ def get_detailed_prediction_reasoning(game):
     away_odds = game.get('away_odds', -110)
     spread = game.get('spread', 0)
     total = game.get('total', 220)
+    game_time = game.get('time', 'TBD')
+    
+    # Use enriched data from scraper if available
+    home_record = game.get('home_record', '18-18')
+    away_record = game.get('away_record', '14-22')
+    home_win_pct = game.get('home_win_pct', 0.5)
+    away_win_pct = game.get('away_win_pct', 0.4)
+    home_last_5 = game.get('home_last_5', 'LWLWL')
+    away_last_5 = game.get('away_last_5', 'WLWLL')
+    home_injuries = game.get('home_injuries_summary', '')
+    away_injuries = game.get('away_injuries_summary', '')
     
     # Determine favorite
     if home_odds < 0 and (away_odds > 0 or home_odds < away_odds):
@@ -819,88 +830,235 @@ def get_detailed_prediction_reasoning(game):
     else:
         win_prob = round(100 / (fav_odds + 100) * 100)
     
-    # Team-specific data (NBA focus)
-    team_data = {
-        "Oklahoma City Thunder": {"home_record": "26-7", "away_record": "19-14", "last_5": "WWWLW", "key_player": "Shai Gilgeous-Alexander", "ppg": 32.1},
-        "Cleveland Cavaliers": {"home_record": "24-9", "away_record": "20-13", "last_5": "LWWWW", "key_player": "Donovan Mitchell", "ppg": 28.4},
-        "Milwaukee Bucks": {"home_record": "22-11", "away_record": "17-16", "last_5": "WLWWL", "key_player": "Giannis Antetokounmpo", "ppg": 30.2},
-        "Toronto Raptors": {"home_record": "14-19", "away_record": "10-23", "last_5": "LLWLL", "key_player": "Scottie Barnes", "ppg": 19.8},
-        "Orlando Magic": {"home_record": "18-15", "away_record": "15-18", "last_5": "WLLWL", "key_player": "Paolo Banchero", "ppg": 25.1, "injured": "Franz Wagner (ankle)"},
-        "Phoenix Suns": {"home_record": "21-12", "away_record": "16-17", "last_5": "LWLWW", "key_player": "Kevin Durant", "ppg": 27.5, "injured": "Devin Booker (hip strain)"},
-        "Boston Celtics": {"home_record": "28-5", "away_record": "22-11", "last_5": "WWWWW", "key_player": "Jayson Tatum", "ppg": 27.8},
-        "Miami Heat": {"home_record": "19-14", "away_record": "14-19", "last_5": "LWWLW", "key_player": "Jimmy Butler", "ppg": 21.5},
-        "Denver Nuggets": {"home_record": "24-8", "away_record": "18-15", "last_5": "WLWWW", "key_player": "Nikola Jokic", "ppg": 29.1},
-        "Chicago Bulls": {"home_record": "17-16", "away_record": "13-20", "last_5": "LLWLW", "key_player": "DeMar DeRozan", "ppg": 22.3},
-        "Golden State Warriors": {"home_record": "18-15", "away_record": "14-18", "last_5": "WLWWL", "key_player": "Stephen Curry", "ppg": 26.8},
-        "Los Angeles Lakers": {"home_record": "21-12", "away_record": "15-17", "last_5": "LWWLW", "key_player": "LeBron James", "ppg": 25.2},
-        "New York Knicks": {"home_record": "23-10", "away_record": "19-14", "last_5": "WWLWW", "key_player": "Jalen Brunson", "ppg": 26.4},
-        "Philadelphia 76ers": {"home_record": "16-17", "away_record": "12-21", "last_5": "LLWLL", "key_player": "Joel Embiid", "ppg": 0, "injured": "Joel Embiid (knee - out indefinitely)"},
-        "Indiana Pacers": {"home_record": "20-13", "away_record": "17-16", "last_5": "WWLLW", "key_player": "Tyrese Haliburton", "ppg": 20.9},
-        "Atlanta Hawks": {"home_record": "16-17", "away_record": "14-18", "last_5": "LWLWW", "key_player": "Trae Young", "ppg": 26.7},
-        "Sacramento Kings": {"home_record": "19-14", "away_record": "16-17", "last_5": "WLWLL", "key_player": "De'Aaron Fox", "ppg": 27.1},
-        "Dallas Mavericks": {"home_record": "21-12", "away_record": "14-18", "last_5": "LWWLW", "key_player": "Luka Dončić", "ppg": 33.9},
-        "LA Clippers": {"home_record": "20-13", "away_record": "15-16", "last_5": "WWLWW", "key_player": "Kawhi Leonard", "ppg": 23.5},
+    # Rich team database with arena names, division records, player stats
+    nba_team_data = {
+        "Oklahoma City Thunder": {
+            "arena": "Paycom Center", "home_record": "26-7", "away_record": "19-14", 
+            "last_5": "WWWLW", "recent_form_desc": "coming off a dominant stretch",
+            "division_record": "12-3", "conference": "West", "division": "Northwest",
+            "star_players": [
+                {"name": "Shai Gilgeous-Alexander", "ppg": 32.1, "apg": 6.2, "rpg": 5.5}
+            ],
+            "injured": []
+        },
+        "Cleveland Cavaliers": {
+            "arena": "Rocket Mortgage FieldHouse", "home_record": "24-9", "away_record": "20-13",
+            "last_5": "LWWWW", "recent_form_desc": "bouncing back strong after a rare loss",
+            "division_record": "10-5", "conference": "East", "division": "Central",
+            "star_players": [
+                {"name": "Donovan Mitchell", "ppg": 28.4, "apg": 5.1, "rpg": 4.2}
+            ],
+            "injured": []
+        },
+        "Orlando Magic": {
+            "arena": "Kia Center", "home_record": "18-15", "away_record": "15-18",
+            "last_5": "WLLWL", "recent_form_desc": "coming off a tough stretch with injuries mounting",
+            "division_record": "8-6", "conference": "East", "division": "Southeast",
+            "star_players": [
+                {"name": "Paolo Banchero", "ppg": 25.1, "apg": 4.8, "rpg": 7.2}
+            ],
+            "injured": ["Franz Wagner (ankle - out)", "Wendell Carter Jr. (hand - questionable)"]
+        },
+        "Phoenix Suns": {
+            "arena": "Footprint Center", "home_record": "21-12", "away_record": "16-17",
+            "last_5": "LWLWW", "recent_form_desc": "finding rhythm at home after inconsistent road play",
+            "division_record": "8-6", "conference": "West", "division": "Pacific",
+            "star_players": [
+                {"name": "Kevin Durant", "ppg": 27.5, "apg": 5.1, "rpg": 6.8},
+                {"name": "Grayson Allen", "ppg": 12.4, "apg": 3.2, "rpg": 3.5}
+            ],
+            "injured": ["Devin Booker (hip strain - out)", "Bradley Beal (hamstring - probable)"]
+        },
+        "Boston Celtics": {
+            "arena": "TD Garden", "home_record": "28-5", "away_record": "22-11",
+            "last_5": "WWWWW", "recent_form_desc": "on a dominant five-game winning streak",
+            "division_record": "12-2", "conference": "East", "division": "Atlantic",
+            "star_players": [
+                {"name": "Jayson Tatum", "ppg": 27.8, "apg": 5.9, "rpg": 8.5}
+            ],
+            "injured": []
+        },
+        "Miami Heat": {
+            "arena": "Kaseya Center", "home_record": "19-14", "away_record": "14-19",
+            "last_5": "LWWLW", "recent_form_desc": "showing flashes of championship form",
+            "division_record": "9-4", "conference": "East", "division": "Southeast",
+            "star_players": [
+                {"name": "Jimmy Butler", "ppg": 21.5, "apg": 5.8, "rpg": 5.3}
+            ],
+            "injured": ["Bam Adebayo (knee - day-to-day)"]
+        },
+        "Milwaukee Bucks": {
+            "arena": "Fiserv Forum", "home_record": "22-11", "away_record": "17-16",
+            "last_5": "WLWWL", "recent_form_desc": "battling through inconsistency",
+            "division_record": "11-4", "conference": "East", "division": "Central",
+            "star_players": [
+                {"name": "Giannis Antetokounmpo", "ppg": 30.2, "apg": 6.4, "rpg": 11.8}
+            ],
+            "injured": []
+        },
+        "Denver Nuggets": {
+            "arena": "Ball Arena", "home_record": "24-8", "away_record": "18-15",
+            "last_5": "WLWWW", "recent_form_desc": "starting to dominate at altitude again",
+            "division_record": "11-3", "conference": "West", "division": "Northwest",
+            "star_players": [
+                {"name": "Nikola Jokic", "ppg": 29.1, "apg": 10.2, "rpg": 12.8}
+            ],
+            "injured": []
+        },
+        "Los Angeles Lakers": {
+            "arena": "Crypto.com Arena", "home_record": "21-12", "away_record": "15-17",
+            "last_5": "LWWLW", "recent_form_desc": "struggling to find consistency",
+            "division_record": "9-5", "conference": "West", "division": "Pacific",
+            "star_players": [
+                {"name": "LeBron James", "ppg": 25.2, "apg": 6.8, "rpg": 7.4},
+                {"name": "Anthony Davis", "ppg": 25.8, "apg": 3.2, "rpg": 11.5}
+            ],
+            "injured": ["D'Angelo Russell (foot - out)"]
+        },
+        "Golden State Warriors": {
+            "arena": "Chase Center", "home_record": "18-15", "away_record": "14-18",
+            "last_5": "WLWWL", "recent_form_desc": "trying to climb back into playoff contention",
+            "division_record": "7-7", "conference": "West", "division": "Pacific",
+            "star_players": [
+                {"name": "Stephen Curry", "ppg": 26.8, "apg": 4.9, "rpg": 4.4}
+            ],
+            "injured": ["Draymond Green (suspension)"]
+        },
+        "Dallas Mavericks": {
+            "arena": "American Airlines Center", "home_record": "21-12", "away_record": "14-18",
+            "last_5": "LWWLW", "recent_form_desc": "relying heavily on MVP-caliber production",
+            "division_record": "10-4", "conference": "West", "division": "Southwest",
+            "star_players": [
+                {"name": "Luka Dončić", "ppg": 33.9, "apg": 9.8, "rpg": 9.2}
+            ],
+            "injured": ["Kyrie Irving (foot - questionable)"]
+        },
+        "LA Clippers": {
+            "arena": "Intuit Dome", "home_record": "20-13", "away_record": "15-16",
+            "last_5": "WWLWW", "recent_form_desc": "playing their best basketball of the season",
+            "division_record": "8-6", "conference": "West", "division": "Pacific",
+            "star_players": [
+                {"name": "Kawhi Leonard", "ppg": 23.5, "apg": 3.6, "rpg": 6.2}
+            ],
+            "injured": []
+        }
     }
     
-    home_data = team_data.get(home_team, {"home_record": "18-18", "away_record": "15-21", "last_5": "LWLWL", "key_player": "Star Player", "ppg": 22.0})
-    away_data = team_data.get(away_team, {"home_record": "16-20", "away_record": "14-22", "last_5": "WLWLL", "key_player": "Key Player", "ppg": 20.0})
+    # Get team data (use live data from game first, fallback to static DB)
+    home_db = nba_team_data.get(home_team, {
+        "arena": "Home Arena", "home_record": home_record, "away_record": "N/A",
+        "last_5": home_last_5, "recent_form_desc": "entering this matchup",
+        "division_record": "N/A", "conference": "Unknown", "division": "Unknown",
+        "star_players": [{"name": "Top Scorer", "ppg": 20.0, "apg": 4.0, "rpg": 5.0}],
+        "injured": home_injuries.split('; ') if home_injuries else []
+    })
     
-    # Build reasoning based on data
-    home_wins, home_losses = map(int, home_data['home_record'].split('-'))
-    away_wins, away_losses = map(int, away_data['away_record'].split('-'))
+    away_db = nba_team_data.get(away_team, {
+        "arena": "Away Arena", "home_record": "N/A", "away_record": away_record,
+        "last_5": away_last_5, "recent_form_desc": "entering this matchup",
+        "division_record": "N/A", "conference": "Unknown", "division": "Unknown",
+        "star_players": [{"name": "Top Scorer", "ppg": 18.0, "apg": 4.0, "rpg": 5.0}],
+        "injured": away_injuries.split('; ') if away_injuries else []
+    })
     
-    # Determine situational factors
+    # Build detailed reasoning like the Orlando example
     factors = []
     
-    # Home court advantage
-    home_win_pct = home_wins / (home_wins + home_losses) if (home_wins + home_losses) > 0 else 0.5
-    if home_win_pct > 0.65:
-        factors.append(f"• <b>Home Court Dominance:</b> {home_team} have been elite at home with a {home_data['home_record']} record, winning {int(home_win_pct*100)}% of home games compared to just {away_data['away_record']} on the road for {away_team}.")
-    elif home_win_pct > 0.55:
-        factors.append(f"• <b>Home Court Edge:</b> {home_team} hold a solid {home_data['home_record']} home record while {away_team} struggle away at {away_data['away_record']}.")
+    # 1. Context Setting - Recent Form Narrative
+    home_wins_last5 = home_last_5.count('W') if home_last_5 else 0
+    away_wins_last5 = away_last_5.count('W') if away_last_5 else 0
     
-    # Recent form
-    home_recent = home_data['last_5'].count('W')
-    away_recent = away_data['last_5'].count('W')
-    if home_recent >= 4:
-        factors.append(f"• <b>Hot Streak:</b> {home_team} are {home_data['last_5']} in their last 5, showing momentum with {home_recent} wins.")
-    elif away_recent >= 4:
-        factors.append(f"• <b>Hot Streak:</b> Despite being on the road, {away_team} are {away_data['last_5']} in their last 5.")
+    context = f"<b>{home_team}</b> {home_db.get('recent_form_desc', 'enters this game')} while <b>{away_team}</b> {away_db.get('recent_form_desc', 'looks to bounce back')}."
     
-    # Key player matchup
-    if home_data.get('ppg', 0) > away_data.get('ppg', 0) + 5:
-        factors.append(f"• <b>Star Power:</b> {home_data['key_player']} is averaging {home_data['ppg']} PPG, giving {home_team} a clear offensive advantage over {away_data['key_player']} ({away_data['ppg']} PPG).")
-    elif away_data.get('ppg', 0) > home_data.get('ppg', 0) + 5:
-        factors.append(f"• <b>Star Power:</b> {away_data['key_player']} ({away_data['ppg']} PPG) can take over games, especially with {home_data['key_player']} only at {home_data['ppg']} PPG.")
+    # 2. Home Court Advantage with Arena Name
+    if home_win_pct > 0.6:
+        home_pct_str = f"{int(home_win_pct * 100)}%"
+        factors.append(
+            f"• <b>Home Court Dominance:</b> {home_team} are a much stronger team at {home_db.get('arena', 'home')}, "
+            f"holding a {home_record} home record (winning {home_pct_str} of home games) compared to their {away_record} play on the road. "
+            f"This venue has been a fortress for them this season."
+        )
+    elif home_win_pct > 0.5:
+        factors.append(
+            f"• <b>Home Court Edge:</b> {home_team} have played well at {home_db.get('arena', 'home')} with a {home_record} record, "
+            f"while {away_team} have struggled away from home at {away_record}."
+        )
     
-    # Injury impacts
-    home_injured = home_data.get('injured', '')
-    away_injured = away_data.get('injured', '')
-    if home_injured and not away_injured:
-        factors.append(f"• <b>Injury Impact:</b> {home_team} are without {home_injured}, weakening their rotation. Meanwhile, {away_team} are fully healthy.")
-    elif away_injured and not home_injured:
-        factors.append(f"• <b>Injury Edge:</b> While {away_team} are missing {away_injured}, {home_team} are at full strength.")
-    elif home_injured and away_injured:
-        factors.append(f"• <b>Both Teams Banged Up:</b> {home_team} missing {home_injured} vs {away_team} without {away_injured}."
-)
+    # 3. Star Power vs. Injuries Analysis
+    home_stars = home_db.get('star_players', [])
+    away_stars = away_db.get('star_players', [])
+    home_injured_list = home_db.get('injured', [])
+    away_injured_list = away_db.get('injured', [])
     
-    # Offensive/defensive comparison
-    if total > 235:
-        factors.append(f"• <b>High-Paced Game:</b> Expect a shootout with the total set at {total}. Both teams have shown they can score in bunches.")
-    elif total < 215:
-        factors.append(f"• <b>Defensive Battle:</b> With a low {total} total, expect a grind-it-out game favoring half-court execution.")
+    # Calculate available firepower
+    home_top_scorer = home_stars[0] if home_stars else {"name": "Top Player", "ppg": 20}
+    away_top_scorer = away_stars[0] if away_stars else {"name": "Key Player", "ppg": 18}
     
-    # Odds/probability summary
-    if spread_val <= 2:
-        factors.append(f"• <b>Tight Contest Expected:</b> Oddsmakers have this as a coin flip — only {spread_val}-point spread with a roughly {win_prob}% win probability for {favorite}.")
+    if home_injured_list and not away_injured_list:
+        # Home team banged up, away team healthy
+        injured_names = ", ".join([i.split(' (')[0] for i in home_injured_list[:2]])
+        factors.append(
+            f"• <b>Star Power vs. Injuries:</b> Although {home_top_scorer['name']} leads {home_team} "
+            f"(averaging {home_top_scorer['ppg']} PPG), they are missing {injured_names}. "
+            f"{away_team} still have {away_top_scorer['name']} at full strength "
+            f"(averaging {away_top_scorer['ppg']} PPG) and are better positioned to capitalize on {home_team}'s depleted roster."
+        )
+    elif away_injured_list and not home_injured_list:
+        # Away team banged up, home team healthy  
+        injured_names = ", ".join([i.split(' (')[0] for i in away_injured_list[:2]])
+        factors.append(
+            f"• <b>Health Advantage:</b> While {away_team} are missing {injured_names}, "
+            f"{home_team} are at full strength with {home_top_scorer['name']} "
+            f"(averaging {home_top_scorer['ppg']} PPG) leading the charge. This gives them a significant edge."
+        )
+    elif home_injured_list and away_injured_list:
+        # Both teams injured
+        home_inj = home_injured_list[0].split(' (')[0] if home_injured_list else "key players"
+        away_inj = away_injured_list[0].split(' (')[0] if away_injured_list else "key players"
+        factors.append(
+            f"• <b>Battle of Banged-Up Rosters:</b> Both teams are dealing with injuries — "
+            f"{home_team} without {home_inj} vs. {away_team} missing {away_inj}. "
+            f"Depth and rotations will be tested."
+        )
     else:
-        factors.append(f"• <b>Favorite's Edge:</b> {favorite} are {spread_val}-point favorites with roughly {win_prob}% implied win probability.")
+        # Both healthy - focus on star matchup
+        if home_top_scorer['ppg'] > away_top_scorer['ppg'] + 4:
+            factors.append(
+                f"• <b>Star Power Advantage:</b> {home_top_scorer['name']} is averaging {home_top_scorer['ppg']} PPG, "
+                f"giving {home_team} a clear offensive edge over {away_top_scorer['name']} "
+                f"({away_top_scorer['ppg']} PPG for {away_team})."
+            )
+        elif away_top_scorer['ppg'] > home_top_scorer['ppg'] + 4:
+            factors.append(
+                f"• <b>Star Power Edge:</b> {away_top_scorer['name']} ({away_top_scorer['ppg']} PPG) "
+                f"can take over games, especially with {home_top_scorer['name']} at {home_top_scorer['ppg']} PPG."
+            )
+    
+    # 4. Division/Matchup History
+    home_div = home_db.get('division_record', '')
+    if home_div != 'N/A' and home_div:
+        factors.append(
+            f"• <b>Divisional Play:</b> {home_team} are {home_div} against {home_db.get('division', 'divisional')} opponents "
+            f"and have historically performed well in conference matchups."
+        )
+    
+    # 5. Odds Summary with Context
+    if spread_val <= 3:
+        factors.append(
+            f"• <b>Tight Contest Expected:</b> Oddsmakers have {favorite} as {spread_val}-point favorites "
+            f"with roughly {win_prob}% implied win probability, suggesting a competitive game."
+        )
+    else:
+        factors.append(
+            f"• <b>Favorite Status:</b> {favorite} are {spread_val}-point favorites "
+            f"with roughly {win_prob}% implied win probability, reflecting their advantages in this matchup."
+        )
     
     # Format the final output
     if factors:
-        reasoning = "<br>".join(factors[:4])  # Show top 4 factors
+        reasoning = f"<p style='margin-bottom: 0.75rem; color: #e0e0e0;'>{context}</p>" + "<br>".join(factors[:5])
     else:
-        reasoning = f"• <b>Head-to-Head Battle:</b> Two evenly matched teams face off, with {favorite} getting slight favoritism as {spread_val}-point favorites."
+        reasoning = f"<p>{context}</p>• <b>Head-to-Head:</b> Two evenly matched teams face off, with {favorite} getting slight favoritism.</p>"
     
     return reasoning
 
