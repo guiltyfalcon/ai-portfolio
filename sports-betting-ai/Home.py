@@ -430,18 +430,27 @@ st.markdown("""
         background: rgba(0, 0, 0, 0.3);
         border-radius: 8px;
         padding: 0.5rem 0;
+        -webkit-overflow-scrolling: touch;
     }
     .ticker-track {
         display: flex;
         width: max-content;
         animation: ticker-scroll 30s linear infinite;
+        -webkit-animation: ticker-scroll 30s linear infinite;
+        will-change: transform;
     }
-    .ticker-container:hover .ticker-track {
+    .ticker-container:hover .ticker-track,
+    .ticker-container:active .ticker-track {
         animation-play-state: paused;
+        -webkit-animation-play-state: paused;
     }
     @keyframes ticker-scroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+        0% { transform: translateX(0); -webkit-transform: translateX(0); }
+        100% { transform: translateX(-50%); -webkit-transform: translateX(-50%); }
+    }
+    @-webkit-keyframes ticker-scroll {
+        0% { -webkit-transform: translateX(0); transform: translateX(0); }
+        100% { -webkit-transform: translateX(-50%); transform: translateX(-50%); }
     }
     .ticker-item {
         display: inline-flex;
@@ -450,6 +459,14 @@ st.markdown("""
         padding: 0.5rem 1rem;
         white-space: nowrap;
         flex-shrink: 0;
+    }
+    
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+        .ticker-track {
+            animation-duration: 20s;
+            -webkit-animation-duration: 20s;
+        }
     }
     
     /* Hide Streamlit branding */
