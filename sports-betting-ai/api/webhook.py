@@ -40,7 +40,7 @@ def verify_stripe_signature(payload, sig_header, secret):
 
 def save_subscription(customer_id, data):
     """Save subscription to file"""
-    user_file = f"/tmp/sports_bet_users/{customer_id}.json"
+    user_file = f".subscriptions/{customer_id}.json"
     os.makedirs(os.path.dirname(user_file), exist_ok=True)
     
     with open(user_file, 'w') as f:
@@ -86,26 +86,23 @@ def handler(request):
             
         elif event_type == 'customer.subscription.deleted':
             customer_id = data.get('customer')
-            print(f"❌ Cancelled: {customer_id}")
+            user_file = f".subscriptions/{customer_id}.json"
+            if os.path.exists(user_file):
+                with open(user_file, 'r') as f:
+                    subscription_data = json.load(f)
+                subscription_data['status'] = 'cancelled'
+                subscription_data['is_cancelled'] = True
+                subscription_data['cancelled_at'] = datetime.now().isoformat()
+                save_subscription(customer_id, subscription_data)
+                print(f"❌ Cancelled: {customer_id}")
         
         return {"statusCode": 200, "body": json.dumps({"received": True})}
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         return {"statusCode": 400, "body": json.dumps({"error": str(e)})}
 
-# Vercel entry point
-def main(request):
-    response = handler(request)
-    
-    headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Stripe-Signature"
-    }
-    
-    if request.method == "OPTIONS":
-        return {"statusCode": 200, "headers": headers, "body": ""}
-    
-    response["headers"] = headers
-    return response
+# For testing locally
+if __name__ == "__main__":
+    print("Stripe Webhook Handler")
+    print("Set STRIPE_WEBHOOK_SECRET environment variable to test")

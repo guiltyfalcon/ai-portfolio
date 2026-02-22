@@ -13,6 +13,16 @@ import requests
 import json
 from pathlib import Path
 
+# Import auth functions with premium support
+from auth import (
+    is_premium_user, 
+    can_make_prediction, 
+    increment_prediction, 
+    predictions_remaining,
+    FREE_PREDICTIONS_LIMIT,
+    STRIPE_CHECKOUT_URL
+)
+
 # Page config MUST be first
 st.set_page_config(
     page_title="Sports Betting AI Pro",
@@ -1236,6 +1246,45 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
     
+    # Premium Banner for Free Users
+    if not is_premium_user():
+        remaining = predictions_remaining()
+        if remaining > 0:
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+             border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p style="margin: 0; color: #FFD700; font-weight: 600;">⭐ Free Tier: {remaining} prediction{'s' if remaining != 1 else ''} remaining</p>
+                        <p style="margin: 0; color: #8A8F98; font-size: 0.75rem;">Upgrade to unlock unlimited predictions</p>
+                    </div>
+                    <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%); color: #0B0E14; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">Upgrade $5/mo</a>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            # Out of predictions - show paywall
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, rgba(255, 75, 75, 0.1) 0%, rgba(255, 140, 140, 0.1) 100%);
+             border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 12px; padding: 2rem; margin-bottom: 1rem; text-align: center;">
+                <p style="margin: 0 0 0.5rem 0; color: #ff6b6b; font-weight: 600; font-size: 1.25rem;">🔒 Limit Reached</p>
+                <p style="margin: 0 0 1.5rem 0; color: #8A8F98;">You've used all {FREE_PREDICTIONS_LIMIT} free predictions. Upgrade to Pro for unlimited access.</p>
+                <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%); color: #0B0E14; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Upgrade to Pro — $5/month</a>
+            </div>
+            """, unsafe_allow_html=True)
+            st.stop()
+    else:
+        # Premium user badge
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(0, 231, 1, 0.1) 100%); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 1.25rem;">💎</span>
+                <span style="color: #00d2ff; font-weight: 600;">Pro Member</span>
+                <span style="color: #8A8F98; font-size: 0.75rem; margin-left: auto;">Unlimited predictions</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
     # Title row with Sport Selector and Refresh
     col_title, col_sport, col_refresh = st.columns([3, 1, 1])
     with col_title:
@@ -1457,10 +1506,40 @@ def show_dashboard():
         # Get prediction reasoning for this game
         prediction_reasoning = get_detailed_prediction_reasoning(game)
         
+        # Create unique key for this game's prediction view tracking
+        prediction_key = f"pred_view_{game['id']}"
+        
+        # Check if prediction was already viewed
+        viewed_predictions = st.session_state.get('viewed_predictions', set())
+        is_viewed = prediction_key in viewed_predictions
+        
+        # Determine if this game should show prediction details
+        if is_premium_user():
+            can_view = True  # Premium users always can view
+        elif is_viewed:
+            can_view = True  # Already viewed, can re-open
+        elif can_make_prediction():
+            can_view = True  # Free user with predictions remaining
+        else:
+            can_view = False  # Out of free predictions
+        
         live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
         score_display = game.get('time', 'TBD')
         if game['status'] == 'live' and 'score' in game:
             score_display = f"{game['score']['home']} - {game['score']['away']}"
+        
+        if can_view:
+            # Use Streamlit's expander (tracks state automatically)
+            with st.expander(f"🔮 View Prediction Analysis {'✓' if is_viewed else ''}", expanded=False):
+                if not is_viewed and not is_premium_user():
+                    # First time viewing - decrement counter
+                    increment_prediction()
+                    viewed_predictions.add(prediction_key)
+                    st.session_state.viewed_predictions = viewed_predictions
+                    st.toast(f"📊 Predictions remaining: {predictions_remaining()}")
+                
+                st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
+                st.markdown(prediction_reasoning)
         
         card_html = f'''
         <div class="game-card">
@@ -1483,20 +1562,18 @@ def show_dashboard():
                 <span style="color: #8A8F98; font-size: 0.75rem;">Spread: {game['spread']}</span>
                 <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
             </div>
-            <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,210,255,0.3);">
-                <details style="cursor: pointer;">
-                    <summary style="color: #00d2ff; font-size: 0.8rem; font-weight: 500; list-style: none;">🔮 View Prediction Analysis</summary>
-                    <div style="margin-top: 0.75rem; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                        <p style="color: #8A8F98; font-size: 0.75rem; font-weight: 500; margin-bottom: 0.5rem;">📊 Why {game['home_team']} are favored:</p>
-                        <div style="color: #e0e0e0; font-size: 0.75rem; line-height: 1.5;">
-                            {prediction_reasoning}
-                        </div>
-                    </div>
-                </details>
-            </div>
         </div>
         '''
         st.html(card_html)
+        
+        # Show locked message if user can't view prediction
+        if not can_view:
+            st.error("🔒 View prediction analysis — Upgrade to Pro for unlimited access", icon="💎")
+            st.markdown(f"""
+            <div style="text-align: center; margin: 1rem 0 2rem 0;">
+                <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%); color: #0B0E14; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Upgrade to Pro — $5/month</a>
+            </div>
+            """, unsafe_allow_html=True)
     
     # Live Odds Ticker
     st.markdown("---")

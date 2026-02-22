@@ -12,15 +12,20 @@ ADMIN_PASSWORD_HASH = hashlib.sha256("admin123".encode()).hexdigest()
 # Session management
 SESSION_DURATION = 24 * 60 * 60  # 24 hours in seconds
 
+# Stripe configuration
+STRIPE_CHECKOUT_URL = "https://buy.stripe.com/4gM28k5L17246LNfubfjG00"
+STRIPE_TEST_MODE = False
+
 def hash_password(password):
     """Hash a password using SHA-256"""
     return hashlib.sha256(password.encode()).hexdigest()
 
-def create_session(username, is_admin=False):
-    """Create a new session"""
+def create_session(username, is_admin=False, is_premium=False):
+    """Create a new session with premium status"""
     session = {
         'username': username,
         'is_admin': is_admin,
+        'is_premium': is_premium or is_admin,  # Admin is always premium
         'created_at': time.time(),
         'expires_at': time.time() + SESSION_DURATION
     }
@@ -41,6 +46,13 @@ def check_session():
     
     return session
 
+def is_premium_user():
+    """Check if current user has premium access"""
+    session = check_session()
+    if session:
+        return session.get('is_premium', False) or session.get('is_admin', False)
+    return False
+
 def logout():
     """Clear user session"""
     if 'auth_session' in st.session_state:
@@ -51,6 +63,33 @@ def is_admin():
     """Check if current user is admin"""
     session = check_session()
     return session and session.get('is_admin', False)
+
+# Free tier prediction tracking
+FREE_PREDICTIONS_LIMIT = 2
+
+def get_prediction_count():
+    """Get current prediction count for free tier"""
+    if 'prediction_count' not in st.session_state:
+        st.session_state['prediction_count'] = 0
+    return st.session_state['prediction_count']
+
+def increment_prediction():
+    """Increment prediction counter"""
+    if 'prediction_count' not in st.session_state:
+        st.session_state['prediction_count'] = 0
+    st.session_state['prediction_count'] += 1
+
+def can_make_prediction():
+    """Check if user can make a prediction (free tier or premium)"""
+    if is_premium_user():
+        return True
+    return get_prediction_count() < FREE_PREDICTIONS_LIMIT
+
+def predictions_remaining():
+    """Get number of free predictions remaining"""
+    if is_premium_user():
+        return -1  # Unlimited
+    return max(0, FREE_PREDICTIONS_LIMIT - get_prediction_count())
 
 # User storage (in production, use a database)
 USERS_FILE = ".users.json"
