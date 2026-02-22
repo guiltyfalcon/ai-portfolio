@@ -609,11 +609,140 @@ def scrape_all_odds(days_ahead: int = 1) -> Dict:
         'sports': {}
     }
     
+    # ESPN API mapping
+    espn_api_map = {
+        'nba': 'basketball/nba',
+        'nfl': 'football/nfl',
+        'mlb': 'baseball/mlb',
+        'nhl': 'hockey/nhl',
+        'ncaab': 'basketball/mens-college-basketball',
+        'ncaaf': 'football/college-football',
+    }
+    
+    def fetch_espn_standings_api(sport: str) -> Dict:
+        """Fetch team standings from ESPN API."""
+        if sport not in espn_api_map:
+            return {}
+        
+        url = f"https://site.api.espn.com/apis/site/v2/sports/{espn_api_map[sport]}/standings"
+        try:
+            response = requests.get(url, headers=get_headers(), timeout=15)
+            data = response.json()
+            team_records = {}
+            
+            if 'standings' in data:
+                entries = []
+                if 'entries' in data['standings']:
+                    entries = data['standings']['entries']
+                elif 'conferences' in data['standings']:
+                    for conf in data['standings']['conferences']:
+                        if 'entries' in conf:
+                            entries.extend(conf['entries'])
+                elif 'divisions' in data['standings']:
+                    for div in data['standings']['divisions']:
+                        if 'entries' in div:
+                            entries.extend(div['entries'])
+                
+                for entry in entries:
+                    team_info = entry.get('team', {})
+                    team_name = team_info.get('displayName', '')
+                    if team_name:
+                        stats = entry.get('stats', [])
+                        wins, losses = 0, 0
+                        for stat in stats:
+                            if stat.get('name') == 'wins':
+                                wins = int(stat.get('value', 0))
+                            elif stat.get('name') == 'losses':
+                                losses = int(stat.get('value', 0))
+                        if wins == 0 and losses == 0:
+                            for stat in stats:
+                                if stat.get('abbreviation') == 'W':
+                                    wins = int(stat.get('value', 0))
+                                elif stat.get('abbreviation') == 'L':
+                                    losses = int(stat.get('value', 0))
+                        if wins > 0 or losses > 0:
+                            total = wins + losses
+                            team_records[team_name] = {
+                                'wins': wins,
+                                'losses': losses,
+                                'record': f"{wins}-{losses}",
+                                'win_pct': round(wins / total, 3) if total > 0 else 0
+                            }
+            return team_records
+        except Exception as e:
+            print(f"⚠️ {sport.upper()}: ESPN standings API error - {e}")
+            return {}
+    
+    def fetch_espn_injuries_api(sport: str) -> Dict:
+        """Fetch injury reports from ESPN API."""
+        if sport not in espn_api_map or sport in ['ncaab', 'ncaaf']:
+            return {}
+        
+        url = f"https://site.api.espn.com/apis/site/v2/sports/{espn_api_map[sport]}/injuries"
+        try:
+            response = requests.get(url, headers=get_headers(), timeout=15)
+            data = response.json()
+            team_injuries = {}
+            
+            if 'injuries' in data:
+                for team_data in data['injuries']:
+                    team_name = team_data.get('team', {}).get('displayName', '')
+                    injuries = []
+                    for athlete in team_data.get('athletes', []):
+                        player_name = athlete.get('athlete', {}).get('displayName', '')
+                        status = athlete.get('status', 'Unknown')
+                        desc = "No details"
+                        if 'injuries' in athlete and athlete['injuries']:
+                            desc = athlete['injuries'][0].get('detail', 'No details')
+                        if player_name:
+                            injuries.append({'name': player_name, 'status': status, 'description': desc})
+                    if injuries and team_name:
+                        team_injuries[team_name] = injuries
+            return team_injuries
+        except Exception as e:
+            print(f"⚠️ {sport.upper()}: ESPN injuries API error - {e}")
+            return {}
+    
+    def fetch_espn_results_api(sport: str) -> Dict:
+        """Fetch recent game results from ESPN API."""
+        if sport not in espn_api_map:
+            return {}
+        
+        # Get games from last 3 days
+        team_form = {}
+        for day_offset in range(1, 4):
+            date = (datetime.now() - timedelta(days=day_offset)).strftime('%Y%m%d')
+            url = f"https://site.api.espn.com/apis/site/v2/sports/{espn_api_map[sport]}/scoreboard?dates={date}"
+            try:
+                response = requests.get(url, headers=get_headers(), timeout=10)
+                data = response.json()
+                if 'events' in data:
+                    for event in data['events']:
+                        if not event.get('status', {}).get('type', {}).get('completed', False):
+                            continue
+                        for comp in event.get('competitions', []):
+                            for competitor in comp.get('competitors', []):
+                                team_name = competitor.get('team', {}).get('displayName', '')
+                                winner = competitor.get('winner', False)
+                                if team_name:
+                                    if team_name not in team_form:
+                                        team_form[team_name] = {'last_5': []}
+                                    team_form[team_name]['last_5'].append('W' if winner else 'L')
+            except:
+                continue
+        
+        # Format last 5 for each team
+        for team, data in team_form.items():
+            recent = data['last_5'][-5:] if len(data['last_5']) >= 5 else data['last_5']
+            data['last_5_form'] = ''.join(recent)
+            data['last_5_wins'] = recent.count('W')
+        
+        return team_form
+    
     print(f"\n{'='*60}")
     print(f"🏃 YAHOO + ESPN SCRAPER STARTED")
     print(f"{'='*60}\n")
     
-    # Calculate dates to fetch for Yahoo
     dates = []
     for i in range(days_ahead):
         date = (datetime.now() + timedelta(days=i)).strftime('%Y-%m-%d')
@@ -623,41 +752,78 @@ def scrape_all_odds(days_ahead: int = 1) -> Dict:
         print(f"\n📊 Processing {sport.upper()}...")
         print("-" * 40)
         
-        # Step 1: Scrape ESPN team data (standings, injuries, form)
-        print(f"  ⏳ Scraping ESPN standings...")
-        standings = scrape_espn_standings(sport)
+        # Fetch ESPN data via API
+        print(f"  ⏳ Fetching ESPN standings...")
+        standings = fetch_espn_standings_api(sport)
         
-        print(f"  ⏳ Scraping ESPN injuries...")
-        injuries = scrape_espn_injuries(sport)
+        print(f"  ⏳ Fetching ESPN injuries...")
+        injuries = fetch_espn_injuries_api(sport)
         
-        print(f"  ⏳ Scraping ESPN recent form...")
-        recent_form = scrape_espn_recent_form(sport)
+        print(f"  ⏳ Fetching ESPN recent results...")
+        recent_form = fetch_espn_results_api(sport)
         
-        # Step 2: Fetch odds from Yahoo
+        # Fetch Yahoo odds
         all_games = []
         for date in dates:
             games = fetch_yahoo_odds(sport, date)
             all_games.extend(games)
         
-        # Step 3: Enrich Yahoo games with ESPN data
+        # Enrich games with ESPN data
         if all_games:
             enriched_games = []
             for game in all_games:
-                enriched_game = enrich_game_data(game, sport, standings, injuries, recent_form)
-                enriched_games.append(enriched_game)
+                home_team = game.get('home_team', '')
+                away_team = game.get('away_team', '')
+                
+                # Find team data
+                def find_team(team_name, data_dict):
+                    if team_name in data_dict:
+                        return data_dict[team_name]
+                    for key in data_dict:
+                        if team_name.lower() in key.lower() or key.lower() in team_name.lower():
+                            return data_dict[key]
+                    return {}
+                
+                # Add standings
+                home_stand = find_team(home_team, standings)
+                away_stand = find_team(away_team, standings)
+                if home_stand:
+                    game['home_record'] = home_stand.get('record', '0-0')
+                    game['home_win_pct'] = home_stand.get('win_pct', 0)
+                if away_stand:
+                    game['away_record'] = away_stand.get('record', '0-0')
+                    game['away_win_pct'] = away_stand.get('win_pct', 0)
+                
+                # Add injuries
+                home_inj = find_team(home_team, injuries)
+                away_inj = find_team(away_team, injuries)
+                if home_inj:
+                    game['home_injuries'] = home_inj
+                    summary = '; '.join([f"{p['name']} ({p['status']})" for p in home_inj[:3]])
+                    game['home_injuries_summary'] = summary or 'None reported'
+                if away_inj:
+                    game['away_injuries'] = away_inj
+                    summary = '; '.join([f"{p['name']} ({p['status']})" for p in away_inj[:3]])
+                    game['away_injuries_summary'] = summary or 'None reported'
+                
+                # Add recent form
+                home_form = find_team(home_team, recent_form)
+                away_form = find_team(away_team, recent_form)
+                if home_form:
+                    game['home_last_5'] = home_form.get('last_5_form', '')
+                if away_form:
+                    game['away_last_5'] = away_form.get('last_5_form', '')
+                
+                enriched_games.append(game)
             
             all_odds['sports'][sport] = enriched_games
-            
-            # Sample output for debugging
             if enriched_games:
                 sample = enriched_games[0]
-                print(f"\n  ✅ Sample enriched game data:")
-                print(f"     • {sample.get('home_team', 'Unknown')} ({sample.get('home_record', 'N/A')}) vs")
-                print(f"     • {sample.get('away_team', 'Unknown')} ({sample.get('away_record', 'N/A')})")
+                print(f"\n  ✅ Sample enriched game:")
+                print(f"     • {sample.get('home_team', '?')} ({sample.get('home_record', 'N/A')}) vs")
+                print(f"     • {sample.get('away_team', '?')} ({sample.get('away_record', 'N/A')})")
                 if sample.get('home_injuries_summary'):
-                    print(f"     • Home injuries: {sample['home_injuries_summary']}")
-                if sample.get('away_injuries_summary'):
-                    print(f"     • Away injuries: {sample['away_injuries_summary']}")
+                    print(f"     • Home inj: {sample['home_injuries_summary']}")
     
     print(f"\n{'='*60}")
     print(f"✅ SCRAPING COMPLETE")
