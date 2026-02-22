@@ -7,21 +7,37 @@ Runs via cron every 2 hours
 import requests
 import json
 import os
+import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
+# Try to import BeautifulSoup, fallback to regex if not installed
+try:
+    from bs4 import BeautifulSoup
+    BS4_AVAILABLE = True
+except ImportError:
+    BS4_AVAILABLE = False
+    print("⚠️ BeautifulSoup4 not installed. Install with: pip install beautifulsoup4")
+
 # Sport mapping for Yahoo API
 SPORTS_CONFIG = {
-    'nba': {'league': 'nba', 'key': 'basketball_nba'},
-    'nfl': {'league': 'nfl', 'key': 'americanfootball_nfl'},
-    'mlb': {'league': 'mlb', 'key': 'baseball_mlb'},
-    'nhl': {'league': 'nhl', 'key': 'icehockey_nhl'},
-    'ncaab': {'league': 'ncaab', 'key': 'basketball_ncaab'},
-    'ncaaf': {'league': 'ncaaf', 'key': 'americanfootball_ncaaf'},
+    'nba': {'league': 'nba', 'key': 'basketball_nba', 'espn_path': 'nba'},
+    'nfl': {'league': 'nfl', 'key': 'americanfootball_nfl', 'espn_path': 'nfl'},
+    'mlb': {'league': 'mlb', 'key': 'baseball_mlb', 'espn_path': 'mlb'},
+    'nhl': {'league': 'nhl', 'key': 'icehockey_nhl', 'espn_path': 'nhl'},
+    'ncaab': {'league': 'ncaab', 'key': 'basketball_ncaab', 'espn_path': 'mens-college-basketball'},
+    'ncaaf': {'league': 'ncaaf', 'key': 'americanfootball_ncaaf', 'espn_path': 'college-football'},
 }
 
-# Yahoo Sports API endpoint
+# ESPN URLs for different data types
+ESPN_URLS = {
+    'standings': 'https://www.espn.com/{sport}/standings',
+    'injuries': 'https://www.espn.com/{sport}/injuries',
+    'teams': 'https://www.espn.com/{sport}/teams',
+}
+
 YAHOO_API_URL = "https://api-secure.sports.yahoo.com/v1/editorial/s/scoreboard"
+
 
 # Bookmaker ID to name mapping (Yahoo uses IDs)
 BOOKMAKER_MAP = {
@@ -90,6 +106,352 @@ def safe_float(value) -> Optional[float]:
         return float(value)
     except (ValueError, TypeError):
         return None
+
+
+# ========== ESPN SCRAPING FUNCTIONS ==========
+
+def get_headers():
+    """Get headers for web scraping requests."""
+    return {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+    }
+
+
+def scrape_espn_standings(sport: str) -> Dict[str, Dict]:
+    """
+    Scrape team standings from ESPN.
+    
+    Args:
+        sport: Sport key (nba, nfl, mlb, nhl, ncaab, ncaaf)
+    
+    Returns:
+        Dict mapping team names to their records
+    """
+    if not BS4_AVAILABLE:
+        print(f"⚠️ {sport.upper()}: BeautifulSoup not available, skipping ESPN standings")
+        return {}
+    
+    config = SPORTS_CONFIG.get(sport.lower())
+    if not config:
+        return {}
+    
+    espn_path = config['espn_path']
+    url = ESPN_URLS['standings'].format(sport=espn_path)
+    
+    try:
+        response = requests.get(url, headers=get_headers(), timeout=15)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        team_records = {}
+        
+        # Find standings tables
+        tables = soup.find_all('table', class_='standings')
+        if not tables:
+            tables = soup.find_all('table')
+        
+        for table in tables:
+            rows = table.find_all('tr')
+            for row in rows:
+                cells = row.find_all(['td', 'th'])
+                if len(cells) >= 3:
+                    # Try to find team name
+                    team_cell = cells[0]
+                    team_link = team_cell.find('a', href=re.compile(r'/team/'))
+                    if not team_link:
+                        team_link = team_cell.find('a')
+                    
+                    if team_link:
+                        team_name = team_link.get_text(strip=True)
+                        # Handle different ESPN formats
+                        if team_name and len(team_name) > 1:
+                            # Look for record in format XX-XX
+                            for cell in cells[1:]:
+                                text = cell.get_text(strip=True)
+                                match = re.match(r'(\d+)-(\d+)', text)
+                                if match:
+                                    wins = int(match.group(1))
+                                    losses = int(match.group(2))
+                                    team_records[team_name] = {
+                                        'wins': wins,
+                                        'losses': losses,
+                                        'record': f"{wins}-{losses}",
+                                        'win_pct': round(wins / (wins + losses), 3) if (wins + losses) > 0 else 0
+                                    }
+                                    break
+        
+        print(f"✅ {sport.upper()}: Scraped {len(team_records)} team records from ESPN")
+        return team_records
+        
+    except Exception as e:
+        print(f"⚠️ {sport.upper()}: Could not scrape ESPN standings - {e}")
+        return {}
+
+
+def scrape_espn_injuries(sport: str) -> Dict[str, List[Dict]]:
+    """
+    Scrape injury reports from ESPN.
+    
+    Args:
+        sport: Sport key (nba, nfl, mlb, nhl)
+    
+    Returns:
+        Dict mapping team names to list of injured players
+    """
+    if not BS4_AVAILABLE:
+        print(f"⚠️ {sport.upper()}: BeautifulSoup not available, skipping ESPN injuries")
+        return {}
+    
+    config = SPORTS_CONFIG.get(sport.lower())
+    if not config:
+        return {}
+    
+    # College sports don't have reliable injury pages
+    if sport in ['ncaab', 'ncaaf']:
+        return {}
+    
+    espn_path = config['espn_path']
+    url = ESPN_URLS['injuries'].format(sport=espn_path)
+    
+    try:
+        response = requests.get(url, headers=get_headers(), timeout=15)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        team_injuries = {}
+        
+        # Find team sections
+        team_sections = soup.find_all('div', class_=re.compile(r'team|injury'))
+        
+        for section in team_sections:
+            # Get team name
+            team_header = section.find(['h3', 'h2', 'div'], class_=re.compile(r'team-name|header'))
+            if not team_header:
+                team_header = section.find(['h3', 'h2'])
+            
+            if team_header:
+                team_name = team_header.get_text(strip=True)
+                
+                # Find injured players
+                injuries = []
+                player_rows = section.find_all('tr') or section.find_all('div', class_=re.compile(r'player|injury'))
+                
+                for row in player_rows:
+                    player_name = None
+                    injury_status = None
+                    injury_desc = None
+                    
+                    # Try different formats
+                    name_elem = row.find(['td', 'span', 'div'], class_=re.compile(r'player|name'))
+                    if name_elem:
+                        player_name = name_elem.get_text(strip=True)
+                    
+                    status_elem = row.find(['td', 'span', 'div'], class_=re.compile(r'status|position'))
+                    if status_elem:
+                        status_text = status_elem.get_text(strip=True)
+                        if any(x in status_text.lower() for x in ['out', 'questionable', 'doubtful', 'probable']):
+                            injury_status = status_text
+                    
+                    desc_elem = row.find(['td', 'span', 'div'], class_=re.compile(r'desc|comment'))
+                    if desc_elem:
+                        injury_desc = desc_elem.get_text(strip=True)
+                    
+                    if player_name and len(player_name) > 2:
+                        injuries.append({
+                            'name': player_name,
+                            'status': injury_status or 'Unknown',
+                            'description': injury_desc or 'No details available'
+                        })
+                
+                if injuries:
+                    team_injuries[team_name] = injuries
+        
+        print(f"✅ {sport.upper()}: Scraped injuries for {len(team_injuries)} teams from ESPN")
+        return team_injuries
+        
+    except Exception as e:
+        print(f"⚠️ {sport.upper()}: Could not scrape ESPN injuries - {e}")
+        return {}
+
+
+def scrape_espn_recent_form(sport: str) -> Dict[str, Dict]:
+    """
+    Scrape recent game results/schedule to determine form.
+    
+    Args:
+        sport: Sport key (nba, nfl, mlb, nhl, ncaab, ncaaf)
+    
+    Returns:
+        Dict mapping team names to recent form data
+    """
+    if not BS4_AVAILABLE:
+        print(f"⚠️ {sport.upper()}: BeautifulSoup not available, skipping ESPN form data")
+        return {}
+    
+    config = SPORTS_CONFIG.get(sport.lower())
+    if not config:
+        return {}
+    
+    espn_path = config['espn_path']
+    url = f"https://www.espn.com/{espn_path}/scoreboard"
+    
+    try:
+        response = requests.get(url, headers=get_headers(), timeout=15)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        team_form = {}
+        
+        # Find completed games
+        games = soup.find_all('article', class_=re.compile(r'scoreboard'))
+        if not games:
+            games = soup.find_all('div', class_=re.compile(r'scoreboard|game'))
+        
+        for game in games:
+            # Try to find teams and scores
+            teams = game.find_all('div', class_=re.compile(r'team|participant'))
+            if len(teams) >= 2:
+                for team_elem in teams:
+                    team_name_elem = team_elem.find(['span', 'a', 'div'], class_=re.compile(r'team|name'))
+                    if team_name_elem:
+                        team_name = team_name_elem.get_text(strip=True)
+                        
+                        # Get score if available
+                        score_elem = team_elem.find(['span', 'div'], class_=re.compile(r'score'))
+                        if score_elem:
+                            score_text = score_elem.get_text(strip=True)
+                            if team_name not in team_form:
+                                team_form[team_name] = {'last_5': [], 'points_per_game': []}
+        
+        # Format last 5 for teams with data
+        for team, data in team_form.items():
+            if data['last_5']:
+                recent = data['last_5'][-5:]  # Last 5 games
+                wins = recent.count('W')
+                form_str = ''.join(recent)
+                data['last_5_form'] = form_str
+                data['last_5_wins'] = wins
+        
+        print(f"✅ {sport.upper()}: Scraped recent form for {len(team_form)} teams")
+        return team_form
+        
+    except Exception as e:
+        print(f"⚠️ {sport.upper()}: Could not scrape ESPN schedule - {e}")
+        return {}
+
+
+def enrich_game_data(game: Dict, sport: str, standings: Dict, injuries: Dict, recent_form: Dict) -> Dict:
+    """
+    Enrich game data with ESPN scraped information.
+    
+    Args:
+        game: Game dictionary from Yahoo
+        sport: Sport key
+        standings: Team standings from ESPN
+        injuries: Injury data from ESPN  
+        recent_form: Recent form data from ESPN
+    
+    Returns:
+        Enriched game dictionary
+    """
+    home_team = game.get('home_team', '')
+    away_team = game.get('away_team', '')
+    
+    # Helper to find team data with fuzzy matching
+    def find_team_data(team_name: str, data_dict: Dict) -> Dict:
+        if not team_name:
+            return {}
+        
+        # Try exact match first
+        if team_name in data_dict:
+            return data_dict[team_name]
+        
+        # Try partial match
+        for key in data_dict:
+            if team_name.lower() in key.lower() or key.lower() in team_name.lower():
+                return data_dict[key]
+        
+        return {}
+    
+    # Add standings data
+    home_standings = find_team_data(home_team, standings)
+    away_standings = find_team_data(away_team, standings)
+    
+    if home_standings:
+        game['home_record'] = home_standings.get('record', '0-0')
+        game['home_win_pct'] = home_standings.get('win_pct', 0)
+        game['home_wins'] = home_standings.get('wins', 0)
+        game['home_losses'] = home_standings.get('losses', 0)
+    
+    if away_standings:
+        game['away_record'] = away_standings.get('record', '0-0')
+        game['away_win_pct'] = away_standings.get('win_pct', 0)
+        game['away_wins'] = away_standings.get('wins', 0)
+        game['away_losses'] = away_standings.get('losses', 0)
+    
+    # Add injury data
+    home_injuries = find_team_data(home_team, injuries)
+    away_injuries = find_team_data(away_team, injuries)
+    
+    if home_injuries:
+        game['home_injuries'] = home_injuries
+        # Create summary string
+        key_injuries = [f"{p['name']} ({p['status']})" for p in home_injuries[:3]]
+        game['home_injuries_summary'] = '; '.join(key_injuries) if key_injuries else 'None reported'
+    
+    if away_injuries:
+        game['away_injuries'] = away_injuries
+        key_injuries = [f"{p['name']} ({p['status']})" for p in away_injuries[:3]]
+        game['away_injuries_summary'] = '; '.join(key_injuries) if key_injuries else 'None reported'
+    
+    # Add recent form
+    home_form = find_team_data(home_team, recent_form)
+    away_form = find_team_data(away_team, recent_form)
+    
+    if home_form and 'last_5_form' in home_form:
+        game['home_last_5'] = home_form['last_5_form']
+    
+    if away_form and 'last_5_form' in away_form:
+        game['away_last_5'] = away_form['last_5_form']
+    
+    # Calculate home court advantage factor
+    game['home_court_advantage'] = calculate_home_advantage(game)
+    
+    return game
+
+
+def calculate_home_advantage(game: Dict) -> float:
+    """
+    Calculate home court advantage factor based on records.
+    
+    Returns:
+        Float between 0-1 representing home advantage (0.5 = no advantage)
+    """
+    home_pct = game.get('home_win_pct', 0.5)
+    away_pct = game.get('away_win_pct', 0.5)
+    
+    if home_pct == 0.5 and away_pct == 0.5:
+        return 0.5
+    
+    if home_pct == 0:
+        home_pct = 0.1
+    if away_pct == 0:
+        away_pct = 0.1
+    
+    # Calculate advantage (home team performance relative to away)
+    total_performance = home_pct + away_pct
+    if total_performance == 0:
+        return 0.5
+    
+    return home_pct / total_performance
+
+
+# ========== YAHOO ODDS FUNCTIONS ==========
 
 
 def fetch_yahoo_odds(sport: str, date: str = None) -> List[Dict]:
@@ -233,34 +595,73 @@ def fetch_yahoo_odds(sport: str, date: str = None) -> List[Dict]:
 
 def scrape_all_odds(days_ahead: int = 1) -> Dict:
     """
-    Scrape odds for all supported sports.
+    Scrape odds from Yahoo AND team data from ESPN for all supported sports.
     
     Args:
         days_ahead: Number of days to fetch (1 = today only)
     
     Returns:
-        Dictionary with all odds data
+        Dictionary with all odds data enriched with ESPN team stats
     """
     all_odds = {
         'timestamp': datetime.now().isoformat(),
-        'source': 'yahoo_sports_api',
+        'source': 'yahoo_sports_api + espn_team_data',
         'sports': {}
     }
     
-    # Calculate dates to fetch
+    print(f"\n{'='*60}")
+    print(f"🏃 YAHOO + ESPN SCRAPER STARTED")
+    print(f"{'='*60}\n")
+    
+    # Calculate dates to fetch for Yahoo
     dates = []
     for i in range(days_ahead):
         date = (datetime.now() + timedelta(days=i)).strftime('%Y-%m-%d')
         dates.append(date)
     
     for sport in SPORTS_CONFIG.keys():
+        print(f"\n📊 Processing {sport.upper()}...")
+        print("-" * 40)
+        
+        # Step 1: Scrape ESPN team data (standings, injuries, form)
+        print(f"  ⏳ Scraping ESPN standings...")
+        standings = scrape_espn_standings(sport)
+        
+        print(f"  ⏳ Scraping ESPN injuries...")
+        injuries = scrape_espn_injuries(sport)
+        
+        print(f"  ⏳ Scraping ESPN recent form...")
+        recent_form = scrape_espn_recent_form(sport)
+        
+        # Step 2: Fetch odds from Yahoo
         all_games = []
         for date in dates:
             games = fetch_yahoo_odds(sport, date)
             all_games.extend(games)
         
+        # Step 3: Enrich Yahoo games with ESPN data
         if all_games:
-            all_odds['sports'][sport] = all_games
+            enriched_games = []
+            for game in all_games:
+                enriched_game = enrich_game_data(game, sport, standings, injuries, recent_form)
+                enriched_games.append(enriched_game)
+            
+            all_odds['sports'][sport] = enriched_games
+            
+            # Sample output for debugging
+            if enriched_games:
+                sample = enriched_games[0]
+                print(f"\n  ✅ Sample enriched game data:")
+                print(f"     • {sample.get('home_team', 'Unknown')} ({sample.get('home_record', 'N/A')}) vs")
+                print(f"     • {sample.get('away_team', 'Unknown')} ({sample.get('away_record', 'N/A')})")
+                if sample.get('home_injuries_summary'):
+                    print(f"     • Home injuries: {sample['home_injuries_summary']}")
+                if sample.get('away_injuries_summary'):
+                    print(f"     • Away injuries: {sample['away_injuries_summary']}")
+    
+    print(f"\n{'='*60}")
+    print(f"✅ SCRAPING COMPLETE")
+    print(f"{'='*60}\n")
     
     return all_odds
 
