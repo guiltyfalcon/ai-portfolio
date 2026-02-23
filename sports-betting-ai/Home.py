@@ -1564,7 +1564,7 @@ def show_dashboard():
         <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
     </div>
 </div>'''
-        st.markdown(card_html, unsafe_allow_html=True)
+        st.components.v1.html(card_html, height=200)
         
         # Show locked message if user can't view prediction
         if not can_view:
