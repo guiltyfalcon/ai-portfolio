@@ -1542,20 +1542,38 @@ def show_dashboard():
                 st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
                 st.markdown(prediction_reasoning)
         
-        # Format time from 24h to 12h with AM/PM
-        time_str = game.get('time', 'TBD')
-        if time_str != 'TBD' and ':' in time_str:
+        # Format time from commence_time to 12h AM/PM format
+        commence_time = game.get('commence_time', '')
+        if commence_time and commence_time != 'TBD':
             try:
-                hour, minute = map(int, time_str.split(':'))
-                ampm = 'AM' if hour < 12 else 'PM'
-                hour_12 = hour if hour <= 12 else hour - 12
-                if hour_12 == 0:
+                # Parse RFC 2822 format: "Sun, 22 Feb 2026 18:00:00 +0000"
+                parts = commence_time.split(' ')
+                time_part = parts[4]  # "18:00:00"
+                hour_24 = int(time_part.split(':')[0])
+                minute = int(time_part.split(':')[1])
+                
+                # Convert UTC to EST (UTC-5)
+                hour_est = (hour_24 - 5) % 24
+                
+                # Convert to 12-hour format
+                if hour_est == 0:
                     hour_12 = 12
-                formatted_time = f"{hour_12}:{minute:02d} {ampm}"
-            except:
-                formatted_time = time_str
+                    ampm = 'AM'
+                elif hour_est < 12:
+                    hour_12 = hour_est
+                    ampm = 'AM'
+                elif hour_est == 12:
+                    hour_12 = 12
+                    ampm = 'PM'
+                else:
+                    hour_12 = hour_est - 12
+                    ampm = 'PM'
+                
+                formatted_time = f"{hour_12}:{minute:02d} {ampm} EST"
+            except Exception as e:
+                formatted_time = game.get('time', 'TBD')
         else:
-            formatted_time = time_str
+            formatted_time = game.get('time', 'TBD')
         
         card_html = f'''<div class="game-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
