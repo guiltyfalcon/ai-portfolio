@@ -1542,11 +1542,26 @@ def show_dashboard():
                 st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
                 st.markdown(prediction_reasoning)
         
+        # Format time from 24h to 12h with AM/PM
+        time_str = game.get('time', 'TBD')
+        if time_str != 'TBD' and ':' in time_str:
+            try:
+                hour, minute = map(int, time_str.split(':'))
+                ampm = 'AM' if hour < 12 else 'PM'
+                hour_12 = hour if hour <= 12 else hour - 12
+                if hour_12 == 0:
+                    hour_12 = 12
+                formatted_time = f"{hour_12}:{minute:02d} {ampm}"
+            except:
+                formatted_time = time_str
+        else:
+            formatted_time = time_str
+        
         card_html = f'''<div class="game-card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
         <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="color: #FFD700; font-size: 0.75rem; font-weight: 500;">🕒 {game.get('time', 'TBD')}</span>
+            <span style="color: #FFD700; font-size: 0.75rem; font-weight: 500;">🕒 {formatted_time}</span>
             {live_badge}
             <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
         </div>
