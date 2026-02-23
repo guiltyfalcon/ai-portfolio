@@ -1542,30 +1542,28 @@ def show_dashboard():
                 st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
                 st.markdown(prediction_reasoning)
         
-        card_html = f'''
-        <div class="game-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="color: #FFD700; font-size: 0.75rem; font-weight: 500;">🕒 {game.get('time', 'TBD')}</span>
-                    {live_badge}
-                    <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
-                </div>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <span style="color: white; font-weight: 500;">{game['home_team']}</span>
-                <span class="odds-box" style="color: #00d2ff;">{game['home_odds']}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: white; font-weight: 500;">{game['away_team']}</span>
-                <span class="odds-box" style="color: #00d2ff;">{game['away_odds']}</span>
-            </div>
-            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between;">
-                <span style="color: #8A8F98; font-size: 0.75rem;">Spread: {game['spread']}</span>
-                <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
-            </div>
+        card_html = f'''<div class="game-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="color: #FFD700; font-size: 0.75rem; font-weight: 500;">🕒 {game.get('time', 'TBD')}</span>
+            {live_badge}
+            <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
         </div>
-        '''
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <span style="color: white; font-weight: 500;">{game['home_team']}</span>
+        <span class="odds-box" style="color: #00d2ff;">{game['home_odds']}</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: white; font-weight: 500;">{game['away_team']}</span>
+        <span class="odds-box" style="color: #00d2ff;">{game['away_odds']}</span>
+    </div>
+    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between;">
+        <span style="color: #8A8F98; font-size: 0.75rem;">Spread: {game['spread']}</span>
+        <span style="color: #8A8F98; font-size: 0.75rem;">Total: {game['total']}</span>
+    </div>
+</div>'''
         st.markdown(card_html, unsafe_allow_html=True)
         
         # Show locked message if user can't view prediction
