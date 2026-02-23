@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 # Admin credentials (in production, use proper auth)
-ADMIN_USERNAME = "admin"
-ADMIN_EMAIL = "admin@betai.pro"
-ADMIN_PASSWORD_HASH = hashlib.sha256("admin123".encode()).hexdigest()
+ADMIN_USERNAME = "Hitman24"
+ADMIN_EMAIL = "dariusr26@gmail.com"
+ADMIN_PASSWORD_HASH = hashlib.sha256("Hitman24".encode()).hexdigest()
 
 # Session management
 SESSION_DURATION = 24 * 60 * 60  # 24 hours in seconds

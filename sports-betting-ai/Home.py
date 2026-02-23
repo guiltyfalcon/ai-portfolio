@@ -16,6 +16,7 @@ from pathlib import Path
 # Import auth functions with premium support
 from auth import (
     is_premium_user, 
+    is_admin,
     can_make_prediction, 
     increment_prediction, 
     predictions_remaining,
@@ -1246,8 +1247,8 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
     
-    # Premium Banner for Free Users
-    if not is_premium_user():
+    # Premium Banner for Free Users (hide for admin)
+    if not is_premium_user() and not is_admin():
         remaining = predictions_remaining()
         if remaining > 0:
             st.markdown(f"""
@@ -1546,6 +1547,7 @@ def show_dashboard():
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                 <span style="color: #00d2ff; font-size: 0.875rem; font-weight: 500;">{game['sport']}</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: #FFD700; font-size: 0.75rem; font-weight: 500;">🕒 {game.get('time', 'TBD')}</span>
                     {live_badge}
                     <span style="color: #8A8F98; font-size: 0.875rem;">{score_display}</span>
                 </div>
@@ -1564,16 +1566,18 @@ def show_dashboard():
             </div>
         </div>
         '''
-        st.html(card_html)
+        st.markdown(card_html, unsafe_allow_html=True)
         
         # Show locked message if user can't view prediction
         if not can_view:
             st.error("🔒 View prediction analysis — Upgrade to Pro for unlimited access", icon="💎")
-            st.markdown(f"""
-            <div style="text-align: center; margin: 1rem 0 2rem 0;">
-                <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%); color: #0B0E14; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Upgrade to Pro — $5/month</a>
-            </div>
-            """, unsafe_allow_html=True)
+            # Only show upgrade button if user is not admin
+            if not is_admin():
+                st.markdown(f"""
+                <div style="text-align: center; margin: 1rem 0 2rem 0;">
+                    <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%); color: #0B0E14; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Upgrade to Pro — $5/month</a>
+                </div>
+                """, unsafe_allow_html=True)
     
     # Live Odds Ticker
     st.markdown("---")
