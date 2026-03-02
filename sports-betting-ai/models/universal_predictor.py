@@ -1,6 +1,6 @@
 """
 Universal Sports Predictor - Works with NBA, NFL, MLB, NHL
-Sport-specific feature engineering and models
+Sport-specific feature engineering and models with reasoning/explanations
 """
 
 import pandas as pd
@@ -279,6 +279,141 @@ class UniversalSportsPredictor:
             'home_win_prob': ensemble,
             'away_win_prob': 1 - ensemble
         })
+    
+    def explain_prediction(self, game_features: pd.Series) -> Dict:
+        """
+        Generate explanation for why a team is predicted to win.
+        
+        Args:
+            game_features: Single row of game features
+            
+        Returns:
+            Dictionary with prediction, confidence, and reasoning
+        """
+        # Get prediction
+        pred_df = self.predict(game_features.to_frame().T)
+        home_prob = pred_df['home_win_prob'].iloc[0]
+        away_prob = 1 - home_prob
+        
+        # Determine predicted winner
+        if home_prob > 0.5:
+            predicted_winner = game_features.get('home_team', 'Home')
+            confidence = home_prob
+        else:
+            predicted_winner = game_features.get('away_team', 'Away')
+            confidence = away_prob
+        
+        # Analyze key factors
+        factors = self._analyze_factors(game_features)
+        
+        # Generate natural language explanation
+        explanation = self._generate_explanation(predicted_winner, confidence, factors)
+        
+        return {
+            'predicted_winner': predicted_winner,
+            'home_win_prob': round(home_prob * 100, 1),
+            'away_win_prob': round(away_prob * 100, 1),
+            'confidence': round(confidence * 100, 1),
+            'key_factors': factors,
+            'explanation': explanation
+        }
+    
+    def _analyze_factors(self, features: pd.Series) -> List[Dict]:
+        """Analyze which factors are driving the prediction."""
+        factors = []
+        
+        # Win percentage differential
+        win_pct_diff = features.get('win_pct_diff', 0)
+        if abs(win_pct_diff) > 0.1:
+            team = 'Home' if win_pct_diff > 0 else 'Away'
+            impact = 'positive' if win_pct_diff > 0 else 'negative'
+            factors.append({
+                'factor': 'Win Rate',
+                'description': f"{team} team has {abs(win_pct_diff)*100:.1f}% better win rate",
+                'impact': impact,
+                'weight': abs(win_pct_diff) * 100
+            })
+        
+        # ELO differential
+        elo_diff = features.get('elo_diff', 0)
+        if abs(elo_diff) > 50:
+            team = 'Home' if elo_diff > 0 else 'Away'
+            factors.append({
+                'factor': 'Team Strength (ELO)',
+                'description': f"{team} team rated {abs(elo_diff):.0f} points higher",
+                'impact': 'positive' if elo_diff > 0 else 'negative',
+                'weight': abs(elo_diff) / 10
+            })
+        
+        # Home advantage
+        home_adv = features.get('home_advantage', 0)
+        if home_adv > 0:
+            factors.append({
+                'factor': 'Home Court Advantage',
+                'description': f"Home team advantage: +{home_adv*100:.1f}% boost",
+                'impact': 'positive',
+                'weight': home_adv * 100
+            })
+        
+        # Point differential
+        point_diff = features.get('point_diff_diff', 0)
+        if abs(point_diff) > 3:
+            team = 'Home' if point_diff > 0 else 'Away'
+            factors.append({
+                'factor': 'Scoring Margin',
+                'description': f"{team} team outscoring opponents by {abs(point_diff):.1f} more points/game",
+                'impact': 'positive' if point_diff > 0 else 'negative',
+                'weight': abs(point_diff) / 3
+            })
+        
+        # Rest advantage
+        rest_diff = features.get('rest_diff', 0)
+        if abs(rest_diff) >= 1:
+            team = 'Home' if rest_diff > 0 else 'Away'
+            factors.append({
+                'factor': 'Rest Advantage',
+                'description': f"{team} team has {abs(rest_diff)} more day(s) of rest",
+                'impact': 'positive' if rest_diff > 0 else 'negative',
+                'weight': abs(rest_diff) * 5
+            })
+        
+        # Sport-specific factors
+        if self.sport == 'nba':
+            pace_diff = features.get('pace_diff', 0)
+            if abs(pace_diff) > 2:
+                factors.append({
+                    'factor': 'Pace Matchup',
+                    'description': f"Pace differential: {pace_diff:+.1f} possessions",
+                    'impact': 'positive' if pace_diff > 0 else 'negative',
+                    'weight': abs(pace_diff) / 2
+                })
+        
+        # Sort by weight
+        factors.sort(key=lambda x: x['weight'], reverse=True)
+        
+        return factors[:5]  # Return top 5 factors
+    
+    def _generate_explanation(self, predicted_winner: str, confidence: float, factors: List[Dict]) -> str:
+        """Generate natural language explanation."""
+        # Confidence level
+        if confidence >= 0.7:
+            conf_level = "high confidence"
+        elif confidence >= 0.55:
+            conf_level = "moderate confidence"
+        else:
+            conf_level = "low confidence"
+        
+        # Build explanation
+        explanation = f"We predict {predicted_winner} to win with {conf_level} ({confidence*100:.1f}%).\n\n"
+        explanation += "**Key Factors:**\n"
+        
+        for i, factor in enumerate(factors, 1):
+            explanation += f"{i}. **{factor['factor']}**: {factor['description']}\n"
+        
+        if not factors:
+            explanation += "No significant factors identified - teams are evenly matched."
+        
+        return explanation
 
 if __name__ == "__main__":
     # Test all sports
