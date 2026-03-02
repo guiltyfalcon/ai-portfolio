@@ -1,0 +1,6 @@
+
+# Environment variables (SECRETS)
+.env
+.env.local
+.env.*.local
+

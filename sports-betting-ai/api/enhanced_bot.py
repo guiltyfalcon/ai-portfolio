@@ -28,8 +28,11 @@ class EnhancedBettingBot:
     def __init__(self):
         self.data_dir = "/Users/djryan/.openclaw/workspace/data"
         self.log_file = "/Users/djryan/.openclaw/workspace/logs/betting-enhanced.log"
-        self.telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN', 'REDACTED_TELEGRAM_TOKEN')
-        self.telegram_chat_id = os.environ.get('TELEGRAM_CHAT_ID', '6471395025')
+        self.telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+        self.telegram_chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+        
+        if not self.telegram_token or not self.telegram_chat_id:
+            raise ValueError("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID environment variables must be set")
         
         # Expanded player list with positions
         self.players_to_track = [
