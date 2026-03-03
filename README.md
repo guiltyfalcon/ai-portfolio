@@ -70,7 +70,7 @@ streamlit run Home.py
 
 ## 🚀 Quick Start
 
-### Run Locally
+### Method 1: Virtual Environment (Recommended)
 
 ```bash
 # Clone repository
@@ -80,6 +80,10 @@ cd ai-portfolio
 # Choose a project
 cd sports-betting-ai  # or fitness-chatbot, sentiment-analyzer, etc.
 
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
 
@@ -87,14 +91,38 @@ pip install -r requirements.txt
 streamlit run Home.py    # or app.py depending on project
 ```
 
+### Method 2: System-Wide (macOS/Linux)
+
+```bash
+# Clone and navigate
+git clone https://github.com/guiltyfalcon/ai-portfolio.git
+cd ai-portfolio/sports-betting-ai  # or other project
+
+# Install dependencies
+pip install --break-system-packages -r requirements.txt
+
+# Run the app
+streamlit run Home.py
+```
+
 ### Deploy to Streamlit Cloud
 
-1. Go to [streamlit.io/cloud](https://streamlit.io/cloud)
-2. Connect your GitHub account
-3. Select `guiltyfalcon/ai-portfolio` repository
-4. Set the main file path (e.g., `sports-betting-ai/Home.py`)
-5. Add any required API keys in Secrets
-6. Deploy!
+**All apps are ready for one-click deployment:**
+
+1. Go to [share.streamlit.io](https://share.streamlit.io)
+2. Click "New app" and select `guiltyfalcon/ai-portfolio`
+3. Set main file path for each app:
+   - Sports Betting AI: `sports-betting-ai/Home.py`
+   - Fitness Chatbot: `fitness-chatbot/app.py`
+   - Sentiment Analyzer: `sentiment-analyzer/app.py`
+   - Image Classifier: `image-classifier/app.py`
+   - QA Bot: `qa-bot/app.py`
+   - RPA News Summarizer: `rpa-news-summarizer/app.py`
+   - Code Explainer: `code-explainer/app.py`
+4. Add required API keys in Secrets (see individual READMEs)
+5. Deploy!
+
+**Note:** Some apps (Fitness Chatbot, QA Bot, Code Explainer, News Summarizer) require OpenAI API keys. Sports Betting AI works with free ESPN API.
 
 ---
 
