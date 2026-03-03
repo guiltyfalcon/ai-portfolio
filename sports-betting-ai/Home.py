@@ -13,16 +13,9 @@ import requests
 import json
 from pathlib import Path
 
-# Import auth functions with premium support
-from auth import (
-    is_premium_user, 
-    is_admin,
-    can_make_prediction, 
-    increment_prediction, 
-    predictions_remaining,
-    FREE_PREDICTIONS_LIMIT,
-    STRIPE_CHECKOUT_URL
-)
+# Auth disabled for testing - import removed
+# from auth import (...)
+STRIPE_CHECKOUT_URL = None  # Disabled
 
 # Page config MUST be first
 st.set_page_config(
@@ -1247,44 +1240,15 @@ def show_dashboard():
         </div>
         """, unsafe_allow_html=True)
     
-    # Premium Banner for Free Users (hide for admin)
-    if not is_premium_user() and not is_admin():
-        remaining = predictions_remaining()
-        if remaining > 0:
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
-             border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <p style="margin: 0; color: #FFD700; font-weight: 600;">⭐ Free Tier: {remaining} prediction{'s' if remaining != 1 else ''} remaining</p>
-                        <p style="margin: 0; color: #8A8F98; font-size: 0.75rem;">Upgrade to unlock unlimited predictions</p>
-                    </div>
-                    <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%); color: #0B0E14; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.875rem;">Upgrade $5/mo</a>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            # Out of predictions - show paywall
-            st.markdown(f"""
-            <div style="background: linear-gradient(135deg, rgba(255, 75, 75, 0.1) 0%, rgba(255, 140, 140, 0.1) 100%);
-             border: 1px solid rgba(255, 75, 75, 0.3); border-radius: 12px; padding: 2rem; margin-bottom: 1rem; text-align: center;">
-                <p style="margin: 0 0 0.5rem 0; color: #ff6b6b; font-weight: 600; font-size: 1.25rem;">🔒 Limit Reached</p>
-                <p style="margin: 0 0 1.5rem 0; color: #8A8F98;">You've used all {FREE_PREDICTIONS_LIMIT} free predictions. Upgrade to Pro for unlimited access.</p>
-                <a href="{STRIPE_CHECKOUT_URL}" target="_blank" style="background: linear-gradient(135deg, #00d2ff 0%, #00e701 100%); color: #0B0E14; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Upgrade to Pro — $5/month</a>
-            </div>
-            """, unsafe_allow_html=True)
-            st.stop()
-    else:
-        # Premium user badge
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(0, 231, 1, 0.1) 100%); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size: 1.25rem;">💎</span>
-                <span style="color: #00d2ff; font-weight: 600;">Pro Member</span>
-                <span style="color: #8A8F98; font-size: 0.75rem; margin-left: auto;">Unlimited predictions</span>
-            </div>
+    # Auth disabled for testing - show testing mode banner
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(0, 231, 1, 0.1) 100%); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 1rem; margin-bottom: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.25rem;">🚀</span>
+            <span style="color: #00d2ff; font-weight: 600;">Testing Mode - All Features Unlocked</span>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     # Title row with Sport Selector and Refresh
     col_title, col_sport, col_refresh = st.columns([3, 1, 1])
@@ -1514,33 +1478,18 @@ def show_dashboard():
         viewed_predictions = st.session_state.get('viewed_predictions', set())
         is_viewed = prediction_key in viewed_predictions
         
-        # Determine if this game should show prediction details
-        if is_premium_user():
-            can_view = True  # Premium users always can view
-        elif is_viewed:
-            can_view = True  # Already viewed, can re-open
-        elif can_make_prediction():
-            can_view = True  # Free user with predictions remaining
-        else:
-            can_view = False  # Out of free predictions
+        # Auth disabled - all predictions unlocked
+        can_view = True
         
         live_badge = '<span class="live-badge">● LIVE</span>' if game['status'] == 'live' else ''
         score_display = game.get('time', 'TBD')
         if game['status'] == 'live' and 'score' in game:
             score_display = f"{game['score']['home']} - {game['score']['away']}"
         
-        if can_view:
-            # Use Streamlit's expander (tracks state automatically)
-            with st.expander(f"🔮 View Prediction Analysis {'✓' if is_viewed else ''}", expanded=False):
-                if not is_viewed and not is_premium_user():
-                    # First time viewing - decrement counter
-                    increment_prediction()
-                    viewed_predictions.add(prediction_key)
-                    st.session_state.viewed_predictions = viewed_predictions
-                    st.toast(f"📊 Predictions remaining: {predictions_remaining()}")
-                
-                st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
-                st.markdown(prediction_reasoning)
+        # Show prediction details
+        with st.expander(f"🔮 View Prediction Analysis", expanded=False):
+            st.markdown(f"**📊 Analysis: {game['home_team']} vs {game['away_team']}**")
+            st.markdown(prediction_reasoning)
         
         # Format time from commence_time to 12h AM/PM format
         commence_time = game.get('commence_time', '')
@@ -1673,9 +1622,7 @@ def show_sidebar():
             logout_user()
             st.rerun()
 
-# Main App
-if not st.session_state.authenticated:
-    show_auth_page()
-else:
-    show_sidebar()
-    show_dashboard()
+# Main App - AUTH DISABLED FOR TESTING
+# No login required - fully open access
+show_sidebar()
+show_dashboard()
