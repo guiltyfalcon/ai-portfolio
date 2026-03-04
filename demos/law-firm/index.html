@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Morrison & Associates - Experienced legal representation in corporate law, litigation, and family law. Trusted attorneys serving clients for over 25 years.">
+    <meta name="keywords" content="law firm, attorney, legal services, corporate law, litigation, family law">
+    <title>Morrison & Associates | Professional Legal Services</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Cormorant Garamond', 'serif'],
+                        'body': ['Lato', 'sans-serif'],
+                    },
+                    colors: {
+                        'navy': '#1A365D',
+                        'gold': '#C5A059',
+                        'light-gray': '#F7F7F7',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-body bg-white text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-md z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="text-3xl text-navy">⚖️</div>
+                    <a href="#" class="font-display text-2xl font-bold text-navy">Morrison & Associates</a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#services" class="hover:text-gold transition">Services</a>
+                    <a href="#attorneys" class="hover:text-gold transition">Attorneys</a>
+                    <a href="#about" class="hover:text-gold transition">About</a>
+                    <a href="#contact" class="hover:text-gold transition">Contact</a>
+                </div>
+                <a href="#contact" class="bg-navy text-white px-6 py-2 rounded hover:bg-blue-900 transition">Free Consultation</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 bg-gradient-to-br from-navy to-blue-900 text-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h1 class="font-display text-5xl md:text-6xl font-bold mb-6">Experienced Legal Representation You Can Trust</h1>
+                    <p class="text-xl mb-8 text-blue-100">For over 25 years, we've been protecting our clients' rights and securing their futures with dedicated, personalized legal counsel.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="bg-gold text-white px-8 py-3 rounded text-center hover:bg-yellow-600 transition">Schedule Consultation</a>
+                        <a href="#services" class="border-2 border-white text-white px-8 py-3 rounded text-center hover:bg-white hover:text-navy transition">Our Services</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=400&fit=crop" alt="Law office" class="rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="py-12 bg-gold">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-navy mb-2">25+</div>
+                    <div class="text-sm">Years Experience</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-navy mb-2">500+</div>
+                    <div class="text-sm">Cases Won</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-navy mb-2">$50M+</div>
+                    <div class="text-sm">Recovered</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-navy mb-2">98%</div>
+                    <div class="text-sm">Client Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-light-gray">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Practice Areas</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Comprehensive legal services tailored to your unique needs</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Corporate Law -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">🏢</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Corporate Law</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Business formation & LLCs</li>
+                        <li>• Contract negotiation</li>
+                        <li>• Mergers & acquisitions</li>
+                        <li>• Corporate governance</li>
+                        <li>• Compliance & regulatory</li>
+                    </ul>
+                </div>
+
+                <!-- Litigation -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">⚖️</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Litigation</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Civil litigation</li>
+                        <li>• Commercial disputes</li>
+                        <li>• Employment law</li>
+                        <li>• Personal injury</li>
+                        <li>• Class action suits</li>
+                    </ul>
+                </div>
+
+                <!-- Family Law -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">👨‍👩‍👧</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Family Law</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Divorce proceedings</li>
+                        <li>• Child custody</li>
+                        <li>• Property division</li>
+                        <li>• Prenuptial agreements</li>
+                        <li>• Adoption services</li>
+                    </ul>
+                </div>
+
+                <!-- Real Estate -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">🏠</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Real Estate</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Property transactions</li>
+                        <li>• Lease agreements</li>
+                        <li>• Zoning & land use</li>
+                        <li>• Real estate litigation</li>
+                        <li>• Title issues</li>
+                    </ul>
+                </div>
+
+                <!-- Estate Planning -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">📜</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Estate Planning</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• Wills & trusts</li>
+                        <li>• Probate administration</li>
+                        <li>• Power of attorney</li>
+                        <li>• Healthcare directives</li>
+                        <li>• Tax planning</li>
+                    </ul>
+                </div>
+
+                <!-- Criminal Defense -->
+                <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-lg transition">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-navy">Criminal Defense</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>• DUI/DWI defense</li>
+                        <li>• Drug offenses</li>
+                        <li>• White-collar crimes</li>
+                        <li>• Domestic violence</li>
+                        <li>• Expungement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attorneys Section -->
+    <section id="attorneys" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Our Attorneys</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Meet our team of experienced legal professionals</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Attorney 1 -->
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop" alt="James Morrison" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover">
+                    <h3 class="font-display text-2xl font-bold text-navy">James Morrison</h3>
+                    <p class="text-gold font-semibold mb-2">Founding Partner</p>
+                    <p class="text-gray-600 text-sm mb-4">Harvard Law '98. 25+ years in corporate law and litigation.</p>
+                    <a href="#contact" class="text-navy hover:text-gold underline">Contact</a>
+                </div>
+
+                <!-- Attorney 2 -->
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop" alt="Sarah Chen" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover">
+                    <h3 class="font-display text-2xl font-bold text-navy">Sarah Chen</h3>
+                    <p class="text-gold font-semibold mb-2">Senior Partner</p>
+                    <p class="text-gray-600 text-sm mb-4">Yale Law '05. Specializes in family law and estate planning.</p>
+                    <a href="#contact" class="text-navy hover:text-gold underline">Contact</a>
+                </div>
+
+                <!-- Attorney 3 -->
+                <div class="text-center">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop" alt="Michael Roberts" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover">
+                    <h3 class="font-display text-2xl font-bold text-navy">Michael Roberts</h3>
+                    <p class="text-gold font-semibold mb-2">Associate Attorney</p>
+                    <p class="text-gray-600 text-sm mb-4">Columbia Law '15. Focus on real estate and criminal defense.</p>
+                    <a href="#contact" class="text-navy hover:text-gold underline">Contact</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-light-gray">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl font-bold mb-6">About Our Firm</h2>
+            <p class="text-lg mb-6">Founded in 1999, Morrison & Associates has built a reputation for excellence in legal representation. Our client-first approach combines deep legal knowledge with personalized attention to every case.</p>
+            <p class="text-lg mb-8">We believe that every client deserves dedicated advocacy, transparent communication, and results-driven representation. Our track record speaks for itself.</p>
+            <div class="grid md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-navy mb-2">🏆 Award-Winning</h4>
+                    <p class="text-gray-600 text-sm">Recognized by Best Lawyers in America and Super Lawyers</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-navy mb-2">💼 Proven Results</h4>
+                    <p class="text-gray-600 text-sm">Millions recovered for clients in settlements and verdicts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact" class="py-20 bg-navy text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Free Consultation</h2>
+            <p class="text-center mb-12">Contact us today for a confidential case evaluation</p>
+            
+            <!-- Formspree form -->
+            <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="bg-white text-gray-800 p-8 rounded-lg">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gold">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Email</label>
+                        <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gold">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Phone</label>
+                        <input type="tel" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gold">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Practice Area</label>
+                        <select name="practice_area" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gold">
+                            <option value="">Select service</option>
+                            <option value="Corporate Law">Corporate Law</option>
+                            <option value="Litigation">Litigation</option>
+                            <option value="Family Law">Family Law</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Estate Planning">Estate Planning</option>
+                            <option value="Criminal Defense">Criminal Defense</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2 font-semibold">Case Details</label>
+                    <textarea name="message" rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gold" placeholder="Briefly describe your legal matter..."></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="newsletter" class="mr-2">
+                        <span class="text-sm">I agree to receive communications from Morrison & Associates</span>
+                    </label>
+                </div>
+                <button type="submit" class="w-full bg-gold text-white py-4 rounded font-semibold text-lg hover:bg-yellow-600 transition">Request Consultation</button>
+                <p class="text-xs text-gray-500 mt-4 text-center">To enable this form, sign up for free at <a href="https://formspree.io" target="_blank" class="underline">Formspree.io</a> and replace YOUR_FORMSPREE_ID with your form endpoint.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-display text-2xl font-bold mb-4 text-gold">Morrison & Associates</h4>
+                    <p class="text-gray-400 text-sm">Trusted legal representation since 1999.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Practice Areas</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#services" class="hover:text-gold">Corporate Law</a></li>
+                        <li><a href="#services" class="hover:text-gold">Litigation</a></li>
+                        <li><a href="#services" class="hover:text-gold">Family Law</a></li>
+                        <li><a href="#services" class="hover:text-gold">Real Estate</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>📍 456 Legal Avenue, Suite 100</li>
+                        <li>📞 (212) 555-0199</li>
+                        <li>✉️ info@morrisonlaw.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Hours</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>Mon-Fri: 8:00 AM - 6:00 PM</li>
+                        <li>Sat: By appointment</li>
+                        <li>Sun: Closed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 Morrison & Associates. All rights reserved. Attorney Advertising.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

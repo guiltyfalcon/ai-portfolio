@@ -22,6 +22,36 @@ A collection of production-grade AI applications built with Python, Streamlit, a
 
 ---
 
+## 🎨 Web Demos
+
+**Professional Website Templates**
+
+In addition to AI applications, this portfolio includes a collection of professional website templates built with HTML + Tailwind CSS:
+
+| Template | Business Type | Features |
+|----------|---------------|----------|
+| **[Restaurant/Cafe](demos/restaurant/)** | Food & Dining | Menu, reservations, hours, location |
+| **[Law Firm](demos/law-firm/)** | Professional Services | Attorney profiles, practice areas, consultation forms |
+| **[Home Contractor](demos/home-contractor/)** | Home Services | Services, project gallery, testimonials, quote requests |
+| **[E-commerce/Product](demos/ecommerce/)** | Online Sales | Product showcase, features, reviews, order form |
+| **[Personal Portfolio](demos/personal-portfolio/)** | Personal Branding | Bio, skills, project showcase, contact form |
+
+**View All Demos:** [`demos/`](demos/)
+
+**Features:**
+- ✅ Fully responsive (mobile-first design)
+- ✅ Tailwind CSS via CDN (no build step needed)
+- ✅ Professional Google Fonts
+- ✅ Working contact forms (Formspree free tier)
+- ✅ SEO-optimized meta tags
+- ✅ Fast loading (<2s)
+- ✅ Easy to customize with detailed comments
+
+**Tech Stack:**
+- HTML5, Tailwind CSS (CDN), Google Fonts, Formspree (forms)
+
+---
+
 ## 🏆 Featured Project: Sports Betting AI
 
 **Production-Ready Multi-Sport Prediction Engine**

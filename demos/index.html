@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Portfolio Demo Gallery - Professional website templates for restaurants, law firms, contractors, e-commerce, and personal portfolios.">
+    <meta name="keywords" content="website templates, demo sites, web design, responsive templates">
+    <title>AI Portfolio Demo Gallery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#3B82F6',
+                        'secondary': '#10B981',
+                        'dark': '#0F172A',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-50 text-dark">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">🎨 AI Portfolio Demo Gallery</h1>
+            <p class="text-gray-600 text-lg">Professional website templates crafted with AI assistance</p>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 bg-gradient-to-br from-primary to-blue-700 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Need a Professional Website?</h2>
+            <p class="text-xl mb-8 text-blue-100">Browse our collection of stunning, responsive templates perfect for any business or personal brand.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#contact" class="bg-white text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition">Get Your Custom Site</a>
+                <a href="#demos" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition">View Demos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl mb-2">📱</div>
+                    <h3 class="font-bold mb-1">Mobile-First</h3>
+                    <p class="text-sm text-gray-600">Fully responsive on all devices</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">⚡</div>
+                    <h3 class="font-bold mb-1">Fast Loading</h3>
+                    <p class="text-sm text-gray-600">Optimized for performance</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">🎯</div>
+                    <h3 class="font-bold mb-1">SEO Ready</h3>
+                    <p class="text-sm text-gray-600">Built for search engines</p>
+                </div>
+                <div>
+                    <div class="text-4xl mb-2">🔧</div>
+                    <h3 class="font-bold mb-1">Easy to Customize</h3>
+                    <p class="text-sm text-gray-600">Clean, well-documented code</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Grid -->
+    <section id="demos" class="py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Choose Your Template</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Restaurant Demo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                            <span class="text-6xl">🍝</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="./restaurant/" class="bg-white text-dark px-6 py-2 rounded-full font-semibold">View Demo</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-yellow-600 uppercase">Restaurant & Cafe</span>
+                        <h3 class="text-xl font-bold mt-2 mb-2">The Golden Fork</h3>
+                        <p class="text-gray-600 text-sm mb-4">Elegant Italian restaurant template with menu, reservations, and location info.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Menu</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Reservations</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Gallery</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                            <a href="./restaurant/" class="text-primary font-semibold hover:underline">View Demo →</a>
+                            <span class="text-sm text-gray-500">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Law Firm Demo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-blue-800 to-blue-900 flex items-center justify-center">
+                            <span class="text-6xl">⚖️</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="./law-firm/" class="bg-white text-dark px-6 py-2 rounded-full font-semibold">View Demo</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-blue-600 uppercase">Professional Services</span>
+                        <h3 class="text-xl font-bold mt-2 mb-2">Morrison & Associates</h3>
+                        <p class="text-gray-600 text-sm mb-4">Professional law firm template with attorney profiles, practice areas, and consultation forms.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Attorneys</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Practice Areas</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Contact</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                            <a href="./law-firm/" class="text-primary font-semibold hover:underline">View Demo →</a>
+                            <span class="text-sm text-gray-500">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Home Contractor Demo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                            <span class="text-6xl">🏠</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="./home-contractor/" class="bg-white text-dark px-6 py-2 rounded-full font-semibold">View Demo</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-orange-600 uppercase">Home Services</span>
+                        <h3 class="text-xl font-bold mt-2 mb-2">Premier Home Contractors</h3>
+                        <p class="text-gray-600 text-sm mb-4">Home renovation template with services, project gallery, testimonials, and quote requests.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Services</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Gallery</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Testimonials</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                            <a href="./home-contractor/" class="text-primary font-semibold hover:underline">View Demo →</a>
+                            <span class="text-sm text-gray-500">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-commerce Demo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-purple-600 to-indigo-700 flex items-center justify-center">
+                            <span class="text-6xl">🎧</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="./ecommerce/" class="bg-white text-dark px-6 py-2 rounded-full font-semibold">View Demo</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-purple-600 uppercase">Product Landing</span>
+                        <h3 class="text-xl font-bold mt-2 mb-2">TechPro Wireless Earbuds</h3>
+                        <p class="text-gray-600 text-sm mb-4">Product landing page template with features, specs, reviews, and ordering system.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Features</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Reviews</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Order Form</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                            <a href="./ecommerce/" class="text-primary font-semibold hover:underline">View Demo →</a>
+                            <span class="text-sm text-gray-500">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Portfolio Demo -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group">
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+                            <span class="text-6xl">👨‍💻</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <a href="./personal-portfolio/" class="bg-white text-dark px-6 py-2 rounded-full font-semibold">View Demo</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-teal-600 uppercase">Personal Brand</span>
+                        <h3 class="text-xl font-bold mt-2 mb-2">Alex Chen Portfolio</h3>
+                        <p class="text-gray-600 text-sm mb-4">Personal portfolio template with bio, skills, project showcase, and contact form.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Projects</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Skills</span>
+                            <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">Contact</span>
+                        </div>
+                        <div class="mt-4 pt-4 border-t flex justify-between items-center">
+                            <a href="./personal-portfolio/" class="text-primary font-semibold hover:underline">View Demo →</a>
+                            <span class="text-sm text-gray-500">Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Card -->
+                <div class="bg-gradient-to-br from-primary to-blue-700 rounded-xl shadow-lg p-8 text-white flex flex-col justify-center items-center text-center">
+                    <div class="text-5xl mb-4">✨</div>
+                    <h3 class="text-xl font-bold mb-2">Need a Custom Design?</h3>
+                    <p class="text-blue-100 text-sm mb-4">We can create a unique website tailored to your specific needs and brand.</p>
+                    <a href="#contact" class="bg-white text-primary px-6 py-3 rounded-full font-semibold hover:bg-blue-50 transition">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customization Guide -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">How to Customize Your Site</h2>
+            
+            <div class="space-y-8">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">1</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Download the Template</h3>
+                        <p class="text-gray-600">Click "View Demo" on any template, then save the page to your computer. All HTML and CSS is included.</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">2</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Replace Content</h3>
+                        <p class="text-gray-600">Edit the HTML to change text, images, and contact information. Look for commented sections marking what to customize.</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">3</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Set Up Contact Forms</h3>
+                        <p class="text-gray-600">Sign up for free at <a href="https://formspree.io" target="_blank" class="text-primary underline">Formspree.io</a> to get a form endpoint, then replace YOUR_FORMSPREE_ID in the HTML.</p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">4</div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Deploy Your Site</h3>
+                        <p class="text-gray-600">Host for free on GitHub Pages, Netlify, or Vercel. No backend required – just upload your HTML files!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-16 bg-gray-100">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-8">Built With Modern Technologies</h2>
+            <div class="flex flex-wrap justify-center gap-6">
+                <div class="bg-white px-6 py-3 rounded-lg shadow font-semibold">HTML5</div>
+                <div class="bg-white px-6 py-3 rounded-lg shadow font-semibold">Tailwind CSS</div>
+                <div class="bg-white px-6 py-3 rounded-lg shadow font-semibold">Google Fonts</div>
+                <div class="bg-white px-6 py-3 rounded-lg shadow font-semibold">Formspree</div>
+                <div class="bg-white px-6 py-3 rounded-lg shadow font-semibold">Unsplash Images</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-16 bg-dark text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Launch Your Website?</h2>
+            <p class="text-xl mb-8 text-gray-300">Get a professional website tailored to your needs. Fast, affordable, and beautiful.</p>
+            
+            <div class="bg-white text-dark p-8 rounded-2xl max-w-lg mx-auto">
+                <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="space-y-4">
+                    <input type="text" name="name" placeholder="Your Name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                    <input type="email" name="email" placeholder="Your Email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                    <select name="template" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                        <option value="">Which template interests you?</option>
+                        <option value="restaurant">Restaurant/Cafe</option>
+                        <option value="law-firm">Law Firm/Professional</option>
+                        <option value="home-contractor">Home Contractor</option>
+                        <option value="ecommerce">E-commerce/Product</option>
+                        <option value="personal-portfolio">Personal Portfolio</option>
+                        <option value="custom">Custom Design</option>
+                    </select>
+                    <textarea name="message" rows="4" placeholder="Tell us about your project..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"></textarea>
+                    <button type="submit" class="w-full bg-primary text-white py-4 rounded-lg font-semibold text-lg hover:bg-blue-600 transition">Send Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="mb-4">© 2026 AI Portfolio Demo Gallery. All templates free to use and modify.</p>
+            <p class="text-sm">Need help? <a href="mailto:contact@example.com" class="text-white hover:underline">Contact us</a></p>
+        </div>
+    </footer>
+</body>
+</html>

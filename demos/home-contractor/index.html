@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premier Home Contractors - Professional home renovation, remodeling, and construction services. Licensed, insured, and trusted by homeowners for 20+ years.">
+    <meta name="keywords" content="home contractor, renovation, remodeling, construction, kitchen, bathroom, home improvement">
+    <title>Premier Home Contractors | Quality Renovation & Remodeling</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Montserrat', 'sans-serif'],
+                        'body': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'orange': '#F97316',
+                        'dark': '#1F2937',
+                        'light': '#F9FAFB',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-body bg-light text-dark">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-lg z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl">🏠</span>
+                    <a href="#" class="font-display text-xl font-bold text-orange">Premier Home Contractors</a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#services" class="hover:text-orange transition">Services</a>
+                    <a href="#gallery" class="hover:text-orange transition">Gallery</a>
+                    <a href="#testimonials" class="hover:text-orange transition">Testimonials</a>
+                    <a href="#contact" class="hover:text-orange transition">Contact</a>
+                </div>
+                <a href="#contact" class="bg-orange text-white px-6 py-2 rounded-full font-semibold hover:bg-orange-600 transition">Get Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 bg-gradient-to-br from-dark to-gray-800 text-white">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h1 class="font-display text-4xl md:text-6xl font-bold mb-6">Transform Your Home Into Your Dream Space</h1>
+                    <p class="text-xl mb-8 text-gray-200">Professional renovation and remodeling services. Licensed, insured, and committed to exceptional craftsmanship.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="bg-orange text-white px-8 py-3 rounded-full text-center font-semibold hover:bg-orange-600 transition">Free Estimate</a>
+                        <a href="#gallery" class="border-2 border-white text-white px-8 py-3 rounded-full text-center font-semibold hover:bg-white hover:text-dark transition">View Our Work</a>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <span class="text-orange mr-2">✓</span>
+                            <span>Licensed & Insured</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-orange mr-2">✓</span>
+                            <span>20+ Years Experience</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop" alt="Home renovation" class="rounded-lg shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Our Services</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Complete home renovation and remodeling solutions</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Kitchen Remodeling -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&h=250&fit=crop" alt="Kitchen" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Kitchen Remodeling</h3>
+                    <p class="text-gray-600 mb-4">Custom cabinets, countertops, islands, and modern appliances. We create kitchens that are both beautiful and functional.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Custom cabinet installation</li>
+                        <li>• Countertop replacement</li>
+                        <li>• Backsplash design</li>
+                        <li>• Flooring installation</li>
+                    </ul>
+                </div>
+
+                <!-- Bathroom Renovation -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&h=250&fit=crop" alt="Bathroom" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Bathroom Renovation</h3>
+                    <p class="text-gray-600 mb-4">Luxury bathrooms tailored to your style. From spa-like retreats to modern minimalist designs.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Shower & tub installation</li>
+                        <li>• Vanity & sink replacement</li>
+                        <li>• Tile work & flooring</li>
+                        <li>• Plumbing upgrades</li>
+                    </ul>
+                </div>
+
+                <!-- Home Additions -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a2c?w=400&h=250&fit=crop" alt="Home Addition" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Home Additions</h3>
+                    <p class="text-gray-600 mb-4">Expand your living space with professional additions. Master suites, family rooms, and more.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Room additions</li>
+                        <li>• Second story additions</li>
+                        <li>• Sunrooms & porches</li>
+                        <li>• Garage conversions</li>
+                    </ul>
+                </div>
+
+                <!-- Flooring -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=250&fit=crop" alt="Flooring" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Flooring Installation</h3>
+                    <p class="text-gray-600 mb-4">Premium flooring solutions for every room. Hardwood, tile, laminate, and luxury vinyl.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Hardwood flooring</li>
+                        <li>• Tile installation</li>
+                        <li>• Laminate & LVP</li>
+                        <li>• Carpet removal & install</li>
+                    </ul>
+                </div>
+
+                <!-- Roofing -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1632759145351-1d592919f522?w=400&h=250&fit=crop" alt="Roofing" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Roofing Services</h3>
+                    <p class="text-gray-600 mb-4">Protect your home with quality roofing. Repairs, replacements, and new installations.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Roof replacement</li>
+                        <li>• Leak repairs</li>
+                        <li>• Shingle installation</li>
+                        <li>• Gutter systems</li>
+                    </ul>
+                </div>
+
+                <!-- Exterior Remodeling -->
+                <div class="bg-light p-8 rounded-lg hover:shadow-lg transition">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?w=400&h=250&fit=crop" alt="Exterior" class="rounded-lg mb-6 w-full h-48 object-cover">
+                    <h3 class="font-display text-2xl font-bold mb-4">Exterior Remodeling</h3>
+                    <p class="text-gray-600 mb-4">Boost curb appeal with exterior upgrades. Siding, windows, doors, and landscaping.</p>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>• Siding installation</li>
+                        <li>• Window replacement</li>
+                        <li>• Door installation</li>
+                        <li>• Deck & patio building</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-light">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Our Recent Projects</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">See the quality of our workmanship</p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1484154218962-a1c002085d2f?w=600&h=400&fit=crop" alt="Project 1" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Modern Kitchen Remodel</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?w=600&h=400&fit=crop" alt="Project 2" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Luxury Bathroom</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&h=400&fit=crop" alt="Project 3" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Home Addition</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=400&fit=crop" alt="Project 4" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Hardwood Flooring</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" alt="Project 5" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Exterior Renovation</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-lg">
+                    <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&h=400&fit=crop" alt="Project 6" class="w-full h-64 object-cover group-hover:scale-110 transition duration-300">
+                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                        <p class="text-white font-semibold">Custom Deck Build</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">What Our Clients Say</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Don't just take our word for it</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-light p-8 rounded-lg shadow-md">
+                    <div class="text-orange text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"Premier Home Contractors transformed our outdated kitchen into a modern masterpiece. The team was professional, on time, and the quality exceeded our expectations. Highly recommend!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">Jennifer Martinez</p>
+                            <p class="text-sm text-gray-500">Kitchen Remodel</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-light p-8 rounded-lg shadow-md">
+                    <div class="text-orange text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"We hired them for a complete bathroom renovation and couldn't be happier. They handled everything from design to installation. The attention to detail was impressive."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">Robert Thompson</p>
+                            <p class="text-sm text-gray-500">Bathroom Renovation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-light p-8 rounded-lg shadow-md">
+                    <div class="text-orange text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"Added a master suite to our home. The project was completed on schedule and within budget. Their communication throughout the process was excellent. True professionals!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">Sarah Johnson</p>
+                            <p class="text-sm text-gray-500">Home Addition</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form / Quote Request -->
+    <section id="contact" class="py-20 bg-dark text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Get Your Free Estimate</h2>
+            <p class="text-center mb-12">Ready to start your project? Contact us today for a no-obligation quote</p>
+            
+            <!-- Formspree form -->
+            <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="bg-white text-dark p-8 rounded-lg">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-orange">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Email</label>
+                        <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-orange">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Phone</label>
+                        <input type="tel" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-orange">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Service Needed</label>
+                        <select name="service" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-orange">
+                            <option value="">Select service</option>
+                            <option value="Kitchen Remodeling">Kitchen Remodeling</option>
+                            <option value="Bathroom Renovation">Bathroom Renovation</option>
+                            <option value="Home Addition">Home Addition</option>
+                            <option value="Flooring">Flooring Installation</option>
+                            <option value="Roofing">Roofing Services</option>
+                            <option value="Exterior">Exterior Remodeling</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2 font-semibold">Project Details</label>
+                    <textarea name="message" rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-orange" placeholder="Tell us about your project, timeline, and budget..."></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2 font-semibold">Preferred Contact Method</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center"><input type="radio" name="contact_method" value="phone" class="mr-2" checked> Phone</label>
+                        <label class="flex items-center"><input type="radio" name="contact_method" value="email" class="mr-2"> Email</label>
+                        <label class="flex items-center"><input type="radio" name="contact_method" value="both" class="mr-2"> Both</label>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-orange text-white py-4 rounded font-semibold text-lg hover:bg-orange-600 transition">Request Free Estimate</button>
+                <p class="text-xs text-gray-500 mt-4 text-center">To enable this form, sign up for free at <a href="https://formspree.io" target="_blank" class="underline">Formspree.io</a> and replace YOUR_FORMSPREE_ID with your form endpoint.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-display text-xl font-bold mb-4 text-orange">Premier Home Contractors</h4>
+                    <p class="text-gray-400 text-sm">Quality craftsmanship and exceptional service for over 20 years.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Services</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#services" class="hover:text-orange">Kitchen Remodeling</a></li>
+                        <li><a href="#services" class="hover:text-orange">Bathroom Renovation</a></li>
+                        <li><a href="#services" class="hover:text-orange">Home Additions</a></li>
+                        <li><a href="#services" class="hover:text-orange">Flooring</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Contact Info</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>📍 789 Builder Lane</li>
+                        <li>📞 (555) 123-4567</li>
+                        <li>✉️ info@premierhome.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">License & Insurance</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>License #: GC-123456</li>
+                        <li>Fully Insured</li>
+                        <li>BBB Accredited A+</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 Premier Home Contractors. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

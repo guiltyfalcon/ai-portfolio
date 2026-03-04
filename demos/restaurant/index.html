@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Golden Fork - Authentic Italian cuisine in the heart of the city. Fresh ingredients, traditional recipes, warm atmosphere.">
+    <meta name="keywords" content="restaurant, italian food, dining, pasta, pizza, fresh ingredients">
+    <title>The Golden Fork | Authentic Italian Restaurant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'gold': '#D4AF37',
+                        'charcoal': '#2C2C2C',
+                        'cream': '#F5F5F0',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom styles for smooth scrolling and animations */
+        html { scroll-behavior: smooth; }
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-body bg-cream text-charcoal">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="font-display text-2xl font-bold text-gold">The Golden Fork</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#menu" class="hover:text-gold transition">Menu</a>
+                    <a href="#about" class="hover:text-gold transition">About</a>
+                    <a href="#location" class="hover:text-gold transition">Location</a>
+                    <a href="#contact" class="hover:text-gold transition">Contact</a>
+                </div>
+                <a href="#contact" class="bg-gold text-white px-6 py-2 rounded-full hover:bg-yellow-600 transition">Book a Table</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center bg-gradient-to-br from-charcoal to-gray-800 text-white">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center px-4 fade-in">
+            <h1 class="font-display text-5xl md:text-7xl font-bold mb-6">Authentic Italian Cuisine</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Fresh ingredients, traditional recipes, and warm hospitality since 1985</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#menu" class="bg-gold text-white px-8 py-3 rounded-full text-lg hover:bg-yellow-600 transition">View Menu</a>
+                <a href="#contact" class="border-2 border-white text-white px-8 py-3 rounded-full text-lg hover:bg-white hover:text-charcoal transition">Reserve Table</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hours & Location -->
+    <section id="location" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="font-display text-4xl font-bold mb-6">Visit Us</h2>
+                    <p class="text-lg mb-6">Located in the heart of downtown, we're easy to reach by public transport or car.</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-gold mr-3">📍</span>
+                            <p>123 Main Street<br>Downtown District<br>New York, NY 10001</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gold mr-3">📞</span>
+                            <p>(212) 555-0123</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-gold mr-3">✉️</span>
+                            <p>hello@goldenfork.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-display text-3xl font-bold mb-6">Opening Hours</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b pb-2">
+                            <span>Monday - Thursday</span>
+                            <span class="font-semibold">11:00 AM - 10:00 PM</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span>Friday - Saturday</span>
+                            <span class="font-semibold">11:00 AM - 11:00 PM</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span>Sunday</span>
+                            <span class="font-semibold">12:00 PM - 9:00 PM</span>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-sm text-gray-600">* Last seating 30 minutes before closing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-cream">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Our Menu</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Crafted with passion using the finest imported Italian ingredients</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Appetizers -->
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="font-display text-2xl font-bold mb-6 text-gold">Antipasti</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Bruschetta Trio</h4>
+                                <p class="text-sm text-gray-600">Tomato, olive tapenade, ricotta</p>
+                            </div>
+                            <span class="font-semibold">$14</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Burrata Caprese</h4>
+                                <p class="text-sm text-gray-600">Fresh burrata, heirloom tomatoes, basil</p>
+                            </div>
+                            <span class="font-semibold">$18</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Calamari Fritti</h4>
+                                <p class="text-sm text-gray-600">Crispy squid, marinara, lemon</p>
+                            </div>
+                            <span class="font-semibold">$16</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pasta -->
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="font-display text-2xl font-bold mb-6 text-gold">Pasta</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Spaghetti Carbonara</h4>
+                                <p class="text-sm text-gray-600">Guanciale, pecorino, egg yolk</p>
+                            </div>
+                            <span class="font-semibold">$24</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Pappardelle al Ragù</h4>
+                                <p class="text-sm text-gray-600">Slow-cooked beef, pork, tomato</p>
+                            </div>
+                            <span class="font-semibold">$26</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Lobster Ravioli</h4>
+                                <p class="text-sm text-gray-600">Fresh lobster, saffron cream</p>
+                            </div>
+                            <span class="font-semibold">$32</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pizza -->
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="font-display text-2xl font-bold mb-6 text-gold">Pizza</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Margherita DOC</h4>
+                                <p class="text-sm text-gray-600">San Marzano tomato, mozzarella, basil</p>
+                            </div>
+                            <span class="font-semibold">$20</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Diavola</h4>
+                                <p class="text-sm text-gray-600">Spicy salami, chili, mozzarella</p>
+                            </div>
+                            <span class="font-semibold">$24</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Quattro Formaggi</h4>
+                                <p class="text-sm text-gray-600">Four cheese, honey, walnuts</p>
+                            </div>
+                            <span class="font-semibold">$22</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="font-display text-2xl font-bold mb-6 text-gold">Dolci</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Tiramisu</h4>
+                                <p class="text-sm text-gray-600">Classic recipe, espresso, mascarpone</p>
+                            </div>
+                            <span class="font-semibold">$12</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Panna Cotta</h4>
+                                <p class="text-sm text-gray-600">Vanilla, berry compote</p>
+                            </div>
+                            <span class="font-semibold">$10</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <h4 class="font-semibold">Cannoli</h4>
+                                <p class="text-sm text-gray-600">Sicilian ricotta, pistachio</p>
+                            </div>
+                            <span class="font-semibold">$11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl font-bold mb-6">Our Story</h2>
+            <p class="text-lg mb-6">Founded by the Rossi family in 1985, The Golden Fork brings authentic Italian flavors to New York. Our recipes have been passed down through generations, using only the finest imported ingredients from Italy.</p>
+            <p class="text-lg mb-8">Every dish is prepared with love and attention to detail, creating an unforgettable dining experience that transports you straight to the streets of Rome.</p>
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&h=400&fit=crop" alt="Restaurant interior" class="rounded-lg shadow-lg w-full">
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact" class="py-20 bg-charcoal text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Make a Reservation</h2>
+            <p class="text-center mb-12">Book your table online or call us at (212) 555-0123</p>
+            
+            <!-- Formspree form - Replace YOUR_FORMSPREE_ID with actual Formspree endpoint -->
+            <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="bg-white text-charcoal p-8 rounded-lg">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Email</label>
+                        <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Phone</label>
+                        <input type="tel" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Date</label>
+                        <input type="date" name="date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block mb-2 font-semibold">Time</label>
+                        <select name="time" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                            <option value="">Select time</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="17:30">5:30 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="18:30">6:30 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="19:30">7:30 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                            <option value="20:30">8:30 PM</option>
+                            <option value="21:00">9:00 PM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Guests</label>
+                        <select name="guests" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold">
+                            <option value="">Number of guests</option>
+                            <option value="1">1 person</option>
+                            <option value="2">2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4 people</option>
+                            <option value="5">5 people</option>
+                            <option value="6">6 people</option>
+                            <option value="7+">7+ people</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block mb-2 font-semibold">Special Requests</label>
+                    <textarea name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gold" placeholder="Allergies, special occasions, seating preferences..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-gold text-white py-4 rounded-lg font-semibold text-lg hover:bg-yellow-600 transition">Reserve Table</button>
+                <p class="text-xs text-gray-500 mt-4 text-center">To enable this form, sign up for free at <a href="https://formspree.io" target="_blank" class="underline">Formspree.io</a> and replace YOUR_FORMSPREE_ID with your form endpoint.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="font-display text-2xl font-bold mb-4 text-gold">The Golden Fork</h4>
+                    <p class="text-gray-400">Authentic Italian cuisine in the heart of New York City.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#menu" class="hover:text-gold transition">Menu</a></li>
+                        <li><a href="#about" class="hover:text-gold transition">About</a></li>
+                        <li><a href="#location" class="hover:text-gold transition">Location</a></li>
+                        <li><a href="#contact" class="hover:text-gold transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-gold transition">Instagram</a>
+                        <a href="#" class="text-gray-400 hover:text-gold transition">Facebook</a>
+                        <a href="#" class="text-gray-400 hover:text-gold transition">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 The Golden Fork. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alex Chen - Full Stack Developer & UI/UX Designer. Building beautiful, functional digital experiences. View my portfolio and projects.">
+    <meta name="keywords" content="web developer, full stack, portfolio, UI/UX designer, JavaScript, React, Python">
+    <title>Alex Chen | Full Stack Developer & Designer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'teal': '#14B8A6',
+                        'dark': '#0F172A',
+                        'light': '#F8FAFC',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #14B8A6 0%, #3B82F6 100%);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #14B8A6 0%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="font-body bg-light text-dark">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="font-display text-2xl font-bold">Alex Chen</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#about" class="hover:text-teal transition">About</a>
+                    <a href="#skills" class="hover:text-teal transition">Skills</a>
+                    <a href="#projects" class="hover:text-teal transition">Projects</a>
+                    <a href="#contact" class="hover:text-teal transition">Contact</a>
+                </div>
+                <a href="#contact" class="gradient-bg text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 transition">Let's Talk</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-teal font-semibold mb-4">👋 Hello, I'm</p>
+                    <h1 class="font-display text-5xl md:text-7xl font-bold mb-6">Alex Chen</h1>
+                    <h2 class="text-2xl md:text-3xl text-gray-600 mb-6">Full Stack Developer & UI/UX Designer</h2>
+                    <p class="text-lg text-gray-600 mb-8 max-w-lg">I build beautiful, functional digital experiences that solve real problems. Currently crafting innovative solutions at TechCorp.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#projects" class="gradient-bg text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition text-center">View My Work</a>
+                        <a href="#contact" class="border-2 border-dark text-dark px-8 py-3 rounded-full font-semibold hover:bg-dark hover:text-white transition text-center">Get In Touch</a>
+                    </div>
+                    <div class="mt-8 flex space-x-6">
+                        <a href="#" class="text-gray-600 hover:text-teal text-2xl">GitHub</a>
+                        <a href="#" class="text-gray-600 hover:text-teal text-2xl">LinkedIn</a>
+                        <a href="#" class="text-gray-600 hover:text-teal text-2xl">Twitter</a>
+                        <a href="#" class="text-gray-600 hover:text-teal text-2xl">Dribbble</a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 gradient-bg opacity-20 blur-3xl rounded-full"></div>
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop" alt="Alex Chen" class="relative z-10 rounded-3xl shadow-2xl w-full max-w-md mx-auto">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold mb-8">About Me</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="md:col-span-2">
+                    <p class="text-lg text-gray-600 mb-6">I'm a passionate developer with 5+ years of experience creating web applications and digital products. My journey started with a curiosity about how websites work, and it's evolved into a career building scalable solutions for startups and enterprises alike.</p>
+                    <p class="text-lg text-gray-600 mb-6">When I'm not coding, you'll find me exploring new design trends, contributing to open-source projects, or hiking in the mountains. I believe in continuous learning and pushing the boundaries of what's possible on the web.</p>
+                    <div class="grid grid-cols-2 gap-6 mt-8">
+                        <div>
+                            <div class="text-3xl font-bold gradient-text">50+</div>
+                            <div class="text-gray-600">Projects Completed</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text">30+</div>
+                            <div class="text-gray-600">Happy Clients</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text">5+</div>
+                            <div class="text-gray-600">Years Experience</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text">10+</div>
+                            <div class="text-gray-600">Awards Won</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-light p-6 rounded-2xl">
+                    <h3 class="font-bold text-xl mb-4">Quick Info</h3>
+                    <ul class="space-y-3">
+                        <li><span class="font-semibold">📍</span> San Francisco, CA</li>
+                        <li><span class="font-semibold">💼</span> Available for freelance</li>
+                        <li><span class="font-semibold">📧</span> alex@example.com</li>
+                        <li><span class="font-semibold">🎓</span> CS, Stanford University</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-light">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-12">Skills & Technologies</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Frontend -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="font-display text-2xl font-bold mb-6">Frontend</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">React</span>
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">Vue.js</span>
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">TypeScript</span>
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">Tailwind CSS</span>
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">Next.js</span>
+                        <span class="bg-teal/10 text-teal px-4 py-2 rounded-full text-sm font-semibold">HTML5/CSS3</span>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="font-display text-2xl font-bold mb-6">Backend</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">Node.js</span>
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">Python</span>
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">PostgreSQL</span>
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">MongoDB</span>
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">GraphQL</span>
+                        <span class="bg-blue-100 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold">REST APIs</span>
+                    </div>
+                </div>
+
+                <!-- Design & Tools -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="font-display text-2xl font-bold mb-6">Design & Tools</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Figma</span>
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Adobe XD</span>
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Git</span>
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Docker</span>
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">AWS</span>
+                        <span class="bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold">Framer Motion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Featured Projects</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">A selection of my recent work</p>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="Project 1" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">E-Commerce Platform</h3>
+                        <p class="text-gray-600 text-sm mb-4">Full-stack e-commerce solution with React, Node.js, and Stripe integration.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">React</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Node.js</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Stripe</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Project 2" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">Analytics Dashboard</h3>
+                        <p class="text-gray-600 text-sm mb-4">Real-time data visualization dashboard with D3.js and WebSocket integration.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Vue.js</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">D3.js</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">WebSocket</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop" alt="Project 3" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">Social Media App</h3>
+                        <p class="text-gray-600 text-sm mb-4">Mobile-first social platform with real-time messaging and content sharing.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">React Native</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Firebase</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Redux</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" alt="Project 4" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">Task Management Tool</h3>
+                        <p class="text-gray-600 text-sm mb-4">Collaborative project management app with drag-and-drop Kanban boards.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Next.js</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Prisma</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">PostgreSQL</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=600&h=400&fit=crop" alt="Project 5" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">AI Content Generator</h3>
+                        <p class="text-gray-600 text-sm mb-4">SaaS platform leveraging GPT-4 for automated content creation and marketing.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Python</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">FastAPI</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">OpenAI</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="group bg-light rounded-2xl overflow-hidden hover:shadow-xl transition">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop" alt="Project 6" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold mb-2">Fitness Tracking App</h3>
+                        <p class="text-gray-600 text-sm mb-4">Mobile app for workout tracking, nutrition logging, and progress analytics.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Flutter</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">Firebase</span>
+                            <span class="text-xs bg-teal/10 text-teal px-3 py-1 rounded-full">HealthKit</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <a href="#" class="text-teal font-semibold hover:underline">Live Demo →</a>
+                            <a href="#" class="text-gray-600 hover:underline">GitHub →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 gradient-bg text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Let's Work Together</h2>
+            <p class="text-center mb-12 text-white/90">Have a project in mind? I'd love to hear about it.</p>
+            
+            <div class="bg-white text-dark p-8 rounded-2xl">
+                <!-- Formspree form -->
+                <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 font-semibold">Name</label>
+                            <input type="text" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-teal">
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-semibold">Email</label>
+                            <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-teal">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Subject</label>
+                        <input type="text" name="subject" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-teal">
+                    </div>
+                    <div>
+                        <label class="block mb-2 font-semibold">Message</label>
+                        <textarea name="message" rows="5" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-teal" placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full gradient-bg text-white py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition">Send Message</button>
+                    <p class="text-xs text-gray-500 text-center">To enable this form, sign up for free at <a href="https://formspree.io" target="_blank" class="underline">Formspree.io</a> and replace YOUR_FORMSPREE_ID with your form endpoint.</p>
+                </form>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="mb-4">Or reach out directly:</p>
+                <div class="flex justify-center space-x-8">
+                    <a href="mailto:alex@example.com" class="flex items-center hover:text-teal">
+                        <span class="mr-2">📧</span> alex@example.com
+                    </a>
+                    <a href="tel:+1234567890" class="flex items-center hover:text-teal">
+                        <span class="mr-2">📱</span> (123) 456-7890
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h4 class="font-display text-2xl font-bold">Alex Chen</h4>
+                    <p class="text-gray-400 text-sm">Building digital experiences that matter.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-teal transition">GitHub</a>
+                    <a href="#" class="text-gray-400 hover:text-teal transition">LinkedIn</a>
+                    <a href="#" class="text-gray-400 hover:text-teal transition">Twitter</a>
+                    <a href="#" class="text-gray-400 hover:text-teal transition">Dribbble</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 Alex Chen. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

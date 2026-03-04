@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TechPro Wireless Earbuds - Premium sound quality, 30-hour battery life, active noise cancellation. Experience audio like never before.">
+    <meta name="keywords" content="wireless earbuds, bluetooth headphones, noise cancelling, premium audio, techpro">
+    <title>TechPro Wireless Earbuds | Premium Audio Experience</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Poppins', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand': '#6366F1',
+                        'brand-dark': '#4F46E5',
+                        'dark': '#0F172A',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+</head>
+<body class="font-body bg-white text-dark">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="font-display text-2xl font-bold gradient-text">TechPro</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="hover:text-brand transition">Features</a>
+                    <a href="#specs" class="hover:text-brand transition">Specs</a>
+                    <a href="#reviews" class="hover:text-brand transition">Reviews</a>
+                    <a href="#faq" class="hover:text-brand transition">FAQ</a>
+                </div>
+                <a href="#buy" class="bg-brand text-white px-6 py-2 rounded-full font-semibold hover:bg-brand-dark transition">Buy Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 bg-gradient-to-br from-dark via-purple-900 to-brand-dark text-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-block bg-white/10 px-4 py-2 rounded-full mb-6">
+                        <span class="text-sm font-semibold">🎉 New Release 2026</span>
+                    </div>
+                    <h1 class="font-display text-5xl md:text-6xl font-bold mb-6">Experience Sound Like Never Before</h1>
+                    <p class="text-xl mb-8 text-gray-200">TechPro Wireless Earbuds with active noise cancellation, 30-hour battery life, and studio-quality sound.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#buy" class="bg-white text-brand-dark px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition text-center">Order Now - $149</a>
+                        <a href="#features" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-brand-dark transition text-center">Learn More</a>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <span class="text-yellow-400 mr-1">★★★★★</span>
+                            <span class="text-sm">4.9/5 (2,000+ reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-brand/30 blur-3xl rounded-full"></div>
+                    <img src="https://images.unsplash.com/photo-1590658268037-6bf1248c0233?w=600&h=600&fit=crop" alt="TechPro Earbuds" class="relative z-10 float w-full max-w-md mx-auto rounded-3xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">Why Choose TechPro?</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Engineered for audiophiles, designed for everyone</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">🎵</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Studio-Quality Sound</h3>
+                    <p class="text-gray-600">Custom 12mm drivers deliver rich bass, clear mids, and crisp highs. Hear every detail in your music.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">🔇</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Active Noise Cancellation</h3>
+                    <p class="text-gray-600">Advanced ANC blocks up to 95% of ambient noise. Immerse yourself in pure sound.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">🔋</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">30-Hour Battery Life</h3>
+                    <p class="text-gray-600">8 hours on earbuds + 22 hours in case. Fast charging gives 2 hours playback in 10 minutes.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">💧</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">IPX7 Waterproof</h3>
+                    <p class="text-gray-600">Sweat and water resistant. Perfect for workouts, runs, and all-weather use.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">📱</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Smart Touch Controls</h3>
+                    <p class="text-gray-600">Intuitive touch controls for music, calls, and voice assistant. No need to reach for your phone.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
+                    <div class="text-5xl mb-6">🎤</div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Crystal Clear Calls</h3>
+                    <p class="text-gray-600">6-mic system with AI noise reduction ensures you're heard clearly on every call.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Showcase -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <img src="https://images.unsplash.com/photo-1606220838315-056192d5e927?w=600&h=600&fit=crop" alt="Earbuds in case" class="rounded-2xl shadow-2xl">
+                <div>
+                    <h2 class="font-display text-4xl font-bold mb-6">Premium Design Meets Comfort</h2>
+                    <p class="text-lg text-gray-600 mb-6">Ergonomically designed for all-day comfort. Three sizes of ear tips ensure a perfect fit for everyone.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <span class="text-brand mr-3 text-xl">✓</span>
+                            <span>Lightweight design (only 4.5g per earbud)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-brand mr-3 text-xl">✓</span>
+                            <span>Premium matte finish</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-brand mr-3 text-xl">✓</span>
+                            <span>Wireless charging case</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-brand mr-3 text-xl">✓</span>
+                            <span>USB-C fast charging</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specs Section -->
+    <section id="specs" class="py-20 bg-dark text-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-12">Technical Specifications</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white/10 p-8 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6 text-brand">Audio</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Driver Size</span>
+                            <span class="font-semibold">12mm dynamic</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Frequency Response</span>
+                            <span class="font-semibold">20Hz - 20kHz</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Impedance</span>
+                            <span class="font-semibold">32Ω</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">ANC Depth</span>
+                            <span class="font-semibold">Up to 35dB</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white/10 p-8 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-6 text-brand">Battery & Connectivity</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Battery Life (ANC On)</span>
+                            <span class="font-semibold">8hrs + 22hrs (case)</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Charging Port</span>
+                            <span class="font-semibold">USB-C</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Bluetooth Version</span>
+                            <span class="font-semibold">5.3</span>
+                        </li>
+                        <li class="flex justify-between border-b border-white/20 pb-2">
+                            <span class="text-gray-300">Wireless Range</span>
+                            <span class="font-semibold">Up to 15m</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-4">What Customers Are Saying</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Join thousands of satisfied customers</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"Best earbuds I've ever owned! The sound quality is incredible and the ANC actually works. Battery lasts forever. Worth every penny!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Reviewer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">Michael Chen</p>
+                            <p class="text-sm text-gray-500">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"I use these daily for my commute and gym. They stay in place, sound amazing, and the battery life is no joke. Highly recommend!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Reviewer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">Emma Rodriguez</p>
+                            <p class="text-sm text-gray-500">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                    <p class="text-gray-600 mb-6">"Upgraded from a major brand and these blow them away. Better sound, better fit, better price. TechPro has a customer for life!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Reviewer" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <p class="font-semibold">David Park</p>
+                            <p class="text-sm text-gray-500">Verified Buyer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Buy Section -->
+    <section id="buy" class="py-20 bg-gradient-to-br from-brand to-purple-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Ready to Upgrade Your Audio?</h2>
+            <p class="text-xl mb-8 text-white/90">Join over 50,000 happy customers experiencing premium sound</p>
+            
+            <div class="bg-white text-dark p-8 rounded-2xl max-w-md mx-auto mb-8">
+                <div class="text-5xl font-bold mb-2">$149</div>
+                <div class="text-gray-500 line-through mb-6">$249</div>
+                <ul class="space-y-3 mb-8 text-left">
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> TechPro Wireless Earbuds</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Wireless Charging Case</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 3 Sizes of Ear Tips</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> USB-C Cable</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> 2-Year Warranty</li>
+                    <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Free Shipping</li>
+                </ul>
+                
+                <!-- Formspree order form -->
+                <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" class="space-y-4">
+                    <input type="text" name="name" placeholder="Full Name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-brand">
+                    <input type="email" name="email" placeholder="Email Address" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-brand">
+                    <input type="text" name="address" placeholder="Shipping Address" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-brand">
+                    <select name="color" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-brand">
+                        <option value="">Select Color</option>
+                        <option value="black">Midnight Black</option>
+                        <option value="white">Pearl White</option>
+                        <option value="blue">Ocean Blue</option>
+                    </select>
+                    <button type="submit" class="w-full bg-brand text-white py-4 rounded-lg font-bold text-lg hover:bg-brand-dark transition">Order Now</button>
+                    <p class="text-xs text-gray-500">To enable this form, sign up for free at <a href="https://formspree.io" target="_blank" class="underline">Formspree.io</a> and replace YOUR_FORMSPREE_ID.</p>
+                </form>
+                
+                <div class="mt-6 flex justify-center space-x-4">
+                    <img src="https://img.shields.io/badge/Payment-Secure-green?style=flat-square" alt="Secure Payment">
+                    <img src="https://img.shields.io/badge/Shipping-Free-blue?style=flat-square" alt="Free Shipping">
+                </div>
+            </div>
+            
+            <p class="text-sm text-white/80">30-day money-back guarantee • Free returns • 2-year warranty</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-display text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            
+            <div class="space-y-6">
+                <div class="border-b pb-6">
+                    <h3 class="font-bold text-lg mb-2">How long does shipping take?</h3>
+                    <p class="text-gray-600">We offer free shipping worldwide. Orders typically arrive within 3-5 business days in the US and 7-14 days internationally.</p>
+                </div>
+                <div class="border-b pb-6">
+                    <h3 class="font-bold text-lg mb-2">What's your return policy?</h3>
+                    <p class="text-gray-600">We offer a 30-day money-back guarantee. If you're not completely satisfied, return them for a full refund, no questions asked.</p>
+                </div>
+                <div class="border-b pb-6">
+                    <h3 class="font-bold text-lg mb-2">Are these compatible with iPhone and Android?</h3>
+                    <p class="text-gray-600">Yes! TechPro earbuds work seamlessly with both iOS and Android devices via Bluetooth 5.3.</p>
+                </div>
+                <div class="border-b pb-6">
+                    <h3 class="font-bold text-lg mb-2">Can I use just one earbud?</h3>
+                    <p class="text-gray-600">Absolutely. You can use either earbud independently for calls or music while keeping the other in the case.</p>
+                </div>
+                <div class="border-b pb-6">
+                    <h3 class="font-bold text-lg mb-2">How do I contact support?</h3>
+                    <p class="text-gray-600">Our support team is available 24/7 via email at support@techpro.com or through the chat on our website.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-display text-2xl font-bold mb-4 gradient-text">TechPro</h4>
+                    <p class="text-gray-400 text-sm">Premium audio products for the modern lifestyle.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Products</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#features" class="hover:text-brand">Wireless Earbuds</a></li>
+                        <li><a href="#" class="hover:text-brand">Headphones</a></li>
+                        <li><a href="#" class="hover:text-brand">Speakers</a></li>
+                        <li><a href="#" class="hover:text-brand">Accessories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#faq" class="hover:text-brand">FAQ</a></li>
+                        <li><a href="#" class="hover:text-brand">Shipping</a></li>
+                        <li><a href="#" class="hover:text-brand">Returns</a></li>
+                        <li><a href="#" class="hover:text-brand">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-brand">Instagram</a>
+                        <a href="#" class="text-gray-400 hover:text-brand">Twitter</a>
+                        <a href="#" class="text-gray-400 hover:text-brand">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 TechPro Audio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
