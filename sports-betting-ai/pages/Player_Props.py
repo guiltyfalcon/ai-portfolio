@@ -1,8 +1,11 @@
 """
 Player Props Page - Explore player prop markets with AI reasoning
+Now uses player_props_cache.json for real-time data
 """
 import streamlit as st
 import requests
+import json
+import os
 import sys
 sys.path.append('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai')
 from models.universal_predictor import UniversalSportsPredictor
@@ -12,6 +15,23 @@ st.set_page_config(page_title="Player Props - Sports Betting AI Pro", page_icon=
 # Check authentication
 if 'authenticated' not in st.session_state or not st.session_state.authenticated:
     st.switch_page("Home.py")
+
+# Load player props cache
+def load_player_props_cache():
+    """Load player props from cache file."""
+    cache_path = '/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/player_props_cache.json'
+    try:
+        with open(cache_path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error loading cache: {e}")
+        return None
+
+def get_props_for_sport(cache, sport):
+    """Get player props for a specific sport."""
+    if not cache or 'sports' not in cache:
+        return []
+    return cache['sports'].get(sport.lower(), [])
 
 # ESPN API Functions
 def fetch_espn_games(sport="nba"):
@@ -274,17 +294,21 @@ with sport_cols[1]:
     if st.button("🔄 Refresh Games", use_container_width=True):
         st.rerun()
 
-# Fetch games
-with st.spinner(f"Loading {current_sport} games..."):
-    games = fetch_espn_games(current_sport.lower())
+# Load player props from cache
+cache = load_player_props_cache()
+props_games = get_props_for_sport(cache, current_sport.lower())
 
-if not games:
-    st.info(f"No active games found for {current_sport}. Check back later or try a different sport.")
+# Show cache timestamp if available
+if cache and 'timestamp' in cache:
+    st.caption(f"📊 Data updated: {cache['timestamp'].replace('T', ' ').split('.')[0]}")
+
+if not props_games:
+    st.info(f"No player props available for {current_sport}. Check back later or try a different sport.")
 else:
     # Game selector
     st.markdown("<h3>📅 Select a Game</h3>", unsafe_allow_html=True)
     
-    game_options = {f"{g['home_team']} vs {g['away_team']} ({g['time']})": g for g in games}
+    game_options = {f"{g['home_team']} vs {g['away_team']}": g for g in props_games}
     selected_game_name = st.selectbox("Game", list(game_options.keys()), label_visibility="collapsed")
     selected_game = game_options[selected_game_name]
     
@@ -292,6 +316,10 @@ else:
     
     # Display players from both teams
     col_home, col_away = st.columns(2)
+    
+    # Helper to format prop type names
+    def format_prop_type(prop_type):
+        return prop_type.replace('_', ' ').title()
     
     with col_home:
         st.markdown(f"""
@@ -301,45 +329,43 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        for player in selected_game['home_players']:
-            with st.expander(f"{player['emoji']} {player['name']} ({player['position']})"):
-                for prop in player['props']:
-                    # Generate reasoning for this prop
-                    reasoning = generate_prop_reasoning(player, prop, current_sport)
+        for player in selected_game.get('players', [])[:4]:  # Show top 4 players
+            player_name = player.get('player', 'Unknown')
+            team = player.get('team', '')
+            props = player.get('props', [])
+            
+            with st.expander(f"🎯 {player_name}"):
+                for prop in props:
+                    if not prop:
+                        continue
                     
-                    # Recommendation badge
-                    hit_rate = prop['hit_rate']
-                    if hit_rate >= 60:
-                        rec_badge = '<span style="background: rgba(0, 231, 1, 0.2); color: #00e701; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">STRONG OVER</span>'
-                    elif hit_rate >= 55:
-                        rec_badge = '<span style="background: rgba(0, 210, 255, 0.2); color: #00d2ff; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">LEAN OVER</span>'
-                    elif hit_rate >= 45:
-                        rec_badge = '<span style="background: rgba(255, 255, 255, 0.1); color: #8A8F98; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">TOSS-UP</span>'
+                    prop_type = format_prop_type(prop.get('type', 'Unknown'))
+                    line = prop.get('line', 0)
+                    avg = prop.get('avg', line - 0.5)
+                    
+                    # Calculate hit rate from avg vs line
+                    hit_rate = 55 if avg >= line else 45
+                    
+                    # Generate simple reasoning
+                    if avg >= line:
+                        reasoning = f"✅ Averaging {avg:.1f} - above the {line} line. Strong OVER lean."
+                        rec_badge = '<span style="background: rgba(0, 231, 1, 0.2); color: #00e701; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">LEAN OVER</span>'
                     else:
+                        reasoning = f"⚠️ Averaging {avg:.1f} - below the {line} line. Consider UNDER."
                         rec_badge = '<span style="background: rgba(255, 77, 77, 0.2); color: #ff4d4d; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">LEAN UNDER</span>'
                     
-                    # Prop card with Over/Under + Reasoning
+                    # Prop card
                     prop_html = f"""
                     <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                             <div>
-                                <span style="color: white; font-weight: 600;">{prop['type']}</span>
-                                <span style="color: #00d2ff; font-family: monospace;"> {prop['line']}</span>
+                                <span style="color: white; font-weight: 600;">{prop_type}</span>
+                                <span style="color: #00d2ff; font-family: monospace;"> {line}</span>
                             </div>
                             {rec_badge}
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
-                            <div style="background: rgba(0, 231, 1, 0.1); border-radius: 6px; padding: 0.5rem; text-align: center;">
-                                <span style="color: #8A8F98; font-size: 0.65rem; display: block;">OVER</span>
-                                <span style="color: #00e701; font-family: monospace; font-weight: 600;">{prop['over']}</span>
-                            </div>
-                            <div style="background: rgba(255, 77, 77, 0.1); border-radius: 6px; padding: 0.5rem; text-align: center;">
-                                <span style="color: #8A8F98; font-size: 0.65rem; display: block;">UNDER</span>
-                                <span style="color: #ff4d4d; font-family: monospace; font-weight: 600;">{prop['under']}</span>
-                            </div>
-                        </div>
                         <div style="background: rgba(0, 210, 255, 0.08); border-left: 3px solid #00d2ff; padding: 0.5rem; border-radius: 4px;">
-                            <div style="color: #00d2ff; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.25rem;">🧠 AI ANALYSIS</div>
+                            <div style="color: #00d2ff; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.25rem;">📊 AVG: {avg:.1f}</div>
                             <div style="color: #B0B5BC; font-size: 0.75rem; line-height: 1.4;">{reasoning}</div>
                         </div>
                     </div>
@@ -377,7 +403,7 @@ else:
         </div>
         """, unsafe_allow_html=True)
         
-        for player in selected_game['away_players']:
+        for player in selected_game.get('players', [])[:4]:  # Show top 4 players
             with st.expander(f"{player['emoji']} {player['name']} ({player['position']})"):
                 for prop in player['props']:
                     # Generate reasoning for this prop

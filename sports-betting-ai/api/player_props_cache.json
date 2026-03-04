@@ -1,0 +1,1195 @@
+{
+  "timestamp": "2026-03-04T18:52:13.861737",
+  "source": "espn_api + generated_averages",
+  "sports": {
+    "nba": [
+      {
+        "game_id": "401810748",
+        "home_team": "New York Knicks",
+        "away_team": "Oklahoma City Thunder",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "NY Star",
+            "team": "New York Knicks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "OKC Star",
+            "team": "Oklahoma City Thunder",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "NY Big",
+            "team": "New York Knicks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "OKC Guard",
+            "team": "Oklahoma City Thunder",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401810749",
+        "home_team": "Boston Celtics",
+        "away_team": "Charlotte Hornets",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "BOS Star",
+            "team": "Boston Celtics",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "CHA Star",
+            "team": "Charlotte Hornets",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "BOS Big",
+            "team": "Boston Celtics",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "CHA Guard",
+            "team": "Charlotte Hornets",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401810750",
+        "home_team": "Philadelphia 76ers",
+        "away_team": "Utah Jazz",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "PHI Star",
+            "team": "Philadelphia 76ers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "UTAH Star",
+            "team": "Utah Jazz",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "PHI Big",
+            "team": "Philadelphia 76ers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "UTAH Guard",
+            "team": "Utah Jazz",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401810751",
+        "home_team": "Memphis Grizzlies",
+        "away_team": "Portland Trail Blazers",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "MEM Star",
+            "team": "Memphis Grizzlies",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "POR Star",
+            "team": "Portland Trail Blazers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "MEM Big",
+            "team": "Memphis Grizzlies",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "POR Guard",
+            "team": "Portland Trail Blazers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401810752",
+        "home_team": "Milwaukee Bucks",
+        "away_team": "Atlanta Hawks",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "MIL Star",
+            "team": "Milwaukee Bucks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "ATL Star",
+            "team": "Atlanta Hawks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "MIL Big",
+            "team": "Milwaukee Bucks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "ATL Guard",
+            "team": "Atlanta Hawks",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401810753",
+        "home_team": "LA Clippers",
+        "away_team": "Indiana Pacers",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "LAC Star",
+            "team": "LA Clippers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 24.5,
+                "avg": 24.0
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.0
+              },
+              {
+                "type": "ast",
+                "line": 6.5,
+                "avg": 6.0
+              }
+            ]
+          },
+          {
+            "player": "IND Star",
+            "team": "Indiana Pacers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.0
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.0
+              },
+              {
+                "type": "ast",
+                "line": 8.5,
+                "avg": 8.0
+              }
+            ]
+          },
+          {
+            "player": "LAC Big",
+            "team": "LA Clippers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.0
+              },
+              {
+                "type": "reb",
+                "line": 10.5,
+                "avg": 10.0
+              },
+              {
+                "type": "ast",
+                "line": 2.5,
+                "avg": 2.0
+              }
+            ]
+          },
+          {
+            "player": "IND Guard",
+            "team": "Indiana Pacers",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.5,
+                "avg": 21.0
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.0
+              },
+              {
+                "type": "ast",
+                "line": 7.5,
+                "avg": 7.0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "nfl": [
+      {
+        "game_id": "401772988",
+        "home_team": "New England Patriots",
+        "away_team": "Seattle Seahawks",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "NE QB",
+            "team": "New England Patriots",
+            "props": [
+              {
+                "type": "pass_yds",
+                "line": 275.5,
+                "avg": 275.0
+              },
+              {
+                "type": "pass_td",
+                "line": 2.5,
+                "avg": 2.0
+              },
+              {
+                "type": "rush_yds",
+                "line": 35.5,
+                "avg": 35.0
+              }
+            ]
+          },
+          {
+            "player": "SEA QB",
+            "team": "Seattle Seahawks",
+            "props": [
+              {
+                "type": "pass_yds",
+                "line": 245.5,
+                "avg": 245.0
+              },
+              {
+                "type": "pass_td",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "rush_yds",
+                "line": 25.5,
+                "avg": 25.0
+              }
+            ]
+          },
+          {
+            "player": "NE WR1",
+            "team": "New England Patriots",
+            "props": [
+              {
+                "type": "rec_yds",
+                "line": 85.5,
+                "avg": 85.0
+              },
+              {
+                "type": "rec",
+                "line": 6.5,
+                "avg": 6.0
+              },
+              {
+                "type": "td",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "SEA RB",
+            "team": "Seattle Seahawks",
+            "props": [
+              {
+                "type": "rush_yds",
+                "line": 75.5,
+                "avg": 75.0
+              },
+              {
+                "type": "rec_yds",
+                "line": 35.5,
+                "avg": 35.0
+              },
+              {
+                "type": "td",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "mlb": [
+      {
+        "game_id": "401833052",
+        "home_team": "Baltimore Orioles",
+        "away_team": "Houston Astros",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "BAL Star",
+            "team": "Baltimore Orioles",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "runs",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "HOU Star",
+            "team": "Houston Astros",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "hr",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401833053",
+        "home_team": "Boston Red Sox",
+        "away_team": "New York Yankees",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "BOS Star",
+            "team": "Boston Red Sox",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "runs",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "NYY Star",
+            "team": "New York Yankees",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "hr",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401833051",
+        "home_team": "Athletics",
+        "away_team": "Arizona Diamondbacks",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "ATH Star",
+            "team": "Athletics",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "runs",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "ARI Star",
+            "team": "Arizona Diamondbacks",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "hr",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401833054",
+        "home_team": "Milwaukee Brewers",
+        "away_team": "Chicago Cubs",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "MIL Star",
+            "team": "Milwaukee Brewers",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "runs",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "CHC Star",
+            "team": "Chicago Cubs",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "hr",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401833055",
+        "home_team": "San Francisco Giants",
+        "away_team": "Seattle Mariners",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "SF Star",
+            "team": "San Francisco Giants",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "runs",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          },
+          {
+            "player": "SEA Star",
+            "team": "Seattle Mariners",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "hr",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "rbis",
+                "line": 0.5,
+                "avg": 0.0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "nhl": [
+      {
+        "game_id": "401803321",
+        "home_team": "Detroit Red Wings",
+        "away_team": "Vegas Golden Knights",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "DET Star",
+            "team": "Detroit Red Wings",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          },
+          {
+            "player": "VGK Star",
+            "team": "Vegas Golden Knights",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401803322",
+        "home_team": "New Jersey Devils",
+        "away_team": "Toronto Maple Leafs",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "NJ Star",
+            "team": "New Jersey Devils",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          },
+          {
+            "player": "TOR Star",
+            "team": "Toronto Maple Leafs",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401803323",
+        "home_team": "Vancouver Canucks",
+        "away_team": "Carolina Hurricanes",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "VAN Star",
+            "team": "Vancouver Canucks",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          },
+          {
+            "player": "CAR Star",
+            "team": "Carolina Hurricanes",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401803324",
+        "home_team": "Anaheim Ducks",
+        "away_team": "New York Islanders",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "ANA Star",
+            "team": "Anaheim Ducks",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          },
+          {
+            "player": "NYI Star",
+            "team": "New York Islanders",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "game_id": "401803325",
+        "home_team": "Seattle Kraken",
+        "away_team": "St. Louis Blues",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "SEA Star",
+            "team": "Seattle Kraken",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          },
+          {
+            "player": "STL Star",
+            "team": "St. Louis Blues",
+            "props": [
+              {
+                "type": "points",
+                "line": 1.5,
+                "avg": 1.0
+              },
+              {
+                "type": "goals",
+                "line": 0.5,
+                "avg": 0.0
+              },
+              {
+                "type": "shots",
+                "line": 4.5,
+                "avg": 4.0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "ncaab": [
+      {
+        "game_id": "401808273",
+        "home_team": "Arkansas Razorbacks",
+        "away_team": "Texas Longhorns",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401820784",
+        "home_team": "SMU Mustangs",
+        "away_team": "Miami Hurricanes",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401828461",
+        "home_team": "Saint Louis Billikens",
+        "away_team": "Loyola Chicago Ramblers",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401825556",
+        "home_team": "Northwestern Wildcats",
+        "away_team": "Purdue Boilermakers",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401827721",
+        "home_team": "Houston Cougars",
+        "away_team": "Baylor Bears",
+        "time": "TBD",
+        "players": []
+      }
+    ]
+  }
+}
