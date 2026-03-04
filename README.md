@@ -1,14 +1,57 @@
-# AI Portfolio 🤖
+# 💼 Professional Web Development Portfolio
 
-A collection of production-grade AI applications built with Python, Streamlit, and modern ML frameworks.
+**Custom Websites for Small Businesses — Ready in Days, Not Weeks**
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=Streamlit&logoColor=white)](https://streamlit.io)
+[![Live Demos](https://img.shields.io/badge/Demos-Live-brightgreen)](https://guiltyfalcon.github.io/ai-portfolio/demos/)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Glossary/HTML5)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## 🚀 Projects
+## 🎨 **LIVE DEMO WEBSITES**
+
+**5 Professional Website Templates — Fully Functional & Mobile-Optimized**
+
+Browse the complete demo gallery: **[👉 View All Demos](https://guiltyfalcon.github.io/ai-portfolio/demos/)**
+
+| Template | Business Type | Live Demo |
+|----------|---------------|-----------|
+| 🍕 **Restaurant/Cafe** | Food & Dining | [View Demo](https://guiltyfalcon.github.io/ai-portfolio/demos/restaurant/) |
+| ⚖️ **Law Firm** | Professional Services | [View Demo](https://guiltyfalcon.github.io/ai-portfolio/demos/law-firm/) |
+| 🔨 **Home Contractor** | Home Services | [View Demo](https://guiltyfalcon.github.io/ai-portfolio/demos/home-contractor/) |
+| 🛒 **E-commerce/Product** | Online Sales | [View Demo](https://guiltyfalcon.github.io/ai-portfolio/demos/ecommerce/) |
+| 👤 **Personal Portfolio** | Personal Branding | [View Demo](https://guiltyfalcon.github.io/ai-portfolio/demos/personal-portfolio/) |
+
+### ✨ **Every Template Includes:**
+
+✅ **Mobile-First Responsive Design** — Looks perfect on phone, tablet, desktop  
+✅ **Tailwind CSS via CDN** — No build step, instant customization  
+✅ **Professional Typography** — Google Fonts integration  
+✅ **Working Contact Forms** — Formspree integration (free tier)  
+✅ **SEO-Optimized** — Meta tags, semantic HTML, alt text  
+✅ **Fast Loading** — Under 2 seconds page load  
+✅ **Easy to Customize** — Detailed code comments + customization guide  
+
+### 🚀 **Perfect For:**
+
+- Restaurants & cafes needing online menus
+- Law firms & professional services
+- Home contractors & service businesses
+- E-commerce product launches
+- Personal branding & portfolios
+
+### 💰 **Pricing:**
+
+**Starting at $400-800** for a fully customized, deployed website.
+
+**Contact:** [Open an Issue](https://github.com/guiltyfalcon/ai-portfolio/issues) or email for a quote.
+
+---
+
+## 🚀 **AI & Data Science Projects**
+
+In addition to web development, this portfolio includes production-grade AI applications:
 
 | Project | Description | Status |
 |---------|-------------|--------|
@@ -19,36 +62,6 @@ A collection of production-grade AI applications built with Python, Streamlit, a
 | **💬 QA Bot** | Smart Q&A chatbot with conversation history and context | ✅ Complete |
 | **📰 RPA News Summarizer** | Intelligent RPA engine for automated news aggregation and summarization | ✅ Complete |
 | **🧩 Code Explainer** | AI utility for translating code to plain English documentation | ✅ Complete |
-
----
-
-## 🎨 Web Demos
-
-**Professional Website Templates**
-
-In addition to AI applications, this portfolio includes a collection of professional website templates built with HTML + Tailwind CSS:
-
-| Template | Business Type | Features |
-|----------|---------------|----------|
-| **[Restaurant/Cafe](demos/restaurant/)** | Food & Dining | Menu, reservations, hours, location |
-| **[Law Firm](demos/law-firm/)** | Professional Services | Attorney profiles, practice areas, consultation forms |
-| **[Home Contractor](demos/home-contractor/)** | Home Services | Services, project gallery, testimonials, quote requests |
-| **[E-commerce/Product](demos/ecommerce/)** | Online Sales | Product showcase, features, reviews, order form |
-| **[Personal Portfolio](demos/personal-portfolio/)** | Personal Branding | Bio, skills, project showcase, contact form |
-
-**View All Demos:** [`demos/`](demos/)
-
-**Features:**
-- ✅ Fully responsive (mobile-first design)
-- ✅ Tailwind CSS via CDN (no build step needed)
-- ✅ Professional Google Fonts
-- ✅ Working contact forms (Formspree free tier)
-- ✅ SEO-optimized meta tags
-- ✅ Fast loading (<2s)
-- ✅ Easy to customize with detailed comments
-
-**Tech Stack:**
-- HTML5, Tailwind CSS (CDN), Google Fonts, Formspree (forms)
 
 ---
 
