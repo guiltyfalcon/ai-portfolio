@@ -43,6 +43,7 @@ UNDERDOG_API_URL = "https://api.underdogfantasy.com/v1/api/contest_maps"
 # ESPN Real-Time Player Stats Endpoints
 ESPN_PLAYER_STATS_URL = "https://www.espn.com/nba/stats"
 ESPN_TEAM_ROSTER_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/roster"
+ESPN_INJURY_REPORT_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
 
 # Top NBA players 2025-26 season stats (real data)
 NBA_STAR_PLAYERS = {
@@ -106,7 +107,6 @@ NBA_STAR_PLAYERS = {
 def fetch_underdog_odds(sport: str) -> Optional[Dict]:
     """Fetch player prop odds from Underdog API (if available)."""
     try:
-        # Underdog public API - may require auth in production
         url = f"{UNDERDOG_API_URL}?sport={sport}"
         response = requests.get(url, timeout=5)
         if response.status_code == 200:
@@ -114,6 +114,79 @@ def fetch_underdog_odds(sport: str) -> Optional[Dict]:
     except Exception as e:
         print(f"⚠️ Underdog API unavailable (using fallback odds): {e}")
     return None
+
+
+def fetch_injury_report(sport: str = 'nba') -> Dict:
+    """Fetch NBA injury report from ESPN API (only injuries from last 48 hours)."""
+    injuries = {}
+    try:
+        if sport == 'nba':
+            url = ESPN_INJURY_REPORT_URL
+            response = requests.get(url, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                now = datetime.now()
+                
+                # ESPN returns injuries grouped by team
+                for team_injury in data.get('injuries', []):
+                    team_name = team_injury.get('displayName', '')
+                    # Find team abbreviation
+                    team_abbr = None
+                    for abbr in NBA_STAR_PLAYERS.keys():
+                        if abbr.lower() in team_name.lower():
+                            team_abbr = abbr
+                            break
+                    
+                    # Process each player injury for this team
+                    for player_injury in team_injury.get('injuries', []):
+                        athlete = player_injury.get('athlete', {})
+                        player_name = athlete.get('displayName', '')
+                        status = player_injury.get('status', 'Unknown')
+                        details = player_injury.get('shortComment', '')
+                        date_str = player_injury.get('date', '')
+                        
+                        # Parse injury date and only include if within last 48 hours
+                        if date_str:
+                            try:
+                                # Format: 2026-03-04T19:16Z
+                                injury_date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+                                hours_old = (now - injury_date.replace(tzinfo=None)).total_seconds() / 3600
+                                
+                                # Skip injuries older than 48 hours
+                                if hours_old > 48:
+                                    continue
+                            except:
+                                pass  # If date parsing fails, include the injury
+                        
+                        if player_name:
+                            injuries[player_name] = {
+                                'status': status,
+                                'details': details,
+                                'team': team_abbr or team_name,
+                                'hours_old': hours_old if date_str else 0
+                            }
+                
+                print(f"  ✅ Injury report: {len(injuries)} players listed (last 48h)")
+                if injuries:
+                    for name, info in list(injuries.items())[:5]:
+                        hours = info.get('hours_old', 0)
+                        print(f"     • {name}: {info['status']} ({hours:.0f}h ago)")
+    except Exception as e:
+        print(f"  ⚠️ Injury report fetch failed: {e}")
+    return injuries
+
+
+def get_team_abbr_from_id(team_id: str) -> Optional[str]:
+    """Map ESPN team ID to team abbreviation."""
+    team_map = {
+        '1': 'ATL', '2': 'BOS', '3': 'NOP', '4': 'CHI', '5': 'CLE',
+        '6': 'DAL', '7': 'DEN', '8': 'DET', '9': 'GSW', '10': 'HOU',
+        '11': 'IND', '12': 'LAC', '13': 'LAL', '14': 'MIA', '15': 'MIL',
+        '16': 'MIN', '17': 'BKN', '18': 'NY', '19': 'ORL', '20': 'PHI',
+        '21': 'PHX', '22': 'POR', '23': 'SAC', '24': 'SAS', '25': 'OKC',
+        '26': 'UTA', '27': 'WAS', '28': 'TOR', '29': 'MEM', '30': 'CHA'
+    }
+    return team_map.get(team_id)
 
 
 def fetch_espn_scoreboard(sport: str) -> List[Dict]:
@@ -144,12 +217,13 @@ def fetch_espn_scoreboard(sport: str) -> List[Dict]:
     return []
 
 
-def calculate_hit_probability(prop_line: float, player_avg: float, last5_avg: float = None, matchup_rating: float = 0) -> float:
+def calculate_hit_probability(prop_line: float, player_avg: float, last5_avg: float = None, matchup_rating: float = 0, injury_status: str = None) -> float:
     """
     Calculate probability of prop hitting based on:
     - Player season average vs line
     - Last 5 games performance
     - Matchup rating (positive = favorable)
+    - Injury status (CRITICAL)
     
     Returns probability as percentage (0-100)
     """
@@ -165,8 +239,21 @@ def calculate_hit_probability(prop_line: float, player_avg: float, last5_avg: fl
     # Adjust for matchup
     base_prob += matchup_rating * 3
     
-    # Clamp to realistic range (15% - 95%)
-    return max(15, min(95, base_prob))
+    # CRITICAL: Adjust for injury status
+    if injury_status:
+        status_lower = injury_status.lower()
+        if 'out' in status_lower:
+            base_prob = 0  # Player is out, prop cannot hit
+        elif 'doubt' in status_lower:
+            base_prob *= 0.3  # 70% reduction - unlikely to play or limited
+        elif 'questionable' in status_lower:
+            base_prob *= 0.6  # 40% reduction - game time decision
+        elif 'probable' in status_lower:
+            base_prob *= 0.9  # 10% reduction - likely limited
+        # 'Expected to play' or no status = no adjustment
+    
+    # Clamp to realistic range (0% - 95%)
+    return max(0, min(95, base_prob))
 
 
 def get_matchup_rating(team_abbr: str, sport: str, prop_type: str) -> float:
@@ -198,24 +285,30 @@ def get_matchup_rating(team_abbr: str, sport: str, prop_type: str) -> float:
     return ratings.get(key_map.get(prop_key, prop_key), 0)
 
 
-def generate_enhanced_player_props(game: Dict, sport: str) -> List[Dict]:
-    """Generate player props with real player names, stats, odds, and hit probabilities."""
+def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict = None) -> List[Dict]:
+    """Generate player props with real player names, stats, odds, hit probabilities, and injury status."""
     players = []
     home_abbr = game.get('home_abbr', '')[:3].upper()
     away_abbr = game.get('away_abbr', '')[:3].upper()
+    injury_report = injury_report or {}
     
     # Use real NBA player data
     if sport == 'nba':
         # Home team players
         if home_abbr in NBA_STAR_PLAYERS:
             for player_data in NBA_STAR_PLAYERS[home_abbr]:
+                player_name = player_data['name']
+                # Check injury status
+                injury_info = injury_report.get(player_name, {})
+                injury_status = injury_info.get('status', None)
+                
                 props = []
                 for stat_type in ['pts', 'reb', 'ast']:
                     avg = player_data.get(stat_type, 0)
                     line = round(avg * 2) / 2
                     last5_avg = player_data.get(f'last5_{stat_type}', None)
                     matchup = get_matchup_rating(away_abbr, sport, stat_type)
-                    hit_prob = calculate_hit_probability(line, avg, last5_avg, matchup)
+                    hit_prob = calculate_hit_probability(line, avg, last5_avg, matchup, injury_status)
                     
                     if hit_prob >= 70:
                         odds_over, odds_under, rec = -150, 125, "STRONG"
@@ -235,7 +328,8 @@ def generate_enhanced_player_props(game: Dict, sport: str) -> List[Dict]:
                         'hit_probability': round(hit_prob, 1),
                         'odds_over': odds_over,
                         'odds_under': odds_under,
-                        'recommendation': rec
+                        'recommendation': rec,
+                        'injury_status': injury_status
                     })
                 
                 players.append({
@@ -244,19 +338,24 @@ def generate_enhanced_player_props(game: Dict, sport: str) -> List[Dict]:
                     'team_abbr': home_abbr,
                     'pos': player_data.get('pos', ''),
                     'props': props,
-                    'is_star': True
+                    'is_star': True,
+                    'injury_status': injury_status
                 })
         
         # Away team players
         if away_abbr in NBA_STAR_PLAYERS:
             for player_data in NBA_STAR_PLAYERS[away_abbr]:
+                player_name = player_data['name']
+                injury_info = injury_report.get(player_name, {})
+                injury_status = injury_info.get('status', None)
+                
                 props = []
                 for stat_type in ['pts', 'reb', 'ast']:
                     avg = player_data.get(stat_type, 0)
                     line = round(avg * 2) / 2
                     last5_avg = player_data.get(f'last5_{stat_type}', None)
                     matchup = get_matchup_rating(home_abbr, sport, stat_type)
-                    hit_prob = calculate_hit_probability(line, avg, last5_avg, matchup)
+                    hit_prob = calculate_hit_probability(line, avg, last5_avg, matchup, injury_status)
                     
                     if hit_prob >= 70:
                         odds_over, odds_under, rec = -150, 125, "STRONG"
@@ -404,6 +503,10 @@ def scrape_all_sports() -> Dict:
     
     all_props_for_parlay = {}
     
+    # Fetch injury report once (applies to all sports)
+    print("\n🏥 Fetching injury reports...")
+    injury_report = fetch_injury_report('nba')
+    
     for sport, config in SPORTS_CONFIG.items():
         print(f"\n📊 Processing {config['name']}...")
         print("-" * 40)
@@ -422,8 +525,8 @@ def scrape_all_sports() -> Dict:
         
         sport_props = []
         for game in games:
-            # Generate enhanced props with real stats and probabilities
-            players = generate_enhanced_player_props(game, sport)
+            # Generate enhanced props with injury status
+            players = generate_enhanced_player_props(game, sport, injury_report)
             
             game_data = {
                 'game_id': game['game_id'],
@@ -445,10 +548,14 @@ def scrape_all_sports() -> Dict:
         
         cache['sports'][sport] = sport_props
     
-    # Generate best bets (props with >= 75% hit probability)
+    # Generate best bets (props with >= 75% hit probability, NOT injured)
     for sport, games in cache['sports'].items():
         for game in games:
             for player in game.get('players', []):
+                injury_status = player.get('injury_status')
+                # Skip injured players
+                if injury_status and ('out' in injury_status.lower() or 'doubt' in injury_status.lower()):
+                    continue
                 for prop in player.get('props', []):
                     if prop and prop.get('hit_probability', 0) >= 75:
                         cache['best_bets'].append({
@@ -458,7 +565,8 @@ def scrape_all_sports() -> Dict:
                             'prop': f"{prop['type'].title()} {prop['line']}",
                             'hit_probability': prop['hit_probability'],
                             'odds': prop['odds_over'],
-                            'recommendation': prop['recommendation']
+                            'recommendation': prop['recommendation'],
+                            'injury_status': injury_status
                         })
     
     # Sort best bets by probability
