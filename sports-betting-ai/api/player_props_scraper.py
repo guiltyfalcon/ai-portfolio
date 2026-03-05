@@ -390,8 +390,9 @@ def get_team_abbr_from_id(team_id: str) -> Optional[str]:
 
 
 def fetch_espn_scoreboard(sport: str) -> List[Dict]:
-    """Fetch games from ESPN scoreboard."""
+    """Fetch games from ESPN scoreboard - ONLY TODAY'S GAMES."""
     try:
+        today = datetime.now().strftime('%Y-%m-%d')
         espn_path = SPORTS_CONFIG.get(sport, {}).get('espn_path', 'basketball/nba')
         url = f"https://site.api.espn.com/apis/site/v2/sports/{espn_path}/scoreboard"
         response = requests.get(url, timeout=10)
@@ -399,6 +400,13 @@ def fetch_espn_scoreboard(sport: str) -> List[Dict]:
             data = response.json()
             games = []
             for event in data.get('events', [])[:10]:  # Limit to 10 games
+                # Extract game date
+                game_date = event.get('date', '')[:10]  # YYYY-MM-DD from ISO string
+                
+                # SKIP if not today's game
+                if game_date != today:
+                    continue
+                
                 home_team = event['competitions'][0]['competitors'][0]['team']
                 away_team = event['competitions'][0]['competitors'][1]['team']
                 
@@ -409,8 +417,11 @@ def fetch_espn_scoreboard(sport: str) -> List[Dict]:
                     'home_abbr': home_team.get('abbreviation', ''),
                     'away_abbr': away_team.get('abbreviation', ''),
                     'time': event.get('status', {}).get('shortDetail', 'TBD'),
-                    'status': event.get('status', {}).get('type', {}).get('state', 'pre')
+                    'status': event.get('status', {}).get('type', {}).get('state', 'pre'),
+                    'date': game_date  # Store for validation
                 })
+            
+            print(f"✅ {sport.upper()}: Found {len(games)} games TODAY ({today})")
             return games
     except Exception as e:
         print(f"⚠️ Error fetching ESPN scoreboard: {e}")
@@ -1087,9 +1098,11 @@ def scrape_all_sports(ml_model = None) -> Dict:
 
 def main():
     """Main entry point - MAX ACCURACY VERSION."""
+    today = datetime.now().strftime('%Y-%m-%d')
     print("=" * 60)
     print("🎯 PLAYER PROPS SCRAPER - MAX ACCURACY")
     print("=" * 60)
+    print(f"\n📅 Today's Date: {today}")
     print("\n📡 Accuracy Features:")
     print("  • Historical hit rates (real game data)")
     print("  • Usage rate & minutes tracking")
@@ -1097,6 +1110,7 @@ def main():
     print("  • Rest/fatigue factors (B2B, rest days)")
     print("  • Line movement tracking")
     print("  • Multi-sportsbook odds (DK + FD + MGM)")
+    print("  • DATE VALIDATION: Only TODAY's games")
     print("=" * 60)
     
     # Initialize trackers and models
@@ -1111,6 +1125,28 @@ def main():
     
     # Scrape all sports (with ML ensemble)
     cache = scrape_all_sports(ml_model=ml_model)
+    
+    # Check if we found any games today
+    total_games = sum(len(games) for games in cache['sports'].values())
+    if total_games == 0:
+        print("\n⚠️  NO GAMES FOUND TODAY!")
+        print(f"   Date: {today}")
+        print("   Skipping scrape - no games to analyze")
+        print("\n💾 Saving empty cache with timestamp...")
+        
+        # Save empty cache with today's date
+        cache['scrape_time'] = datetime.now().isoformat()
+        cache['date'] = today
+        cache['message'] = 'No games scheduled today'
+        
+        cache_file = os.path.join(script_dir, 'player_props_cache.json')
+        with open(cache_file, 'w') as f:
+            json.dump(cache, f, indent=2, default=str)
+        
+        print(f"✅ Cache saved to {cache_file}")
+        return
+    
+    print(f"\n📊 Total games found: {total_games}")
     
     # Track line movements for all props
     print("\n📈 Tracking line movements...")
