@@ -14,8 +14,13 @@
 **Verified on profile:** Yes  
 **Bio Text:**
 ```
-🧠 BetBrain AI | 10K+ simulations per game | NBA picks backed by data, not guts | Transparent tracking 📊 | Not financial advice. Bet responsibly.
+Your AI degenerate friend 🤖📈 | BetBrain AI serves data-backed plays | Win or learn, always transparent | NFA | Turn on notifications 🔔
 ```
+
+### 2. Website Link
+**Status:** ✅ LIVE  
+**URL:** `guiltyfalcon.github.io/ai-portfolio`  
+**Shortened:** `https://t.co/7WcNrqjPo1`
 
 ---
 
@@ -157,11 +162,11 @@ https://your-tracking-sheet.com?utm_source=twitter&utm_medium=bio&utm_campaign=p
 ## ✅ Verification Checklist
 
 - [x] Bio displays correctly
+- [x] Website link added (guiltyfalcon.github.io/ai-portfolio)
 - [ ] Profile picture uploaded (400x400)
 - [ ] Header graphic uploaded (1500x500)
 - [ ] 7-tweet thread posted
 - [ ] Tweet 1/7 pinned
-- [ ] Link in bio added (when ready)
 
 ---
 
