@@ -1,0 +1,323 @@
+{
+  "timestamp": "2026-03-04T20:00:00.367341",
+  "source": "draftkings_browser_scrape",
+  "sports": {
+    "nba": [
+      {
+        "game_id": "dk_33735759",
+        "home_team": "Memphis Grizzlies",
+        "away_team": "Portland Trail Blazers",
+        "time": "Today 8:10 PM",
+        "players": [
+          {
+            "player": "Jrue Holiday",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 20,
+                "odds_over": 104,
+                "hit_probability": 52
+              }
+            ]
+          },
+          {
+            "player": "Jerami Grant",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 20,
+                "odds_over": -124,
+                "hit_probability": 58
+              }
+            ]
+          },
+          {
+            "player": "GG Jackson",
+            "team": "MEM",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 20,
+                "odds_over": 125,
+                "hit_probability": 48
+              }
+            ]
+          },
+          {
+            "player": "Scoot Henderson",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 18,
+                "odds_over": 103,
+                "hit_probability": 51
+              }
+            ]
+          },
+          {
+            "player": "Jaylen Wells",
+            "team": "MEM",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 17,
+                "odds_over": -101,
+                "hit_probability": 53
+              }
+            ]
+          },
+          {
+            "player": "Toumani Camara",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 15,
+                "odds_over": -109,
+                "hit_probability": 55
+              }
+            ]
+          },
+          {
+            "player": "Olivier-Maxence Prosper",
+            "team": "MEM",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 15,
+                "odds_over": -118,
+                "hit_probability": 56
+              }
+            ]
+          },
+          {
+            "player": "Cam Spencer",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 14,
+                "odds_over": -111,
+                "hit_probability": 54
+              }
+            ]
+          },
+          {
+            "player": "Donovan Clingan",
+            "team": "MEM",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 14,
+                "odds_over": -116,
+                "hit_probability": 55
+              }
+            ]
+          },
+          {
+            "player": "Walter Clayton Jr.",
+            "team": "MEM",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 14,
+                "odds_over": -101,
+                "hit_probability": 53
+              }
+            ]
+          },
+          {
+            "player": "Vit Krejci",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 11,
+                "odds_over": -115,
+                "hit_probability": 56
+              }
+            ]
+          },
+          {
+            "player": "Robert Williams",
+            "team": "POR",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 8,
+                "odds_over": 115,
+                "hit_probability": 47
+              }
+            ]
+          }
+        ],
+        "bookmakers": [
+          "DraftKings"
+        ]
+      },
+      {
+        "game_id": "dk_33735760",
+        "home_team": "Milwaukee Bucks",
+        "away_team": "Atlanta Hawks",
+        "time": "Today 9:40 PM",
+        "players": [
+          {
+            "player": "Giannis Antetokounmpo",
+            "team": "MIL",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 27,
+                "odds_over": -103,
+                "hit_probability": 68
+              }
+            ]
+          },
+          {
+            "player": "Jalen Johnson",
+            "team": "ATL",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 23,
+                "odds_over": -112,
+                "hit_probability": 55
+              }
+            ]
+          },
+          {
+            "player": "Nickeil Alexander-Walker",
+            "team": "MIL",
+            "props": [
+              {
+                "type": "PTS",
+                "line": 20,
+                "odds_over": -102,
+                "hit_probability": 54
+              }
+            ]
+          }
+        ],
+        "bookmakers": [
+          "DraftKings"
+        ]
+      }
+    ]
+  },
+  "best_bets": [
+    {
+      "sport": "NBA",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "player": "Giannis Antetokounmpo",
+      "prop": "PTS OVER 27",
+      "our_probability": 68,
+      "implied_probability": 50.7,
+      "edge": 17.299999999999997,
+      "odds": -103,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "GG Jackson",
+      "prop": "PTS OVER 20",
+      "our_probability": 48,
+      "implied_probability": 44.4,
+      "edge": 3.6000000000000014,
+      "odds": 125,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "player": "Nickeil Alexander-Walker",
+      "prop": "PTS OVER 20",
+      "our_probability": 54,
+      "implied_probability": 50.5,
+      "edge": 3.5,
+      "odds": -102,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Jrue Holiday",
+      "prop": "PTS OVER 20",
+      "our_probability": 52,
+      "implied_probability": 49.0,
+      "edge": 3.0,
+      "odds": 104,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Jaylen Wells",
+      "prop": "PTS OVER 17",
+      "our_probability": 53,
+      "implied_probability": 50.2,
+      "edge": 2.799999999999997,
+      "odds": -101,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Toumani Camara",
+      "prop": "PTS OVER 15",
+      "our_probability": 55,
+      "implied_probability": 52.2,
+      "edge": 2.799999999999997,
+      "odds": -109,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Walter Clayton Jr.",
+      "prop": "PTS OVER 14",
+      "our_probability": 53,
+      "implied_probability": 50.2,
+      "edge": 2.799999999999997,
+      "odds": -101,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Jerami Grant",
+      "prop": "PTS OVER 20",
+      "our_probability": 58,
+      "implied_probability": 55.4,
+      "edge": 2.6000000000000014,
+      "odds": -124,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "player": "Vit Krejci",
+      "prop": "PTS OVER 11",
+      "our_probability": 56,
+      "implied_probability": 53.5,
+      "edge": 2.5,
+      "odds": -115,
+      "bookmaker": "DraftKings"
+    },
+    {
+      "sport": "NBA",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "player": "Jalen Johnson",
+      "prop": "PTS OVER 23",
+      "our_probability": 55,
+      "implied_probability": 52.8,
+      "edge": 2.200000000000003,
+      "odds": -112,
+      "bookmaker": "DraftKings"
+    }
+  ],
+  "recommended_parlay": []
+}
