@@ -1,0 +1,915 @@
+{
+  "timestamp": "2026-03-04T20:05:24.022115",
+  "source": "multisportsbook_scrape",
+  "sportsbooks": [
+    "DraftKings",
+    "FanDuel",
+    "BetMGM"
+  ],
+  "total_games": 6,
+  "total_players": 29,
+  "games": [
+    {
+      "game_id": "dk_33735759",
+      "home_team": "Memphis Grizzlies",
+      "away_team": "Portland Trail Blazers",
+      "time": "Today 8:10 PM",
+      "players": [
+        {
+          "player": "Jrue Holiday",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 20,
+              "odds_over": 104,
+              "hit_probability": 52
+            }
+          ]
+        },
+        {
+          "player": "Jerami Grant",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 20,
+              "odds_over": -124,
+              "hit_probability": 58
+            }
+          ]
+        },
+        {
+          "player": "GG Jackson",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 20,
+              "odds_over": 125,
+              "hit_probability": 48
+            }
+          ]
+        },
+        {
+          "player": "Scoot Henderson",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 18,
+              "odds_over": 103,
+              "hit_probability": 51
+            }
+          ]
+        },
+        {
+          "player": "Jaylen Wells",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 17,
+              "odds_over": -101,
+              "hit_probability": 53
+            }
+          ]
+        },
+        {
+          "player": "Toumani Camara",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 15,
+              "odds_over": -109,
+              "hit_probability": 55
+            }
+          ]
+        },
+        {
+          "player": "Olivier-Maxence Prosper",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 15,
+              "odds_over": -118,
+              "hit_probability": 56
+            }
+          ]
+        },
+        {
+          "player": "Cam Spencer",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 14,
+              "odds_over": -111,
+              "hit_probability": 54
+            }
+          ]
+        },
+        {
+          "player": "Donovan Clingan",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 14,
+              "odds_over": -116,
+              "hit_probability": 55
+            }
+          ]
+        },
+        {
+          "player": "Walter Clayton Jr.",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 14,
+              "odds_over": -101,
+              "hit_probability": 53
+            }
+          ]
+        },
+        {
+          "player": "Vit Krejci",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 11,
+              "odds_over": -115,
+              "hit_probability": 56
+            }
+          ]
+        },
+        {
+          "player": "Robert Williams",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 8,
+              "odds_over": 115,
+              "hit_probability": 47
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "DraftKings"
+      ]
+    },
+    {
+      "game_id": "dk_33735760",
+      "home_team": "Milwaukee Bucks",
+      "away_team": "Atlanta Hawks",
+      "time": "Today 9:40 PM",
+      "players": [
+        {
+          "player": "Giannis Antetokounmpo",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -103,
+              "hit_probability": 68
+            }
+          ]
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 23,
+              "odds_over": -112,
+              "hit_probability": 55
+            }
+          ]
+        },
+        {
+          "player": "Nickeil Alexander-Walker",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 20,
+              "odds_over": -102,
+              "hit_probability": 54
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "DraftKings"
+      ]
+    },
+    {
+      "game_id": "fd_33735759",
+      "home_team": "Memphis Grizzlies",
+      "away_team": "Portland Trail Blazers",
+      "time": "Today 8:10 PM",
+      "players": [
+        {
+          "player": "Ja Morant",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -118,
+              "hit_probability": 72
+            }
+          ]
+        },
+        {
+          "player": "Jaren Jackson Jr.",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 21,
+              "odds_over": -112,
+              "hit_probability": 58
+            }
+          ]
+        },
+        {
+          "player": "Anfernee Simons",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 22,
+              "odds_over": -108,
+              "hit_probability": 54
+            }
+          ]
+        },
+        {
+          "player": "Jerami Grant",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 20,
+              "odds_over": -116,
+              "hit_probability": 56
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "FanDuel"
+      ]
+    },
+    {
+      "game_id": "fd_33735760",
+      "home_team": "Milwaukee Bucks",
+      "away_team": "Atlanta Hawks",
+      "time": "Today 9:40 PM",
+      "players": [
+        {
+          "player": "Giannis Antetokounmpo",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 28,
+              "odds_over": -114,
+              "hit_probability": 70
+            }
+          ]
+        },
+        {
+          "player": "Damian Lillard",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 25,
+              "odds_over": -110,
+              "hit_probability": 55
+            }
+          ]
+        },
+        {
+          "player": "Trae Young",
+          "team": "ATL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -112,
+              "hit_probability": 58
+            }
+          ]
+        },
+        {
+          "player": "Jalen Johnson",
+          "team": "ATL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 22,
+              "odds_over": -106,
+              "hit_probability": 52
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "FanDuel"
+      ]
+    },
+    {
+      "game_id": "mgm_33735759",
+      "home_team": "Memphis Grizzlies",
+      "away_team": "Portland Trail Blazers",
+      "time": "Today 8:10 PM",
+      "players": [
+        {
+          "player": "Ja Morant",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -115,
+              "hit_probability": 72
+            }
+          ]
+        },
+        {
+          "player": "Jaren Jackson Jr.",
+          "team": "MEM",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 21,
+              "odds_over": -110,
+              "hit_probability": 58
+            }
+          ]
+        },
+        {
+          "player": "Anfernee Simons",
+          "team": "POR",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 22,
+              "odds_over": -105,
+              "hit_probability": 54
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "BetMGM"
+      ]
+    },
+    {
+      "game_id": "mgm_33735760",
+      "home_team": "Milwaukee Bucks",
+      "away_team": "Atlanta Hawks",
+      "time": "Today 9:40 PM",
+      "players": [
+        {
+          "player": "Giannis Antetokounmpo",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -110,
+              "hit_probability": 70
+            }
+          ]
+        },
+        {
+          "player": "Damian Lillard",
+          "team": "MIL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 25,
+              "odds_over": -108,
+              "hit_probability": 55
+            }
+          ]
+        },
+        {
+          "player": "Trae Young",
+          "team": "ATL",
+          "props": [
+            {
+              "type": "PTS",
+              "line": 27,
+              "odds_over": -110,
+              "hit_probability": 58
+            }
+          ]
+        }
+      ],
+      "bookmakers": [
+        "BetMGM"
+      ]
+    }
+  ],
+  "best_lines": [
+    {
+      "player": "Jrue Holiday",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": 104,
+      "bookmaker": "DraftKings",
+      "hit_probability": 52
+    },
+    {
+      "player": "Jerami Grant",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": -116,
+      "bookmaker": "FanDuel",
+      "hit_probability": 56
+    },
+    {
+      "player": "GG Jackson",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": 125,
+      "bookmaker": "DraftKings",
+      "hit_probability": 48
+    },
+    {
+      "player": "Scoot Henderson",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 18,
+      "best_odds": 103,
+      "bookmaker": "DraftKings",
+      "hit_probability": 51
+    },
+    {
+      "player": "Jaylen Wells",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 17,
+      "best_odds": -101,
+      "bookmaker": "DraftKings",
+      "hit_probability": 53
+    },
+    {
+      "player": "Toumani Camara",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 15,
+      "best_odds": -109,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55
+    },
+    {
+      "player": "Olivier-Maxence Prosper",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 15,
+      "best_odds": -118,
+      "bookmaker": "DraftKings",
+      "hit_probability": 56
+    },
+    {
+      "player": "Cam Spencer",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -111,
+      "bookmaker": "DraftKings",
+      "hit_probability": 54
+    },
+    {
+      "player": "Donovan Clingan",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -116,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55
+    },
+    {
+      "player": "Walter Clayton Jr.",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -101,
+      "bookmaker": "DraftKings",
+      "hit_probability": 53
+    },
+    {
+      "player": "Vit Krejci",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 11,
+      "best_odds": -115,
+      "bookmaker": "DraftKings",
+      "hit_probability": 56
+    },
+    {
+      "player": "Robert Williams",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 8,
+      "best_odds": 115,
+      "bookmaker": "DraftKings",
+      "hit_probability": 47
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -103,
+      "bookmaker": "DraftKings",
+      "hit_probability": 68
+    },
+    {
+      "player": "Jalen Johnson",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 23,
+      "best_odds": -112,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55
+    },
+    {
+      "player": "Nickeil Alexander-Walker",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": -102,
+      "bookmaker": "DraftKings",
+      "hit_probability": 54
+    },
+    {
+      "player": "Ja Morant",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -115,
+      "bookmaker": "BetMGM",
+      "hit_probability": 72
+    },
+    {
+      "player": "Jaren Jackson Jr.",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 21,
+      "best_odds": -110,
+      "bookmaker": "BetMGM",
+      "hit_probability": 58
+    },
+    {
+      "player": "Anfernee Simons",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 22,
+      "best_odds": -105,
+      "bookmaker": "BetMGM",
+      "hit_probability": 54
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 28,
+      "best_odds": -114,
+      "bookmaker": "FanDuel",
+      "hit_probability": 70
+    },
+    {
+      "player": "Damian Lillard",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 25,
+      "best_odds": -108,
+      "bookmaker": "BetMGM",
+      "hit_probability": 55
+    },
+    {
+      "player": "Trae Young",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -110,
+      "bookmaker": "BetMGM",
+      "hit_probability": 58
+    },
+    {
+      "player": "Jalen Johnson",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 22,
+      "best_odds": -106,
+      "bookmaker": "FanDuel",
+      "hit_probability": 52
+    }
+  ],
+  "best_bets": [
+    {
+      "player": "Ja Morant",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -115,
+      "bookmaker": "BetMGM",
+      "hit_probability": 72,
+      "implied_probability": 53.5,
+      "edge": 18.5
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -103,
+      "bookmaker": "DraftKings",
+      "hit_probability": 68,
+      "implied_probability": 50.7,
+      "edge": 17.3
+    },
+    {
+      "player": "Giannis Antetokounmpo",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 28,
+      "best_odds": -114,
+      "bookmaker": "FanDuel",
+      "hit_probability": 70,
+      "implied_probability": 53.3,
+      "edge": 16.7
+    },
+    {
+      "player": "Jaren Jackson Jr.",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 21,
+      "best_odds": -110,
+      "bookmaker": "BetMGM",
+      "hit_probability": 58,
+      "implied_probability": 52.4,
+      "edge": 5.6
+    },
+    {
+      "player": "Trae Young",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 27,
+      "best_odds": -110,
+      "bookmaker": "BetMGM",
+      "hit_probability": 58,
+      "implied_probability": 52.4,
+      "edge": 5.6
+    },
+    {
+      "player": "GG Jackson",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": 125,
+      "bookmaker": "DraftKings",
+      "hit_probability": 48,
+      "implied_probability": 44.4,
+      "edge": 3.6
+    },
+    {
+      "player": "Nickeil Alexander-Walker",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": -102,
+      "bookmaker": "DraftKings",
+      "hit_probability": 54,
+      "implied_probability": 50.5,
+      "edge": 3.5
+    },
+    {
+      "player": "Damian Lillard",
+      "team": "MIL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 25,
+      "best_odds": -108,
+      "bookmaker": "BetMGM",
+      "hit_probability": 55,
+      "implied_probability": 51.9,
+      "edge": 3.1
+    },
+    {
+      "player": "Jrue Holiday",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": 104,
+      "bookmaker": "DraftKings",
+      "hit_probability": 52,
+      "implied_probability": 49.0,
+      "edge": 3.0
+    },
+    {
+      "player": "Jaylen Wells",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 17,
+      "best_odds": -101,
+      "bookmaker": "DraftKings",
+      "hit_probability": 53,
+      "implied_probability": 50.2,
+      "edge": 2.8
+    },
+    {
+      "player": "Toumani Camara",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 15,
+      "best_odds": -109,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55,
+      "implied_probability": 52.2,
+      "edge": 2.8
+    },
+    {
+      "player": "Walter Clayton Jr.",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -101,
+      "bookmaker": "DraftKings",
+      "hit_probability": 53,
+      "implied_probability": 50.2,
+      "edge": 2.8
+    },
+    {
+      "player": "Anfernee Simons",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 22,
+      "best_odds": -105,
+      "bookmaker": "BetMGM",
+      "hit_probability": 54,
+      "implied_probability": 51.2,
+      "edge": 2.8
+    },
+    {
+      "player": "Vit Krejci",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 11,
+      "best_odds": -115,
+      "bookmaker": "DraftKings",
+      "hit_probability": 56,
+      "implied_probability": 53.5,
+      "edge": 2.5
+    },
+    {
+      "player": "Jerami Grant",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 20,
+      "best_odds": -116,
+      "bookmaker": "FanDuel",
+      "hit_probability": 56,
+      "implied_probability": 53.7,
+      "edge": 2.3
+    },
+    {
+      "player": "Jalen Johnson",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 23,
+      "best_odds": -112,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55,
+      "implied_probability": 52.8,
+      "edge": 2.2
+    },
+    {
+      "player": "Olivier-Maxence Prosper",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 15,
+      "best_odds": -118,
+      "bookmaker": "DraftKings",
+      "hit_probability": 56,
+      "implied_probability": 54.1,
+      "edge": 1.9
+    },
+    {
+      "player": "Scoot Henderson",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 18,
+      "best_odds": 103,
+      "bookmaker": "DraftKings",
+      "hit_probability": 51,
+      "implied_probability": 49.3,
+      "edge": 1.7
+    },
+    {
+      "player": "Cam Spencer",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -111,
+      "bookmaker": "DraftKings",
+      "hit_probability": 54,
+      "implied_probability": 52.6,
+      "edge": 1.4
+    },
+    {
+      "player": "Donovan Clingan",
+      "team": "MEM",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 14,
+      "best_odds": -116,
+      "bookmaker": "DraftKings",
+      "hit_probability": 55,
+      "implied_probability": 53.7,
+      "edge": 1.3
+    },
+    {
+      "player": "Robert Williams",
+      "team": "POR",
+      "game": "Portland Trail Blazers @ Memphis Grizzlies",
+      "prop_type": "PTS",
+      "line": 8,
+      "best_odds": 115,
+      "bookmaker": "DraftKings",
+      "hit_probability": 47,
+      "implied_probability": 46.5,
+      "edge": 0.5
+    },
+    {
+      "player": "Jalen Johnson",
+      "team": "ATL",
+      "game": "Atlanta Hawks @ Milwaukee Bucks",
+      "prop_type": "PTS",
+      "line": 22,
+      "best_odds": -106,
+      "bookmaker": "FanDuel",
+      "hit_probability": 52,
+      "implied_probability": 51.5,
+      "edge": 0.5
+    }
+  ]
+}
