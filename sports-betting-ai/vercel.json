@@ -1,18 +1,11 @@
 {
   "version": 2,
   "functions": {
-    "api/webhook.py": {
-      "maxDuration": 10
-    },
     "api/email-capture/index.py": {
       "maxDuration": 10
     }
   },
   "routes": [
-    {
-      "src": "/api/webhook",
-      "dest": "/api/webhook.py"
-    },
     {
       "src": "/api/email-capture",
       "dest": "/api/email-capture/index.py"
