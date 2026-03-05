@@ -2,11 +2,9 @@
   "version": 2,
   "functions": {
     "api/webhook.py": {
-      "runtime": "python3.9",
       "maxDuration": 10
     },
     "api/email-capture/index.py": {
-      "runtime": "python3.9",
       "maxDuration": 10
     }
   },
