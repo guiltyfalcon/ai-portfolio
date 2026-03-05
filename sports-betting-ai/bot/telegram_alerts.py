@@ -50,6 +50,18 @@ def find_value_bets(cache_data):
     """Find high-value bets from cache."""
     value_bets = []
     
+    # Check if data is fresh (within last 2 hours)
+    scrape_time = cache_data.get('scrape_time', '')
+    if scrape_time:
+        try:
+            from datetime import datetime, timedelta
+            scrape_dt = datetime.fromisoformat(scrape_time.replace('Z', '+00:00'))
+            if datetime.now(scrape_dt.tzinfo) - scrape_dt > timedelta(hours=2):
+                print("⚠️  WARNING: Data is stale (>2 hours old)")
+                return []  # Don't send alerts on old data
+        except:
+            pass
+    
     sports = cache_data.get('sports', {})
     nba_players = sports.get('nba', [])
     
