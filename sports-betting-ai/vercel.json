@@ -19,9 +19,5 @@
       "src": "/api/email-capture",
       "dest": "/api/email-capture/index.py"
     }
-  ],
-  "env": {
-    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
-    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token"
-  }
+  ]
 }
