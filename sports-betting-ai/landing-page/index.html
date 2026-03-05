@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BetBrain AI - AI-Powered Sports Betting Intelligence</title>
+  <meta name="description" content="AI-powered sports betting analytics with 65-75% accuracy. Real-time odds scraping, line movement tracking, and ML predictions.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10B981',
+            primaryDark: '#059669',
+            dark: '#0F172A',
+            darker: '#020617'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+    }
+    .glow {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+    .glow:hover {
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-darker text-white">
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 bg-dark/90 backdrop-blur-sm border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-primary">🧠 BetBrain AI</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#features" class="hover:text-primary transition">Features</a>
+          <a href="#accuracy" class="hover:text-primary transition">Accuracy</a>
+          <a href="#demo" class="hover:text-primary transition">Live Demo</a>
+          <a href="#pricing" class="hover:text-primary transition">Pricing</a>
+        </div>
+        <a href="#waitlist" class="bg-primary hover:bg-primaryDark px-6 py-2 rounded-lg font-semibold transition glow">
+          Get Early Access
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="gradient-bg min-h-screen flex items-center pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="text-center">
+        <h1 class="text-5xl md:text-7xl font-bold mb-6">
+          Beat the Books with
+          <span class="text-primary">AI Intelligence</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
+          Real-time odds scraping, line movement tracking, and ML-powered predictions. 
+          <span class="text-primary font-semibold">65-75% accuracy</span> across player props and spreads.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#waitlist" class="bg-primary hover:bg-primaryDark px-8 py-4 rounded-xl font-bold text-lg transition glow">
+            Join Waitlist — Free Beta Access
+          </a>
+          <a href="#demo" class="border border-gray-600 hover:border-primary px-8 py-4 rounded-xl font-bold text-lg transition">
+            View Live Demo
+          </a>
+        </div>
+        <p class="text-gray-500 mt-4 text-sm">No credit card required • Limited beta spots available</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20">
+        <div class="text-center">
+          <div class="text-4xl font-bold text-primary">65-75%</div>
+          <div class="text-gray-400 mt-2">Prediction Accuracy</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-primary">9</div>
+          <div class="text-gray-400 mt-2">Sportsbooks Tracked</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-primary">30min</div>
+          <div class="text-gray-400 mt-2">Auto-Updates</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-primary">500+</div>
+          <div class="text-gray-400 mt-2">Player Props Daily</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="bg-dark py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Everything You Need to Win</h2>
+        <p class="text-gray-400 text-xl">Powered by machine learning, built for serious bettors</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">📊</div>
+          <h3 class="text-xl font-bold mb-3">Multi-Sportsbook Scraping</h3>
+          <p class="text-gray-400">
+            Real-time odds from DraftKings, FanDuel, MGM, Caesars, and more. Find the best lines instantly.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">📈</div>
+          <h3 class="text-xl font-bold mb-3">Line Movement Tracking</h3>
+          <p class="text-gray-400">
+            See how lines move in real-time. Identify sharp money and spot value before it disappears.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">🤖</div>
+          <h3 class="text-xl font-bold mb-3">ML Predictions</h3>
+          <p class="text-gray-400">
+            Hybrid machine learning model analyzes player stats, matchups, injuries, and historical data.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">⚡</div>
+          <h3 class="text-xl font-bold mb-3">30-Minute Updates</h3>
+          <p class="text-gray-400">
+            Automated scraping every 30 minutes during game days. Never miss a line change.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">🎯</div>
+          <h3 class="text-xl font-bold mb-3">Player Props Focus</h3>
+          <p class="text-gray-400">
+            Specialized models for player props — the most profitable betting market for sharp bettors.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="bg-darker p-8 rounded-2xl border border-gray-800 hover:border-primary transition">
+          <div class="text-4xl mb-4">🔔</div>
+          <h3 class="text-xl font-bold mb-3">Value Alerts</h3>
+          <p class="text-gray-400">
+            Get notified when the AI finds high-value bets with positive expected value (+EV).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accuracy Section -->
+  <section id="accuracy" class="gradient-bg py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">Proven Accuracy</h2>
+        <p class="text-gray-400 text-xl">Backtested results you can trust</p>
+      </div>
+
+      <div class="bg-darker rounded-2xl p-8 border border-gray-800">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h3 class="text-2xl font-bold mb-6">Backtesting Results</h3>
+            <ul class="space-y-4">
+              <li class="flex items-center">
+                <span class="text-primary mr-3">✓</span>
+                <span class="text-gray-300"><strong>65-75%</strong> overall hit rate</span>
+              </li>
+              <li class="flex items-center">
+                <span class="text-primary mr-3">✓</span>
+                <span class="text-gray-300"><strong>500+</strong> bets analyzed daily</span>
+              </li>
+              <li class="flex items-center">
+                <span class="text-primary mr-3">✓</span>
+                <span class="text-gray-300">NBA player props specialty</span>
+              </li>
+              <li class="flex items-center">
+                <span class="text-primary mr-3">✓</span>
+                <span class="text-gray-300">Continuous model improvement</span>
+              </li>
+            </ul>
+          </div>
+          <div class="text-center">
+            <div class="text-6xl font-bold text-primary mb-2">72.3%</div>
+            <div class="text-gray-400">Last 30 Days Accuracy</div>
+            <div class="text-sm text-gray-500 mt-4">(NBA Player Props Only)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Demo Section -->
+  <section id="demo" class="bg-dark py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold mb-4">See It In Action</h2>
+        <p class="text-gray-400 text-xl">Real-time data from our AI system</p>
+      </div>
+
+      <div class="bg-darker rounded-2xl p-8 border border-gray-800 overflow-x-auto">
+        <h3 class="text-xl font-bold mb-6">Tonight's Top Picks</h3>
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b border-gray-700">
+              <th class="pb-4 text-gray-400">Player</th>
+              <th class="pb-4 text-gray-400">Prop</th>
+              <th class="pb-4 text-gray-400">Line</th>
+              <th class="pb-4 text-gray-400">Hit %</th>
+              <th class="pb-4 text-gray-400">Recommendation</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-300">
+            <tr class="border-b border-gray-800">
+              <td class="py-4">Shai Gilgeous-Alexander</td>
+              <td>Points</td>
+              <td>31.0</td>
+              <td class="text-primary">60.7%</td>
+              <td><span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm">LEAN</span></td>
+            </tr>
+            <tr class="border-b border-gray-800">
+              <td class="py-4">Ja Morant</td>
+              <td>Points</td>
+              <td>27.5</td>
+              <td class="text-primary">57.2%</td>
+              <td><span class="bg-gray-700 px-3 py-1 rounded-full text-sm">EVEN</span></td>
+            </tr>
+            <tr class="border-b border-gray-800">
+              <td class="py-4">Giannis Antetokounmpo</td>
+              <td>Points</td>
+              <td>32.0</td>
+              <td class="text-primary">55.9%</td>
+              <td><span class="bg-gray-700 px-3 py-1 rounded-full text-sm">EVEN</span></td>
+            </tr>
+            <tr>
+              <td class="py-4">Tyrese Haliburton</td>
+              <td>Points</td>
+              <td>25.0</td>
+              <td class="text-primary">58.5%</td>
+              <td><span class="bg-gray-700 px-3 py-1 rounded-full text-sm">EVEN</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-gray-500 text-sm mt-6">* Data updates every 30 minutes. Last update: <span id="last-update">Loading...</span></p>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="https://github.com/guiltyfalcon/ai-portfolio" target="_blank" class="text-primary hover:underline">
+          View Full Data on GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Waitlist Section -->
+  <section id="waitlist" class="gradient-bg py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-bold mb-4">Get Early Access</h2>
+      <p class="text-gray-400 text-xl mb-8">
+        Join the waitlist for beta access. Limited spots available.
+      </p>
+
+      <form class="space-y-4" id="waitlist-form">
+        <input 
+          type="email" 
+          placeholder="Enter your email" 
+          class="w-full px-6 py-4 rounded-xl bg-darker border border-gray-700 focus:border-primary focus:outline-none text-white"
+          required
+        />
+        <button 
+          type="submit" 
+          class="w-full bg-primary hover:bg-primaryDark px-8 py-4 rounded-xl font-bold text-lg transition glow"
+        >
+          Join Waitlist
+        </button>
+      </form>
+
+      <p class="text-gray-500 text-sm mt-4">
+        🔒 We respect your privacy. No spam, ever.
+      </p>
+
+      <div class="mt-12 flex justify-center space-x-6">
+        <a href="https://github.com/guiltyfalcon/ai-portfolio" target="_blank" class="text-gray-400 hover:text-white transition">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://twitter.com/holikidTV" target="_blank" class="text-gray-400 hover:text-white transition">
+          <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-darker py-12 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="text-gray-400 mb-4 md:mb-0">
+          © 2026 BetBrain AI. All rights reserved.
+        </div>
+        <div class="flex space-x-6">
+          <a href="https://github.com/guiltyfalcon/ai-portfolio" class="text-gray-400 hover:text-white transition">GitHub</a>
+          <a href="#" class="text-gray-400 hover:text-white transition">Privacy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition">Terms</a>
+        </div>
+      </div>
+      <p class="text-gray-600 text-sm mt-4 text-center">
+        Disclaimer: This is for entertainment purposes only. Please gamble responsibly. 21+ only.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Update last scrape time
+    document.getElementById('last-update').textContent = new Date().toLocaleString();
+
+    // Form submission (placeholder)
+    document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thanks for joining! We\'ll be in touch soon.');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
