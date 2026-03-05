@@ -13,7 +13,7 @@ from pathlib import Path
 # Config - BetBrain AI Alerts Bot Token
 # NEVER commit tokens to GitHub! Use environment variables.
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '6471395025')  # User's Telegram ID
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '@betbrainaiwinner')  # Telegram Channel
 
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN not set! Set it in your environment or .env file.")

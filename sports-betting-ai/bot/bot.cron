@@ -1,0 +1,18 @@
+# BetBrain AI - Telegram Bot Cron Jobs
+# Install with: crontab /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot/bot.cron
+
+# Environment setup
+SHELL=/bin/zsh
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+
+# Morning picks thread (9:00 AM ET)
+0 9 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && python3 ai_picks_generator.py >> /tmp/betbrain-morning.log 2>&1
+
+# 30-minute odds updates during game days (9 AM - 11 PM ET)
+*/30 9-23 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api && python3 yahoo_scraper.py && python3 player_props_scraper.py && cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && python3 telegram_alerts.py >> /tmp/betbrain-updates.log 2>&1
+
+# Evening recap (6:00 PM ET)
+0 18 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && python3 telegram_alerts.py >> /tmp/betbrain-evening.log 2>&1
+
+# Welcome new members (hourly)
+0 * * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && python3 welcome_new_members.py >> /tmp/betbrain-welcome.log 2>&1

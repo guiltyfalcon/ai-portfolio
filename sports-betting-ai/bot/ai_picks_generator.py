@@ -5,12 +5,13 @@ Analyzes tonight's NBA slate and generates AI-powered picks
 """
 
 import json
+import os
 import requests
 from datetime import datetime
 
 # NEVER commit tokens to GitHub! Use environment variables.
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '6471395025')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '@betbrainaiwinner')  # Telegram Channel
 
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN not set! Set it in your environment or .env file.")
