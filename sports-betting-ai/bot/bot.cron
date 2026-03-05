@@ -16,3 +16,6 @@ PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 
 # Welcome new members (hourly)
 0 * * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && export TELEGRAM_BOT_TOKEN=8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88 && export TELEGRAM_CHAT_ID=@betbrainaiwinner && python3 welcome_new_members.py >> /tmp/betbrain-welcome.log 2>&1
+
+# Email signup digest (hourly) - sends to your personal chat
+30 * * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && export TELEGRAM_BOT_TOKEN=8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88 && export TELEGRAM_CHAT_ID=@betbrainaiwinner && python3 email_digest_bot.py >> /tmp/betbrain-digest.log 2>&1
