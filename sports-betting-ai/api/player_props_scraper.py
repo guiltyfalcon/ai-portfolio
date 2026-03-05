@@ -171,58 +171,27 @@ def scrape_draftkings_player_props() -> List[Dict]:
     try:
         print("  🌐 Scraping DraftKings player props...")
         
-        # Use browser tool to scrape DraftKings
+        # Run the dedicated browser scraper
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        scraper_path = os.path.join(script_dir, 'draftkings_browser_scraper.py')
+        
         from subprocess import run, PIPE
+        result = run(['python3', scraper_path], capture_output=True, text=True, timeout=30)
         
-        # Simple HTTP scrape (in production use Playwright)
-        session = requests.Session()
-        session.headers.update({
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
-        })
-        
-        url = SPORTSBOOK_URLS['draftkings']
-        response = session.get(url, timeout=15)
-        
-        if response.status_code == 200:
-            # Parse HTML for player props
-            # Note: This is simplified - DK uses dynamic JS loading
-            # For production, use Playwright browser automation
-            html = response.text
+        if result.returncode == 0:
+            # Load the scraped data
+            cache_path = os.path.join(script_dir, 'draftkings_props_cache.json')
+            with open(cache_path, 'r') as f:
+                dk_cache = json.load(f)
             
-            # Extract player names and lines from HTML
-            import re
-            player_props = []
+            games = dk_cache.get('sports', {}).get('nba', [])
+            print(f"    ✅ Scraped {len(games)} games from DraftKings")
             
-            # Pattern: player name + line + odds
-            patterns = [
-                r'paragraph[^>]*>([^<]+)</paragraph>.*?button[^>]*>(\d+)\+\s*([+-]?\d+)',
-            ]
-            
-            for pattern in patterns:
-                matches = re.findall(pattern, html, re.DOTALL)
-                for match in matches:
-                    player_name, line, odds = match
-                    if player_name and line:
-                        player_props.append({
-                            'player': player_name.strip(),
-                            'line': int(line),
-                            'odds': int(odds) if odds else -110
-                        })
-            
-            # Group by game (simplified - in production parse game containers)
-            if player_props:
-                games.append({
-                    'game_id': 'dk_scraped',
-                    'home_team': 'Various',
-                    'away_team': 'Various',
-                    'time': 'Today',
-                    'players': [{'player': p['player'], 'team': 'Unknown', 'props': [{'type': 'PTS', 'line': p['line'], 'odds_over': p['odds']}]} for p in player_props[:20]],
-                    'bookmakers': ['DraftKings']
-                })
-            
-            print(f"    ✅ Scraped {len(player_props)} player props from DraftKings")
+            # Add best bets to main cache
+            if 'best_bets' in dk_cache:
+                print(f"    🔥 Found {len(dk_cache['best_bets'])} value bets")
         else:
-            print(f"    ⚠️ DraftKings returned status {response.status_code}")
+            print(f"    ⚠️ DraftKings scraper failed: {result.stderr[:200]}")
             
     except Exception as e:
         print(f"    ⚠️ DraftKings scrape failed: {e}")
