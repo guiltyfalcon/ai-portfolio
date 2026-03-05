@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-04T18:52:13.861737",
-  "source": "espn_api + generated_averages",
+  "timestamp": "2026-03-04T19:00:34.472169",
+  "source": "espn_api + enhanced_stats + underdog_odds",
   "sports": {
     "nba": [
       {
@@ -12,86 +12,166 @@
           {
             "player": "NY Star",
             "team": "New York Knicks",
+            "team_abbr": "NY",
             "props": [
               {
                 "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
+                "line": 28.5,
+                "avg": 28.5,
+                "last5_avg": 31.2,
+                "matchup_rating": -2,
+                "hit_probability": 57.5,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 7.0,
+                "avg": 7.2,
+                "last5_avg": null,
+                "matchup_rating": -1,
+                "hit_probability": 48.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
+                "line": 7.0,
+                "avg": 6.8,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 42.4,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               }
-            ]
-          },
-          {
-            "player": "OKC Star",
-            "team": "Oklahoma City Thunder",
-            "props": [
-              {
-                "type": "pts",
-                "line": 26.5,
-                "avg": 26.0
-              },
-              {
-                "type": "reb",
-                "line": 5.5,
-                "avg": 5.0
-              },
-              {
-                "type": "ast",
-                "line": 8.5,
-                "avg": 8.0
-              }
-            ]
+            ],
+            "is_star": true
           },
           {
             "player": "NY Big",
             "team": "New York Knicks",
+            "team_abbr": "NY",
             "props": [
               {
                 "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
+                "line": 22.0,
+                "avg": 22.1,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 44.8,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               },
               {
                 "type": "reb",
-                "line": 10.5,
-                "avg": 10.0
+                "line": 11.5,
+                "avg": 11.3,
+                "last5_avg": null,
+                "matchup_rating": -1,
+                "hit_probability": 45.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
+                "line": 3.0,
+                "avg": 3.1,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 44.8,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               }
-            ]
+            ],
+            "is_star": false
+          },
+          {
+            "player": "OKC Star",
+            "team": "Oklahoma City Thunder",
+            "team_abbr": "OKC",
+            "props": [
+              {
+                "type": "pts",
+                "line": 31.0,
+                "avg": 30.8,
+                "last5_avg": 33.5,
+                "matchup_rating": 0,
+                "hit_probability": 61.9,
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN"
+              },
+              {
+                "type": "reb",
+                "line": 6.5,
+                "avg": 6.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 9.0,
+                "avg": 9.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
           },
           {
             "player": "OKC Guard",
             "team": "Oklahoma City Thunder",
+            "team_abbr": "OKC",
             "props": [
               {
                 "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
+                "line": 23.5,
+                "avg": 23.4,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
+                "line": 4.0,
+                "avg": 4.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 8.0,
+                "avg": 7.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": false
           }
         ]
       },
@@ -104,86 +184,125 @@
           {
             "player": "BOS Star",
             "team": "Boston Celtics",
+            "team_abbr": "BOS",
             "props": [
               {
                 "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
+                "line": 27.0,
+                "avg": 27.2,
+                "last5_avg": 29.8,
+                "matchup_rating": 3,
+                "hit_probability": 73.6,
+                "odds_over": -150,
+                "odds_under": 125,
+                "recommendation": "STRONG"
               },
               {
                 "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
-              },
-              {
-                "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
-              }
-            ]
-          },
-          {
-            "player": "CHA Star",
-            "team": "Charlotte Hornets",
-            "props": [
-              {
-                "type": "pts",
-                "line": 26.5,
-                "avg": 26.0
-              },
-              {
-                "type": "reb",
-                "line": 5.5,
-                "avg": 5.0
-              },
-              {
-                "type": "ast",
                 "line": 8.5,
-                "avg": 8.0
+                "avg": 8.4,
+                "last5_avg": null,
+                "matchup_rating": -1,
+                "hit_probability": 46.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 6.0,
+                "avg": 5.9,
+                "last5_avg": null,
+                "matchup_rating": 2,
+                "hit_probability": 55.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           },
           {
             "player": "BOS Big",
             "team": "Boston Celtics",
+            "team_abbr": "BOS",
             "props": [
               {
                 "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
+                "line": 20.5,
+                "avg": 20.5,
+                "last5_avg": null,
+                "matchup_rating": 3,
+                "hit_probability": 59.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 10.5,
-                "avg": 10.0
+                "line": 12.0,
+                "avg": 12.1,
+                "last5_avg": null,
+                "matchup_rating": -1,
+                "hit_probability": 47.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
+                "line": 3.0,
+                "avg": 2.8,
+                "last5_avg": null,
+                "matchup_rating": 2,
+                "hit_probability": 54.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": false
           },
           {
-            "player": "CHA Guard",
+            "player": "CHA Star",
             "team": "Charlotte Hornets",
+            "team_abbr": "CHA",
             "props": [
               {
                 "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
+                "line": 25.5,
+                "avg": 25.6,
+                "last5_avg": 27.3,
+                "matchup_rating": -3,
+                "hit_probability": 50.3,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
+                "line": 5.0,
+                "avg": 5.2,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 45.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
                 "line": 7.5,
-                "avg": 7.0
+                "avg": 7.5,
+                "last5_avg": null,
+                "matchup_rating": -1,
+                "hit_probability": 47.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -196,86 +315,125 @@
           {
             "player": "PHI Star",
             "team": "Philadelphia 76ers",
+            "team_abbr": "PHI",
             "props": [
               {
                 "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
+                "line": 29.0,
+                "avg": 29.1,
+                "last5_avg": 32.4,
+                "matchup_rating": 1,
+                "hit_probability": 70.3,
+                "odds_over": -150,
+                "odds_under": 125,
+                "recommendation": "STRONG"
               },
               {
                 "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 8.0,
+                "avg": 7.8,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 42.4,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               },
               {
                 "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
+                "line": 6.0,
+                "avg": 6.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
-          },
-          {
-            "player": "UTAH Star",
-            "team": "Utah Jazz",
-            "props": [
-              {
-                "type": "pts",
-                "line": 26.5,
-                "avg": 26.0
-              },
-              {
-                "type": "reb",
-                "line": 5.5,
-                "avg": 5.0
-              },
-              {
-                "type": "ast",
-                "line": 8.5,
-                "avg": 8.0
-              }
-            ]
+            ],
+            "is_star": true
           },
           {
             "player": "PHI Big",
             "team": "Philadelphia 76ers",
+            "team_abbr": "PHI",
             "props": [
               {
                 "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
+                "line": 22.0,
+                "avg": 21.8,
+                "last5_avg": null,
+                "matchup_rating": 1,
+                "hit_probability": 51.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
                 "line": 10.5,
-                "avg": 10.0
+                "avg": 10.5,
+                "last5_avg": null,
+                "matchup_rating": -2,
+                "hit_probability": 44.0,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               },
               {
                 "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
+                "line": 3.5,
+                "avg": 3.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": false
           },
           {
-            "player": "UTAH Guard",
+            "player": "UTA Star",
             "team": "Utah Jazz",
+            "team_abbr": "UTA",
             "props": [
               {
                 "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
+                "line": 24.5,
+                "avg": 24.3,
+                "last5_avg": 22.8,
+                "matchup_rating": 0,
+                "hit_probability": 40.9,
+                "odds_over": 115,
+                "odds_under": -140,
+                "recommendation": "UNDER"
               },
               {
                 "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
+                "line": 6.0,
+                "avg": 6.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 8.0,
+                "avg": 8.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -288,86 +446,84 @@
           {
             "player": "MEM Star",
             "team": "Memphis Grizzlies",
-            "props": [
-              {
-                "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
-              },
-              {
-                "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
-              },
-              {
-                "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
-              }
-            ]
-          },
-          {
-            "player": "POR Star",
-            "team": "Portland Trail Blazers",
+            "team_abbr": "MEM",
             "props": [
               {
                 "type": "pts",
                 "line": 26.5,
-                "avg": 26.0
+                "avg": 26.7,
+                "last5_avg": 28.9,
+                "matchup_rating": 2,
+                "hit_probability": 68.6,
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN"
               },
               {
                 "type": "reb",
-                "line": 5.5,
-                "avg": 5.0
+                "line": 6.0,
+                "avg": 5.9,
+                "last5_avg": null,
+                "matchup_rating": 1,
+                "hit_probability": 52.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
                 "line": 8.5,
-                "avg": 8.0
+                "avg": 8.4,
+                "last5_avg": null,
+                "matchup_rating": 1,
+                "hit_probability": 52.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           },
           {
-            "player": "MEM Big",
-            "team": "Memphis Grizzlies",
-            "props": [
-              {
-                "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
-              },
-              {
-                "type": "reb",
-                "line": 10.5,
-                "avg": 10.0
-              },
-              {
-                "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
-              }
-            ]
-          },
-          {
-            "player": "POR Guard",
+            "player": "POR Star",
             "team": "Portland Trail Blazers",
+            "team_abbr": "POR",
             "props": [
               {
                 "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
+                "line": 23.0,
+                "avg": 22.8,
+                "last5_avg": 24.1,
+                "matchup_rating": 0,
+                "hit_probability": 54.9,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
+                "line": 4.5,
+                "avg": 4.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 5.5,
+                "avg": 5.6,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -380,86 +536,125 @@
           {
             "player": "MIL Star",
             "team": "Milwaukee Bucks",
+            "team_abbr": "MIL",
             "props": [
               {
                 "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
+                "line": 31.0,
+                "avg": 31.2,
+                "last5_avg": 34.5,
+                "matchup_rating": 0,
+                "hit_probability": 68.1,
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN"
               },
               {
                 "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 12.0,
+                "avg": 11.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
+                "line": 6.0,
+                "avg": 6.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
+          },
+          {
+            "player": "MIL Guard",
+            "team": "Milwaukee Bucks",
+            "team_abbr": "MIL",
+            "props": [
+              {
+                "type": "pts",
+                "line": 25.5,
+                "avg": 25.3,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 4.0,
+                "avg": 4.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 7.0,
+                "avg": 6.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": false
           },
           {
             "player": "ATL Star",
             "team": "Atlanta Hawks",
+            "team_abbr": "ATL",
             "props": [
               {
                 "type": "pts",
-                "line": 26.5,
-                "avg": 26.0
+                "line": 27.5,
+                "avg": 27.5,
+                "last5_avg": 29.8,
+                "matchup_rating": 0,
+                "hit_probability": 61.5,
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN"
               },
               {
                 "type": "reb",
-                "line": 5.5,
-                "avg": 5.0
+                "line": 6.0,
+                "avg": 5.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 8.5,
-                "avg": 8.0
+                "line": 10.0,
+                "avg": 10.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
-          },
-          {
-            "player": "MIL Big",
-            "team": "Milwaukee Bucks",
-            "props": [
-              {
-                "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
-              },
-              {
-                "type": "reb",
-                "line": 10.5,
-                "avg": 10.0
-              },
-              {
-                "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
-              }
-            ]
-          },
-          {
-            "player": "ATL Guard",
-            "team": "Atlanta Hawks",
-            "props": [
-              {
-                "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
-              },
-              {
-                "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
-              },
-              {
-                "type": "ast",
-                "line": 7.5,
-                "avg": 7.0
-              }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -472,86 +667,125 @@
           {
             "player": "LAC Star",
             "team": "LA Clippers",
+            "team_abbr": "LAC",
             "props": [
               {
                 "type": "pts",
-                "line": 24.5,
-                "avg": 24.0
+                "line": 27.0,
+                "avg": 26.8,
+                "last5_avg": 28.2,
+                "matchup_rating": 0,
+                "hit_probability": 55.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 7.0,
+                "avg": 7.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 6.5,
-                "avg": 6.0
-              }
-            ]
-          },
-          {
-            "player": "IND Star",
-            "team": "Indiana Pacers",
-            "props": [
-              {
-                "type": "pts",
-                "line": 26.5,
-                "avg": 26.0
-              },
-              {
-                "type": "reb",
                 "line": 5.5,
-                "avg": 5.0
-              },
-              {
-                "type": "ast",
-                "line": 8.5,
-                "avg": 8.0
+                "avg": 5.4,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           },
           {
             "player": "LAC Big",
             "team": "LA Clippers",
+            "team_abbr": "LAC",
             "props": [
               {
                 "type": "pts",
-                "line": 18.5,
-                "avg": 18.0
+                "line": 23.5,
+                "avg": 23.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 10.5,
-                "avg": 10.0
+                "line": 10.0,
+                "avg": 9.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 2.5,
-                "avg": 2.0
+                "line": 3.0,
+                "avg": 2.9,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": false
           },
           {
-            "player": "IND Guard",
+            "player": "IND Star",
             "team": "Indiana Pacers",
+            "team_abbr": "IND",
             "props": [
               {
                 "type": "pts",
-                "line": 21.5,
-                "avg": 21.0
+                "line": 25.0,
+                "avg": 24.9,
+                "last5_avg": 26.7,
+                "matchup_rating": 0,
+                "hit_probability": 58.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "reb",
-                "line": 3.5,
-                "avg": 3.0
+                "line": 6.5,
+                "avg": 6.3,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "ast",
-                "line": 7.5,
-                "avg": 7.0
+                "line": 9.5,
+                "avg": 9.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       }
@@ -562,92 +796,7 @@
         "home_team": "New England Patriots",
         "away_team": "Seattle Seahawks",
         "time": "TBD",
-        "players": [
-          {
-            "player": "NE QB",
-            "team": "New England Patriots",
-            "props": [
-              {
-                "type": "pass_yds",
-                "line": 275.5,
-                "avg": 275.0
-              },
-              {
-                "type": "pass_td",
-                "line": 2.5,
-                "avg": 2.0
-              },
-              {
-                "type": "rush_yds",
-                "line": 35.5,
-                "avg": 35.0
-              }
-            ]
-          },
-          {
-            "player": "SEA QB",
-            "team": "Seattle Seahawks",
-            "props": [
-              {
-                "type": "pass_yds",
-                "line": 245.5,
-                "avg": 245.0
-              },
-              {
-                "type": "pass_td",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "rush_yds",
-                "line": 25.5,
-                "avg": 25.0
-              }
-            ]
-          },
-          {
-            "player": "NE WR1",
-            "team": "New England Patriots",
-            "props": [
-              {
-                "type": "rec_yds",
-                "line": 85.5,
-                "avg": 85.0
-              },
-              {
-                "type": "rec",
-                "line": 6.5,
-                "avg": 6.0
-              },
-              {
-                "type": "td",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "SEA RB",
-            "team": "Seattle Seahawks",
-            "props": [
-              {
-                "type": "rush_yds",
-                "line": 75.5,
-                "avg": 75.0
-              },
-              {
-                "type": "rec_yds",
-                "line": 35.5,
-                "avg": 35.0
-              },
-              {
-                "type": "td",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          }
-        ]
+        "players": []
       }
     ],
     "mlb": [
@@ -660,44 +809,106 @@
           {
             "player": "BAL Star",
             "team": "Baltimore Orioles",
+            "team_abbr": "BAL",
             "props": [
               {
                 "type": "hits",
                 "line": 1.5,
-                "avg": 1.0
+                "avg": 1.52,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "runs",
-                "line": 0.5,
-                "avg": 0.0
+                "line": 1.0,
+                "avg": 0.75,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "HOU Star",
-            "team": "Houston Astros",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
+                "line": 1.0,
+                "avg": 0.88,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "hr",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.38,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "HOU Star",
+            "team": "Houston Astros",
+            "team_abbr": "HOU",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.61,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.9,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "runs",
+                "line": 1.0,
+                "avg": 0.79,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.3,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "rbis",
+                "line": 1.0,
+                "avg": 0.92,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "hr",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.31,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.5,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -710,44 +921,106 @@
           {
             "player": "BOS Star",
             "team": "Boston Red Sox",
+            "team_abbr": "BOS",
             "props": [
               {
                 "type": "hits",
                 "line": 1.5,
-                "avg": 1.0
+                "avg": 1.65,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "runs",
-                "line": 0.5,
-                "avg": 0.0
+                "line": 1.0,
+                "avg": 0.82,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "NYY Star",
-            "team": "New York Yankees",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
+                "line": 1.0,
+                "avg": 0.95,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "hr",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.35,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "NYY Star",
+            "team": "New York Yankees",
+            "team_abbr": "NYY",
+            "props": [
+              {
+                "type": "hits",
+                "line": 1.5,
+                "avg": 1.58,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "runs",
+                "line": 1.0,
+                "avg": 0.88,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "rbis",
+                "line": 1.0,
+                "avg": 1.12,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "hr",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.42,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -756,150 +1029,21 @@
         "home_team": "Athletics",
         "away_team": "Arizona Diamondbacks",
         "time": "TBD",
-        "players": [
-          {
-            "player": "ATH Star",
-            "team": "Athletics",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "runs",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "ARI Star",
-            "team": "Arizona Diamondbacks",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "hr",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          }
-        ]
+        "players": []
       },
       {
         "game_id": "401833054",
         "home_team": "Milwaukee Brewers",
         "away_team": "Chicago Cubs",
         "time": "TBD",
-        "players": [
-          {
-            "player": "MIL Star",
-            "team": "Milwaukee Brewers",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "runs",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "CHC Star",
-            "team": "Chicago Cubs",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "hr",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          }
-        ]
+        "players": []
       },
       {
         "game_id": "401833055",
         "home_team": "San Francisco Giants",
         "away_team": "Seattle Mariners",
         "time": "TBD",
-        "players": [
-          {
-            "player": "SF Star",
-            "team": "San Francisco Giants",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "runs",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          },
-          {
-            "player": "SEA Star",
-            "team": "Seattle Mariners",
-            "props": [
-              {
-                "type": "hits",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "hr",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "rbis",
-                "line": 0.5,
-                "avg": 0.0
-              }
-            ]
-          }
-        ]
+        "players": []
       }
     ],
     "nhl": [
@@ -912,44 +1056,54 @@
           {
             "player": "DET Star",
             "team": "Detroit Red Wings",
+            "team_abbr": "DET",
             "props": [
               {
                 "type": "points",
                 "line": 1.5,
-                "avg": 1.0
+                "avg": 1.45,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "goals",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.52,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "assists",
+                "line": 1.0,
+                "avg": 0.93,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
+                "line": 4.0,
+                "avg": 4.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 51.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
-          },
-          {
-            "player": "VGK Star",
-            "team": "Vegas Golden Knights",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -962,44 +1116,54 @@
           {
             "player": "NJ Star",
             "team": "New Jersey Devils",
+            "team_abbr": "NJ",
             "props": [
               {
                 "type": "points",
                 "line": 1.5,
-                "avg": 1.0
+                "avg": 1.58,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "goals",
                 "line": 0.5,
-                "avg": 0.0
+                "avg": 0.61,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.9,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "assists",
+                "line": 1.0,
+                "avg": 0.97,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               },
               {
                 "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
+                "line": 5.0,
+                "avg": 4.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 48.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
               }
-            ]
-          },
-          {
-            "player": "TOR Star",
-            "team": "Toronto Maple Leafs",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
+            ],
+            "is_star": true
           }
         ]
       },
@@ -1008,150 +1172,21 @@
         "home_team": "Vancouver Canucks",
         "away_team": "Carolina Hurricanes",
         "time": "TBD",
-        "players": [
-          {
-            "player": "VAN Star",
-            "team": "Vancouver Canucks",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          },
-          {
-            "player": "CAR Star",
-            "team": "Carolina Hurricanes",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          }
-        ]
+        "players": []
       },
       {
         "game_id": "401803324",
         "home_team": "Anaheim Ducks",
         "away_team": "New York Islanders",
         "time": "TBD",
-        "players": [
-          {
-            "player": "ANA Star",
-            "team": "Anaheim Ducks",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          },
-          {
-            "player": "NYI Star",
-            "team": "New York Islanders",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          }
-        ]
+        "players": []
       },
       {
         "game_id": "401803325",
         "home_team": "Seattle Kraken",
         "away_team": "St. Louis Blues",
         "time": "TBD",
-        "players": [
-          {
-            "player": "SEA Star",
-            "team": "Seattle Kraken",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          },
-          {
-            "player": "STL Star",
-            "team": "St. Louis Blues",
-            "props": [
-              {
-                "type": "points",
-                "line": 1.5,
-                "avg": 1.0
-              },
-              {
-                "type": "goals",
-                "line": 0.5,
-                "avg": 0.0
-              },
-              {
-                "type": "shots",
-                "line": 4.5,
-                "avg": 4.0
-              }
-            ]
-          }
-        ]
+        "players": []
       }
     ],
     "ncaab": [
@@ -1191,5 +1226,30 @@
         "players": []
       }
     ]
-  }
+  },
+  "best_bets": [],
+  "recommended_parlay": [
+    {
+      "sport": "nba",
+      "game": "Boston Celtics vs Charlotte Hornets",
+      "player": "BOS Star",
+      "team": "Boston Celtics",
+      "prop_type": "pts",
+      "line": 27.0,
+      "hit_probability": 73.6,
+      "odds": -150,
+      "recommendation": "STRONG"
+    },
+    {
+      "sport": "nba",
+      "game": "Philadelphia 76ers vs Utah Jazz",
+      "player": "PHI Star",
+      "team": "Philadelphia 76ers",
+      "prop_type": "pts",
+      "line": 29.0,
+      "hit_probability": 70.3,
+      "odds": -150,
+      "recommendation": "STRONG"
+    }
+  ]
 }
