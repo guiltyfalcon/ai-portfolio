@@ -11,8 +11,12 @@ from datetime import datetime
 from pathlib import Path
 
 # Config - BetBrain AI Alerts Bot Token
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88')
+# NEVER commit tokens to GitHub! Use environment variables.
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '6471395025')  # User's Telegram ID
+
+if not TELEGRAM_BOT_TOKEN:
+    raise ValueError("TELEGRAM_BOT_TOKEN not set! Set it in your environment or .env file.")
 CACHE_FILE = Path('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/player_props_cache.json')
 HIT_THRESHOLD = 60.0  # Only alert on props with 60%+ hit probability
 

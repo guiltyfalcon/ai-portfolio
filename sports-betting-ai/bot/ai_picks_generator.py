@@ -8,8 +8,12 @@ import json
 import requests
 from datetime import datetime
 
-TELEGRAM_BOT_TOKEN = '8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88'
-TELEGRAM_CHAT_ID = '6471395025'
+# NEVER commit tokens to GitHub! Use environment variables.
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '6471395025')
+
+if not TELEGRAM_BOT_TOKEN:
+    raise ValueError("TELEGRAM_BOT_TOKEN not set! Set it in your environment or .env file.")
 
 def send_telegram_message(message):
     """Send message to Telegram."""
