@@ -1,0 +1,447 @@
+{
+  "discovery_run": {
+    "id": "run-2026-03-04-2345",
+    "timestamp": "2026-03-04T23:45:00-05:00",
+    "icp_profile": "ai-agent-developer",
+    "sources_used": ["github", "twitter", "web_search"],
+    "config_files": {
+      "icp": "~/.openclaw/skills/lead-hunter/config/icp.yaml",
+      "sources": "~/.openclaw/skills/lead-hunter/config/sources.yaml",
+      "enrichment": "~/.openclaw/skills/lead-hunter/config/enrichment.yaml"
+    },
+    "search_queries": [
+      "AI agent developers GitHub autonomous agents langchain crewai 2026",
+      "building in public AI agents automation developer Twitter 2026",
+      "CrewAI developers GitHub contributors langchain engineers 2026"
+    ]
+  },
+  "summary": {
+    "total_leads": 12,
+    "hot_leads": 4,
+    "warm_leads": 5,
+    "cold_leads": 3,
+    "sources_breakdown": {
+      "github": 6,
+      "twitter": 4,
+      "web_search": 2
+    }
+  },
+  "leads": [
+    {
+      "id": 1,
+      "name": "João Moura",
+      "title": "Founder",
+      "company": "crewAI",
+      "source": "github",
+      "github_username": "joaomdmoura",
+      "twitter_handle": "@joaomdmoura",
+      "website": "https://crewai.com",
+      "location": "United States",
+      "bio": "Building CrewAI - Framework for orchestrating autonomous AI agents",
+      "intent_signals": [
+        "building ai agents",
+        "agent framework creator",
+        "active github contributor"
+      ],
+      "tech_stack": ["python", "langchain", "ai-agents", "crewai"],
+      "score": 95,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 20,
+        "tech_stack_match": 15,
+        "intent_signals": 30,
+        "company_stage": 10
+      },
+      "priority": "hot",
+      "opportunity": "Potential partnership or consulting on agent orchestration at scale. CrewAI founder building similar tooling.",
+      "contact_strategy": "Direct outreach via Twitter or GitHub. Offer OpenClaw integration or collaboration.",
+      "discovered_at": "2026-03-04T23:45:00-05:00"
+    },
+    {
+      "id": 2,
+      "name": "crewAI Team",
+      "title": "AI Agent Framework Team",
+      "company": "crewAI Inc",
+      "source": "github",
+      "github_org": "crewAIInc",
+      "twitter_handle": "@crewaiinc",
+      "website": "https://crewai.com",
+      "location": "United States",
+      "bio": "Framework for orchestrating role-playing, autonomous AI agents. 45K+ stars on GitHub.",
+      "company_metrics": {
+        "github_stars": 45026,
+        "github_followers": 1754,
+        "public_repos": 26,
+        "verified": true
+      },
+      "intent_signals": [
+        "rapid growth (45K stars)",
+        "active development",
+        "building agent infrastructure"
+      ],
+      "tech_stack": ["python", "ai-agents", "autonomous-agents", "langchain"],
+      "score": 90,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 30,
+        "company_stage": 10
+      },
+      "priority": "hot",
+      "opportunity": "High-growth agent framework company. Could benefit from OpenClaw for internal automation or offer integration partnership.",
+      "contact_strategy": "Reach out to founder via Twitter. Propose integration or knowledge exchange.",
+      "discovered_at": "2026-03-04T23:45:00-05:00"
+    },
+    {
+      "id": 3,
+      "name": "Ben Newton",
+      "title": "Commerce Frontend Specialist",
+      "company": "Independent",
+      "source": "twitter",
+      "twitter_handle": "@benenewton",
+      "website": "https://benenewton.com",
+      "location": "Unknown",
+      "bio": "Commerce Frontend Specialist. Recently wrote about OpenClaw experience.",
+      "intent_signals": [
+        "wrote about OpenClaw",
+        "building in public",
+        "interested in AI agents"
+      ],
+      "tech_stack": ["openclaw", "ai-agents", "productivity"],
+      "score": 85,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 30,
+        "company_stage": 5
+      },
+      "priority": "hot",
+      "opportunity": "Already using OpenClaw and building in public. Potential case study, testimonial, or consulting client for advanced setups.",
+      "contact_strategy": "Engage with his content. Offer advanced OpenClaw consulting or collaboration on build-in-public journey.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Published 'My First Week with OpenClaw: From Skeptic to Believer' - strong advocate"
+    },
+    {
+      "id": 4,
+      "name": "Swathi Puskoori",
+      "title": "AI Developer / Technical Writer",
+      "company": "Independent",
+      "source": "twitter",
+      "twitter_handle": "@swathipuskoori",
+      "website": "https://medium.com/@swathipuskoori",
+      "location": "Unknown",
+      "bio": "AI developer building autonomous agents. Technical writer on Medium.",
+      "intent_signals": [
+        "built autonomous AI agent",
+        "teaching others",
+        "active content creator"
+      ],
+      "tech_stack": ["ai-agents", "autonomous-agents", "python"],
+      "score": 80,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 25,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Active AI agent builder and educator. Could be consulting client for advanced agent setups or partnership for content.",
+      "contact_strategy": "Engage with Medium articles. Offer OpenClaw for more advanced agent orchestration.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Published 'I Built an Autonomous AI Agent in less than 2 Hours' - shows speed-focused approach"
+    },
+    {
+      "id": 5,
+      "name": "SuryacodesAI",
+      "title": "AI Developer",
+      "company": "SuryacodesAI",
+      "source": "github",
+      "github_username": "SuryacodesAI",
+      "website": "https://github.com/SuryacodesAI",
+      "location": "Unknown",
+      "bio": "Building AI agents with LangChain and CrewAI. Google Colab implementations.",
+      "intent_signals": [
+        "building with langchain + crewai",
+        "creating educational content",
+        "hands-on agent development"
+      ],
+      "tech_stack": ["langchain", "crewai", "python", "google-colab"],
+      "score": 75,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 20,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Using both LangChain and CrewAI. Could benefit from OpenClaw for more sophisticated orchestration.",
+      "contact_strategy": "GitHub outreach. Offer OpenClaw as next-level agent framework.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Repo: AIJ_Agentic_AI_Lab-LangChain-CrewAI - hands-on practitioner"
+    },
+    {
+      "id": 6,
+      "name": "riolaf05",
+      "title": "AI Developer",
+      "company": "Independent",
+      "source": "github",
+      "github_username": "riolaf05",
+      "website": "https://github.com/riolaf05/langchain-crewai-agent",
+      "location": "Unknown",
+      "bio": "Building agents with LangChain and CrewAI",
+      "intent_signals": [
+        "combining langchain + crewai",
+        "active github developer",
+        "agent experimentation"
+      ],
+      "tech_stack": ["langchain", "crewai", "python", "ai-agents"],
+      "score": 70,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 15,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Experimenting with multiple agent frameworks. OpenClaw could simplify their stack.",
+      "contact_strategy": "GitHub issue or discussion. Share OpenClaw benefits for unified agent management.",
+      "discovered_at": "2026-03-04T23:45:00-05:00"
+    },
+    {
+      "id": 7,
+      "name": "OpenClaws Agency",
+      "title": "AI Agency",
+      "company": "OpenClaws Agency",
+      "source": "web_search",
+      "website": "https://openclaws.agency/",
+      "location": "Unknown",
+      "bio": "Managed AI Agent Infrastructure & OpenClaw Deployment Services",
+      "intent_signals": [
+        "offering openclaw services",
+        "managed infrastructure",
+        "agent deployment"
+      ],
+      "tech_stack": ["openclaw", "ai-agents", "infrastructure"],
+      "score": 85,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 20,
+        "tech_stack_match": 15,
+        "intent_signals": 25,
+        "company_stage": 5
+      },
+      "priority": "hot",
+      "opportunity": "Direct competitor or potential partner. Already selling OpenClaw services. Could collaborate or learn from their approach.",
+      "contact_strategy": "Partnership discussion. Explore white-label or referral arrangement.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Offers: Full OpenClaw Deployment, managed agent infrastructure"
+    },
+    {
+      "id": 8,
+      "name": "OpenClaw Consultancy",
+      "title": "AI Strategy Consultancy",
+      "company": "OpenClaw Consultancy",
+      "source": "web_search",
+      "website": "https://openclawconsultancy.com/",
+      "location": "Unknown",
+      "bio": "Strategic AI Agent Advisory - helping businesses understand OpenClaw",
+      "intent_signals": [
+        "openclaw consulting",
+        "strategy advisory",
+        "business transformation"
+      ],
+      "tech_stack": ["openclaw", "ai-agents", "consulting"],
+      "score": 80,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 20,
+        "tech_stack_match": 15,
+        "intent_signals": 20,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Strategy-focused OpenClaw consultancy. Potential partner for technical implementation work.",
+      "contact_strategy": "Partnership outreach. Offer technical implementation services for their strategy clients.",
+      "discovered_at": "2026-03-04T23:45:00-05:00"
+    },
+    {
+      "id": 9,
+      "name": "OpenClaw24",
+      "title": "AI Automation Agency",
+      "company": "OpenClaw24",
+      "source": "web_search",
+      "website": "https://www.openclaw24.com/",
+      "location": "Unknown",
+      "bio": "OpenClaw Implementation + Managed Maintenance for businesses",
+      "intent_signals": [
+        "openclaw implementation",
+        "managed services",
+        "business automation"
+      ],
+      "tech_stack": ["openclaw", "automation", "business-integration"],
+      "score": 75,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 20,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Implementation-focused agency. Could subcontract complex technical work or collaborate.",
+      "contact_strategy": "Partnership discussion. Offer specialized technical services.",
+      "discovered_at": "2026-03-04T23:45:00-05:00"
+    },
+    {
+      "id": 10,
+      "name": "ManagedClaw",
+      "title": "OpenClaw Consulting",
+      "company": "ManagedClaw",
+      "source": "web_search",
+      "website": "http://managedclaw.io/",
+      "location": "Unknown",
+      "bio": "OpenClaw Consulting & Implementation - 3x ROI Business Transformation",
+      "intent_signals": [
+        "openclaw consulting",
+        "roi-focused",
+        "limited availability (3/month)"
+      ],
+      "tech_stack": ["openclaw", "consulting", "business-transformation"],
+      "score": 70,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 15,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "High-end consulting (limited slots). Potential referral partner for overflow or technical work.",
+      "contact_strategy": "Partnership outreach. Discuss referral arrangement for technical implementations.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Limited availability: 3 consultations/month - premium positioning"
+    },
+    {
+      "id": 11,
+      "name": "OpenClaw Agency",
+      "title": "AI Agency",
+      "company": "OpenClaw Agency",
+      "source": "web_search",
+      "website": "https://www.openclawagency.com/",
+      "location": "Unknown",
+      "bio": "Deploy AI Agents That Actually Work - Now deploying Claude 4 Opus agents",
+      "intent_signals": [
+        "deploying ai agents",
+        "claude 4 opus",
+        "customer support automation"
+      ],
+      "tech_stack": ["openclaw", "claude", "ai-agents", "customer-support"],
+      "score": 75,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 15,
+        "tech_stack_match": 15,
+        "intent_signals": 20,
+        "company_stage": 5
+      },
+      "priority": "warm",
+      "opportunity": "Active OpenClaw agency deploying production agents. Potential collaboration on complex deployments.",
+      "contact_strategy": "Technical partnership discussion. Share expertise on advanced agent patterns.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Focus: customer support, operations, sales agents running 24/7"
+    },
+    {
+      "id": 12,
+      "name": "VM0 Team",
+      "title": "AI Startup",
+      "company": "VM0",
+      "source": "twitter",
+      "website": "https://www.vm0.ai/",
+      "twitter_handle": "@vm0ai",
+      "location": "Unknown",
+      "bio": "AI-powered 'Build in Public' workflow. Early-stage startup in AI space.",
+      "intent_signals": [
+        "building in public",
+        "ai startup",
+        "daily product updates"
+      ],
+      "tech_stack": ["ai", "automation", "productivity"],
+      "score": 65,
+      "score_breakdown": {
+        "industry_match": 20,
+        "title_match": 10,
+        "tech_stack_match": 10,
+        "intent_signals": 20,
+        "company_stage": 5
+      },
+      "priority": "cold",
+      "opportunity": "Early-stage AI startup building in public. Could become consulting client as they scale.",
+      "contact_strategy": "Engage with build-in-public content. Offer OpenClaw for scaling their automation.",
+      "discovered_at": "2026-03-04T23:45:00-05:00",
+      "notes": "Using AI for build-in-public workflow - shows automation mindset"
+    }
+  ],
+  "recommended_actions": {
+    "immediate_outreach": [
+      {
+        "lead_id": 1,
+        "action": "Twitter DM to @joaomdmoura",
+        "message_template": "Hey João! Big fan of CrewAI. We're building OpenClaw consulting services for advanced agent orchestration. Would love to explore integration possibilities or share learnings. Open to a quick chat?",
+        "priority": "high"
+      },
+      {
+        "lead_id": 3,
+        "action": "Engage with Ben Newton's content",
+        "message_template": "Loved your OpenClaw article! We're doing advanced OpenClaw implementations. Would you be interested in a deeper technical discussion or collaboration on build-in-public content?",
+        "priority": "high"
+      },
+      {
+        "lead_id": 7,
+        "action": "Partnership outreach to OpenClaws Agency",
+        "message_template": "Hi! We noticed you're offering OpenClaw deployment services. We specialize in complex agent orchestration and automation. Interested in exploring partnership or white-label opportunities?",
+        "priority": "medium"
+      }
+    ],
+    "nurture_sequence": [
+      {
+        "lead_ids": [4, 5, 6],
+        "action": "GitHub/Twitter engagement",
+        "strategy": "Follow, engage with content, share OpenClaw resources. Build relationship before pitching."
+      },
+      {
+        "lead_ids": [8, 9, 10, 11],
+        "action": "Partnership discussions",
+        "strategy": "Reach out to OpenClaw service providers for potential collaboration, referrals, or subcontracting."
+      }
+    ],
+    "content_opportunities": [
+      {
+        "topic": "CrewAI vs OpenClaw comparison",
+        "target_audience": "Agent framework developers",
+        "leads": [1, 2, 5, 6]
+      },
+      {
+        "topic": "Build in Public with OpenClaw",
+        "target_audience": "AI developers building publicly",
+        "leads": [3, 4, 12]
+      }
+    ]
+  },
+  "next_steps": {
+    "automated_discovery": "Set up cron job to run discovery every 6 hours using configured sources",
+    "enrichment": "Add email discovery for hot leads (IDs 1, 2, 3, 7)",
+    "outreach": "Begin immediate outreach to hot leads within 24 hours",
+    "tracking": "Monitor engagement and update lead scores based on responses"
+  },
+  "config_status": {
+    "icp_yaml": "Created at ~/.openclaw/skills/lead-hunter/config/icp.yaml",
+    "sources_yaml": "Created at ~/.openclaw/skills/lead-hunter/config/sources.yaml",
+    "enrichment_yaml": "Created at ~/.openclaw/skills/lead-hunter/config/enrichment.yaml",
+    "ready_for_automation": true
+  }
+}
