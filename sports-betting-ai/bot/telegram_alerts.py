@@ -10,8 +10,8 @@ import requests
 from datetime import datetime
 from pathlib import Path
 
-# Config - Using existing Pokemon deals bot token
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8390019863:AAGlk_il4MU4snr0sRjXw0sgJG2bamYAZUs')
+# Config - BetBrain AI Alerts Bot Token
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88')
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '6471395025')  # User's Telegram ID
 CACHE_FILE = Path('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/player_props_cache.json')
 HIT_THRESHOLD = 60.0  # Only alert on props with 60%+ hit probability
