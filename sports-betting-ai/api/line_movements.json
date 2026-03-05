@@ -1,0 +1,1082 @@
+{
+  "Jalen Brunson_pts_Unknown": {
+    "player": "Jalen Brunson",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.034169",
+        "line": 28.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jalen Brunson_reb_Unknown": {
+    "player": "Jalen Brunson",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.035011",
+        "line": 4.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jalen Brunson_ast_Unknown": {
+    "player": "Jalen Brunson",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.035640",
+        "line": 7.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Julius Randle_pts_Unknown": {
+    "player": "Julius Randle",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.035979",
+        "line": 23.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Julius Randle_reb_Unknown": {
+    "player": "Julius Randle",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.036286",
+        "line": 10.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Julius Randle_ast_Unknown": {
+    "player": "Julius Randle",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.036530",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "RJ Barrett_pts_Unknown": {
+    "player": "RJ Barrett",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.036767",
+        "line": 20.0,
+        "odds": -110
+      }
+    ]
+  },
+  "RJ Barrett_reb_Unknown": {
+    "player": "RJ Barrett",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.037004",
+        "line": 5.5,
+        "odds": -110
+      }
+    ]
+  },
+  "RJ Barrett_ast_Unknown": {
+    "player": "RJ Barrett",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.037244",
+        "line": 3.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Shai Gilgeous-Alexander_pts_Unknown": {
+    "player": "Shai Gilgeous-Alexander",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.037527",
+        "line": 31.0,
+        "odds": -125
+      }
+    ]
+  },
+  "Shai Gilgeous-Alexander_reb_Unknown": {
+    "player": "Shai Gilgeous-Alexander",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.037811",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Shai Gilgeous-Alexander_ast_Unknown": {
+    "player": "Shai Gilgeous-Alexander",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.038087",
+        "line": 6.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Chet Holmgren_pts_Unknown": {
+    "player": "Chet Holmgren",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.038380",
+        "line": 18.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Chet Holmgren_reb_Unknown": {
+    "player": "Chet Holmgren",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.038682",
+        "line": 8.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Chet Holmgren_ast_Unknown": {
+    "player": "Chet Holmgren",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.039027",
+        "line": 2.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Jalen Williams_pts_Unknown": {
+    "player": "Jalen Williams",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.039373",
+        "line": 20.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Jalen Williams_reb_Unknown": {
+    "player": "Jalen Williams",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.039828",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jalen Williams_ast_Unknown": {
+    "player": "Jalen Williams",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.040303",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jayson Tatum_pts_Unknown": {
+    "player": "Jayson Tatum",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.040798",
+        "line": 28.5,
+        "odds": -125
+      }
+    ]
+  },
+  "Jayson Tatum_reb_Unknown": {
+    "player": "Jayson Tatum",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.041326",
+        "line": 8.5,
+        "odds": -150
+      }
+    ]
+  },
+  "Jayson Tatum_ast_Unknown": {
+    "player": "Jayson Tatum",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.041911",
+        "line": 5.5,
+        "odds": -150
+      }
+    ]
+  },
+  "Jaylen Brown_pts_Unknown": {
+    "player": "Jaylen Brown",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.042447",
+        "line": 25.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jaylen Brown_reb_Unknown": {
+    "player": "Jaylen Brown",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.042949",
+        "line": 6.0,
+        "odds": -150
+      }
+    ]
+  },
+  "Jaylen Brown_ast_Unknown": {
+    "player": "Jaylen Brown",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.043488",
+        "line": 4.0,
+        "odds": -150
+      }
+    ]
+  },
+  "Kristaps Porzingis_pts_Unknown": {
+    "player": "Kristaps Porzingis",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.044300",
+        "line": 19.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Kristaps Porzingis_reb_Unknown": {
+    "player": "Kristaps Porzingis",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.044945",
+        "line": 7.0,
+        "odds": -150
+      }
+    ]
+  },
+  "Kristaps Porzingis_ast_Unknown": {
+    "player": "Kristaps Porzingis",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.045535",
+        "line": 2.0,
+        "odds": -150
+      }
+    ]
+  },
+  "LaMelo Ball_pts_Unknown": {
+    "player": "LaMelo Ball",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.046157",
+        "line": 26.5,
+        "odds": -110
+      }
+    ]
+  },
+  "LaMelo Ball_reb_Unknown": {
+    "player": "LaMelo Ball",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.047060",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "LaMelo Ball_ast_Unknown": {
+    "player": "LaMelo Ball",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.048111",
+        "line": 8.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Miles Bridges_pts_Unknown": {
+    "player": "Miles Bridges",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.048808",
+        "line": 21.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Miles Bridges_reb_Unknown": {
+    "player": "Miles Bridges",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.049444",
+        "line": 7.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Miles Bridges_ast_Unknown": {
+    "player": "Miles Bridges",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.050146",
+        "line": 4.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Joel Embiid_pts_Unknown": {
+    "player": "Joel Embiid",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.050867",
+        "line": 30.5,
+        "odds": -125
+      }
+    ]
+  },
+  "Joel Embiid_reb_Unknown": {
+    "player": "Joel Embiid",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.051566",
+        "line": 11.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Joel Embiid_ast_Unknown": {
+    "player": "Joel Embiid",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.052165",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Maxey_pts_Unknown": {
+    "player": "Tyrese Maxey",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.052751",
+        "line": 26.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Maxey_reb_Unknown": {
+    "player": "Tyrese Maxey",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.053343",
+        "line": 3.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Maxey_ast_Unknown": {
+    "player": "Tyrese Maxey",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.053965",
+        "line": 7.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tobias Harris_pts_Unknown": {
+    "player": "Tobias Harris",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.054606",
+        "line": 18.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tobias Harris_reb_Unknown": {
+    "player": "Tobias Harris",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.055254",
+        "line": 6.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Tobias Harris_ast_Unknown": {
+    "player": "Tobias Harris",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.055867",
+        "line": 3.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Lauri Markkanen_pts_Unknown": {
+    "player": "Lauri Markkanen",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.056465",
+        "line": 25.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Lauri Markkanen_reb_Unknown": {
+    "player": "Lauri Markkanen",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.057055",
+        "line": 8.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Lauri Markkanen_ast_Unknown": {
+    "player": "Lauri Markkanen",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.057638",
+        "line": 2.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jordan Clarkson_pts_Unknown": {
+    "player": "Jordan Clarkson",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.058241",
+        "line": 18.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Jordan Clarkson_reb_Unknown": {
+    "player": "Jordan Clarkson",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.058849",
+        "line": 3.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jordan Clarkson_ast_Unknown": {
+    "player": "Jordan Clarkson",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.059464",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Ja Morant_pts_Unknown": {
+    "player": "Ja Morant",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.060065",
+        "line": 27.5,
+        "odds": -125
+      }
+    ]
+  },
+  "Ja Morant_reb_Unknown": {
+    "player": "Ja Morant",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.060696",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Ja Morant_ast_Unknown": {
+    "player": "Ja Morant",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.061327",
+        "line": 8.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jaren Jackson Jr._pts_Unknown": {
+    "player": "Jaren Jackson Jr.",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.061965",
+        "line": 22.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jaren Jackson Jr._reb_Unknown": {
+    "player": "Jaren Jackson Jr.",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.062610",
+        "line": 6.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Jaren Jackson Jr._ast_Unknown": {
+    "player": "Jaren Jackson Jr.",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.063296",
+        "line": 2.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Anfernee Simons_pts_Unknown": {
+    "player": "Anfernee Simons",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.063927",
+        "line": 22.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Anfernee Simons_reb_Unknown": {
+    "player": "Anfernee Simons",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.064535",
+        "line": 3.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Anfernee Simons_ast_Unknown": {
+    "player": "Anfernee Simons",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.065136",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jerami Grant_pts_Unknown": {
+    "player": "Jerami Grant",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.065783",
+        "line": 21.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Jerami Grant_reb_Unknown": {
+    "player": "Jerami Grant",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.066423",
+        "line": 4.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Jerami Grant_ast_Unknown": {
+    "player": "Jerami Grant",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.067069",
+        "line": 3.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Giannis Antetokounmpo_pts_Unknown": {
+    "player": "Giannis Antetokounmpo",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.067722",
+        "line": 32.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Giannis Antetokounmpo_reb_Unknown": {
+    "player": "Giannis Antetokounmpo",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.068403",
+        "line": 11.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Giannis Antetokounmpo_ast_Unknown": {
+    "player": "Giannis Antetokounmpo",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.069117",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Damian Lillard_pts_Unknown": {
+    "player": "Damian Lillard",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.069730",
+        "line": 25.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Damian Lillard_reb_Unknown": {
+    "player": "Damian Lillard",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.070359",
+        "line": 4.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Damian Lillard_ast_Unknown": {
+    "player": "Damian Lillard",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.070985",
+        "line": 7.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Khris Middleton_pts_Unknown": {
+    "player": "Khris Middleton",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.071620",
+        "line": 17.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Khris Middleton_reb_Unknown": {
+    "player": "Khris Middleton",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.072257",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Khris Middleton_ast_Unknown": {
+    "player": "Khris Middleton",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.072916",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Trae Young_pts_Unknown": {
+    "player": "Trae Young",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.073656",
+        "line": 28.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Trae Young_reb_Unknown": {
+    "player": "Trae Young",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.074376",
+        "line": 3.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Trae Young_ast_Unknown": {
+    "player": "Trae Young",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.075092",
+        "line": 11.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Dejounte Murray_pts_Unknown": {
+    "player": "Dejounte Murray",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.075748",
+        "line": 21.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Dejounte Murray_reb_Unknown": {
+    "player": "Dejounte Murray",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.076401",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Dejounte Murray_ast_Unknown": {
+    "player": "Dejounte Murray",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.077054",
+        "line": 6.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Kawhi Leonard_pts_Unknown": {
+    "player": "Kawhi Leonard",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.077693",
+        "line": 26.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Kawhi Leonard_reb_Unknown": {
+    "player": "Kawhi Leonard",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.078353",
+        "line": 7.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Kawhi Leonard_ast_Unknown": {
+    "player": "Kawhi Leonard",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.079038",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Paul George_pts_Unknown": {
+    "player": "Paul George",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.079693",
+        "line": 23.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Paul George_reb_Unknown": {
+    "player": "Paul George",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.080365",
+        "line": 6.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Paul George_ast_Unknown": {
+    "player": "Paul George",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.081055",
+        "line": 5.0,
+        "odds": -110
+      }
+    ]
+  },
+  "James Harden_pts_Unknown": {
+    "player": "James Harden",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.081708",
+        "line": 18.5,
+        "odds": -110
+      }
+    ]
+  },
+  "James Harden_reb_Unknown": {
+    "player": "James Harden",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.082350",
+        "line": 4.5,
+        "odds": -110
+      }
+    ]
+  },
+  "James Harden_ast_Unknown": {
+    "player": "James Harden",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.082999",
+        "line": 9.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Haliburton_pts_Unknown": {
+    "player": "Tyrese Haliburton",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.083648",
+        "line": 25.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Haliburton_reb_Unknown": {
+    "player": "Tyrese Haliburton",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.084308",
+        "line": 4.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Tyrese Haliburton_ast_Unknown": {
+    "player": "Tyrese Haliburton",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.084974",
+        "line": 10.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Myles Turner_pts_Unknown": {
+    "player": "Myles Turner",
+    "prop_type": "pts",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.085642",
+        "line": 18.5,
+        "odds": -110
+      }
+    ]
+  },
+  "Myles Turner_reb_Unknown": {
+    "player": "Myles Turner",
+    "prop_type": "reb",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.086320",
+        "line": 8.0,
+        "odds": -110
+      }
+    ]
+  },
+  "Myles Turner_ast_Unknown": {
+    "player": "Myles Turner",
+    "prop_type": "ast",
+    "sportsbook": "Unknown",
+    "observations": [
+      {
+        "timestamp": "2026-03-04T21:52:14.087000",
+        "line": 1.5,
+        "odds": -110
+      }
+    ]
+  }
+}
