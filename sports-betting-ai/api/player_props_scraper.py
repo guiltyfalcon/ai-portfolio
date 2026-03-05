@@ -590,14 +590,15 @@ def generate_high_probability_parlay(all_props: Dict, target_probability: float 
 
 
 def scrape_all_sports() -> Dict:
-    """Scrape player props for all sports with REAL sportsbook odds."""
+    """Scrape player props for all sports with REAL sportsbook odds from 3 books."""
     cache = {
         'timestamp': datetime.now().isoformat(),
-        'source': 'draftkings_scrape + espn_stats + injury_report',
+        'source': 'multisportsbook_scrape (DK+FD+MGM) + espn_stats + injury_report',
         'sports': {},
         'best_bets': [],
         'recommended_parlay': [],
-        'line_shopping': []
+        'line_shopping': [],
+        'sportsbooks': ['DraftKings', 'FanDuel', 'BetMGM']
     }
     
     all_props_for_parlay = {}
@@ -606,23 +607,30 @@ def scrape_all_sports() -> Dict:
     print("\n🏥 Fetching injury reports...")
     injury_report = fetch_injury_report('nba')
     
-    # Scrape REAL player props from DraftKings
-    print("\n📊 Fetching REAL sportsbook odds...")
-    dk_games = scrape_draftkings_player_props()
+    # Run multi-sportsbook scraper (3 books)
+    print("\n📊 Fetching REAL sportsbook odds from 3 books...")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    multisport_path = os.path.join(script_dir, 'multisportsbook_scraper.py')
     
-    if dk_games:
-        cache['sports']['nba'] = dk_games
-        all_props_for_parlay['nba'] = dk_games
-        print(f"  ✅ Loaded {len(dk_games)} games from DraftKings")
+    from subprocess import run, PIPE
+    result = run(['python3', multisport_path], capture_output=True, text=True, timeout=60)
     
-    # Also fetch game lines from The Odds API (free tier)
-    odds_api_data = fetch_the_odds_api('basketball_nba')
-    if odds_api_data and not dk_games:
-        for game in odds_api_data:
-            parsed_game = parse_odds_api_game(game)
-            if 'nba' not in cache['sports']:
-                cache['sports']['nba'] = []
-            cache['sports']['nba'].append(parsed_game)
+    if result.returncode == 0:
+        # Load the scraped data
+        multisport_cache_path = os.path.join(script_dir, 'multisportsbook_cache.json')
+        with open(multisport_cache_path, 'r') as f:
+            multi_cache = json.load(f)
+        
+        # Extract games
+        cache['sports']['nba'] = multi_cache.get('games', [])
+        cache['line_shopping'] = multi_cache.get('best_lines', [])
+        cache['best_bets'] = multi_cache.get('best_bets', [])
+        
+        all_props_for_parlay['nba'] = cache['sports']['nba']
+        print(f"  ✅ Loaded {multi_cache.get('total_games', 0)} games from 3 sportsbooks")
+        print(f"  🔥 Found {len(cache['best_bets'])} value bets")
+    else:
+        print(f"  ⚠️ Multi-sportsbook scrape failed: {result.stderr[:200]}")
     
     for sport, config in SPORTS_CONFIG.items():
         print(f"\n📊 Processing {config['name']}...")
@@ -630,7 +638,7 @@ def scrape_all_sports() -> Dict:
         
         # Skip if we have real odds
         if sport in cache['sports'] and cache['sports'][sport]:
-            print(f"  ✅ {config['name']}: Real odds loaded")
+            print(f"  ✅ {config['name']}: Real odds loaded from 3 books")
             continue
         
         games = fetch_espn_scoreboard(sport)
