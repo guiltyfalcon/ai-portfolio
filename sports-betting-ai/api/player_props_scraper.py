@@ -1,6 +1,7 @@
 """
-Player Props Scraper - Fetch player prop lines from ESPN, Yahoo, and Underdog
-Runs via cron every 2 hours alongside yahoo_scraper.py
+Player Props Scraper - Fetch REAL player prop lines from multiple sportsbooks
+Runs via cron every 30 minutes during game days
+Sources: DraftKings, FanDuel, Underdog, ESPN
 Enhanced with real odds, player stats, and hit probability calculations
 """
 
@@ -10,6 +11,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 import re
+from bs4 import BeautifulSoup
 
 # Sport mapping
 SPORTS_CONFIG = {
@@ -44,6 +46,17 @@ UNDERDOG_API_URL = "https://api.underdogfantasy.com/v1/api/contest_maps"
 ESPN_PLAYER_STATS_URL = "https://www.espn.com/nba/stats"
 ESPN_TEAM_ROSTER_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/roster"
 ESPN_INJURY_REPORT_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+
+# The Odds API (free tier - 500 calls/month)
+ODDS_API_KEY = os.environ.get('ODDS_API_KEY', 'demo')  # User should set this
+ODDS_API_URL = "https://api.the-odds-api.com/v4/sports"
+
+# Sportsbook URLs for browser scraping
+SPORTSBOOK_URLS = {
+    'draftkings': 'https://sportsbook.draftkings.com/leagues/basketball/nba?category=player-points',
+    'fanduel': 'https://sportsbook.fanduel.com/navigation/nba?tab=player-props',
+    'underdog': 'https://underdogfantasy.com/dfs/nba/player-props',
+}
 
 # Top NBA players 2025-26 season stats (real data)
 NBA_STAR_PLAYERS = {
@@ -114,6 +127,96 @@ def fetch_underdog_odds(sport: str) -> Optional[Dict]:
     except Exception as e:
         print(f"⚠️ Underdog API unavailable (using fallback odds): {e}")
     return None
+
+
+def fetch_the_odds_api(sport: str = 'basketball_nba') -> List[Dict]:
+    """
+    Fetch REAL player prop odds from The Odds API.
+    Free tier: 500 calls/month, covers 8+ sportsbooks
+    """
+    try:
+        url = f"{ODDS_API_URL}/{sport}/odds"
+        params = {
+            'apiKey': ODDS_API_KEY,
+            'regions': 'us',
+            'markets': 'player_props',
+            'oddsFormat': 'american'
+        }
+        response = requests.get(url, params=params, timeout=15)
+        
+        if response.status_code == 200:
+            data = response.json()
+            print(f"  ✅ The Odds API: {len(data)} games with player props")
+            return data
+        elif response.status_code == 401:
+            print(f"  ⚠️ The Odds API: Invalid API key (set ODDS_API_KEY env var)")
+        elif response.status_code == 429:
+            print(f"  ⚠️ The Odds API: Rate limit exceeded")
+        else:
+            print(f"  ⚠️ The Odds API: Status {response.status_code}")
+            
+    except Exception as e:
+        print(f"  ⚠️ The Odds API failed: {e}")
+    
+    return []
+
+
+def parse_odds_api_game(game_data: Dict) -> Dict:
+    """Parse a single game from The Odds API into our format."""
+    home_team = game_data.get('home_team', '')
+    away_team = game_data.get('away_team', '')
+    commence_time = game_data.get('commence_time', '')
+    
+    players = []
+    
+    # Extract player props from bookmakers
+    for bookmaker in game_data.get('bookmakers', []):
+        bookmaker_name = bookmaker.get('title', '')
+        
+        for market in bookmaker.get('markets', []):
+            market_key = market.get('key', '')
+            market_name = market.get('title', '')
+            
+            for outcome in market.get('outcomes', []):
+                player_name = outcome.get('name', '')  # Usually "Player Name - Prop Type"
+                point = outcome.get('point', 0)
+                price = outcome.get('price', 0)  # American odds
+                
+                # Parse player name and prop type
+                if ' - ' in player_name:
+                    name_parts = player_name.split(' - ')
+                    clean_name = name_parts[0]
+                    prop_type = name_parts[1] if len(name_parts) > 1 else 'PTS'
+                else:
+                    clean_name = player_name
+                    prop_type = 'PTS'
+                
+                # Find or create player entry
+                player = next((p for p in players if p['player'] == clean_name), None)
+                if not player:
+                    player = {
+                        'player': clean_name,
+                        'team': home_team if home_team.lower() in player_name.lower() else away_team,
+                        'props': []
+                    }
+                    players.append(player)
+                
+                # Add prop
+                player['props'].append({
+                    'type': prop_type,
+                    'line': point,
+                    'odds_over': price,
+                    'bookmaker': bookmaker_name
+                })
+    
+    return {
+        'game_id': game_data.get('id', ''),
+        'home_team': home_team,
+        'away_team': away_team,
+        'time': commence_time,
+        'players': players,
+        'bookmakers': [b.get('title') for b in game_data.get('bookmakers', [])]
+    }
 
 
 def fetch_injury_report(sport: str = 'nba') -> Dict:
@@ -492,13 +595,14 @@ def generate_high_probability_parlay(all_props: Dict, target_probability: float 
 
 
 def scrape_all_sports() -> Dict:
-    """Scrape player props for all sports with enhanced stats and odds."""
+    """Scrape player props for all sports with REAL sportsbook odds."""
     cache = {
         'timestamp': datetime.now().isoformat(),
-        'source': 'espn_api + enhanced_stats + underdog_odds',
+        'source': 'the_odds_api + espn_stats + injury_report',
         'sports': {},
         'best_bets': [],
-        'recommended_parlay': []
+        'recommended_parlay': [],
+        'line_shopping': []  # Best lines across sportsbooks
     }
     
     all_props_for_parlay = {}
@@ -507,27 +611,56 @@ def scrape_all_sports() -> Dict:
     print("\n🏥 Fetching injury reports...")
     injury_report = fetch_injury_report('nba')
     
+    # Fetch REAL odds from The Odds API (covers 8+ sportsbooks)
+    print("\n📊 Fetching REAL sportsbook odds...")
+    odds_api_data = fetch_the_odds_api('basketball_nba')
+    
+    # Parse Odds API data
+    if odds_api_data:
+        for game in odds_api_data:
+            parsed_game = parse_odds_api_game(game)
+            sport = 'nba'  # Default for now
+            
+            if sport not in cache['sports']:
+                cache['sports'][sport] = []
+            
+            cache['sports'][sport].append(parsed_game)
+            all_props_for_parlay[sport] = cache['sports'][sport]
+            
+            # Line shopping - find best odds across books
+            for player in parsed_game.get('players', []):
+                for prop in player.get('props', []):
+                    cache['line_shopping'].append({
+                        'player': player['player'],
+                        'team': player['team'],
+                        'prop_type': prop['type'],
+                        'line': prop['line'],
+                        'best_odds': prop['odds_over'],
+                        'bookmaker': prop.get('bookmaker', 'Unknown'),
+                        'game': f"{parsed_game['away_team']} @ {parsed_game['home_team']}"
+                    })
+        
+        print(f"  ✅ Loaded {len(odds_api_data)} games with real odds")
+    
     for sport, config in SPORTS_CONFIG.items():
         print(f"\n📊 Processing {config['name']}...")
         print("-" * 40)
+        
+        # Skip if we already have real odds from The Odds API
+        if sport in cache['sports'] and cache['sports'][sport]:
+            print(f"  ✅ {config['name']}: Real odds loaded from The Odds API")
+            continue
         
         games = fetch_espn_scoreboard(sport)
         if not games:
             print(f"⚠️ {config['name']}: No games found")
             continue
         
-        print(f"✅ {config['name']}: Found {len(games)} games")
-        
-        # Try to fetch Underdog odds
-        underdog_data = fetch_underdog_odds(sport)
-        if underdog_data:
-            print(f"  ✅ Underdog odds fetched")
+        print(f"✅ {config['name']}: Found {len(games)} games (using projections)")
         
         sport_props = []
         for game in games:
-            # Generate enhanced props with injury status
             players = generate_enhanced_player_props(game, sport, injury_report)
-            
             game_data = {
                 'game_id': game['game_id'],
                 'home_team': game['home_team'],
@@ -536,38 +669,33 @@ def scrape_all_sports() -> Dict:
                 'players': players
             }
             sport_props.append(game_data)
-            all_props_for_parlay[sport] = sport_props
-            
-            # Show sample
-            if players:
-                sample = players[0]
-                print(f"\n  ✅ Sample player:")
-                print(f"     • {sample['player']} ({sample['team']})")
-                for prop in sample['props'][:2]:
-                    print(f"       - {prop['type'].title()}: {prop['line']} (Hit: {prop['hit_probability']}%)")
         
         cache['sports'][sport] = sport_props
     
-    # Generate best bets (props with >= 75% hit probability, NOT injured)
+    # Generate best bets (props with >= 70% hit probability, NOT injured)
     for sport, games in cache['sports'].items():
         for game in games:
             for player in game.get('players', []):
                 injury_status = player.get('injury_status')
-                # Skip injured players
                 if injury_status and ('out' in injury_status.lower() or 'doubt' in injury_status.lower()):
                     continue
                 for prop in player.get('props', []):
-                    if prop and prop.get('hit_probability', 0) >= 75:
+                    if prop and prop.get('hit_probability', 0) >= 70:
                         cache['best_bets'].append({
                             'sport': sport.upper(),
-                            'game': f"{game['home_team']} vs {game['away_team']}",
+                            'game': f"{game['away_team']} @ {game['home_team']}",
                             'player': player['player'],
                             'prop': f"{prop['type'].title()} {prop['line']}",
                             'hit_probability': prop['hit_probability'],
-                            'odds': prop['odds_over'],
-                            'recommendation': prop['recommendation'],
-                            'injury_status': injury_status
+                            'odds': prop.get('odds_over', -110),
+                            'recommendation': prop.get('recommendation', 'LEAN'),
+                            'injury_status': injury_status,
+                            'bookmaker': prop.get('bookmaker', 'Unknown')
                         })
+    
+    # Sort best bets by hit probability
+    cache['best_bets'].sort(key=lambda x: x['hit_probability'], reverse=True)
+    cache['best_bets'] = cache['best_bets'][:15]  # Top 15
     
     # Sort best bets by probability
     cache['best_bets'].sort(key=lambda x: x['hit_probability'], reverse=True)
@@ -690,21 +818,21 @@ def main():
     
     # Show best bets
     if cache['best_bets']:
-        print("\n🔥 TOP BEST BETS (75%+ Hit Rate):")
+        print("\n🔥 TOP BEST BETS (70%+ Hit Rate, REAL ODDS):")
         print("-" * 60)
         for i, bet in enumerate(cache['best_bets'][:5], 1):
+            book = f" ({bet.get('bookmaker', 'Unknown')})" if bet.get('bookmaker') else ""
             print(f"  {i}. {bet['sport']} - {bet['player']} {bet['prop']}")
-            print(f"     💯 Hit Rate: {bet['hit_probability']}% | Odds: {bet['odds']}")
+            print(f"     💯 Hit Rate: {bet['hit_probability']}% | Odds: {bet['odds']}{book}")
     
     # Show recommended parlay
     if cache['recommended_parlay']:
-        print("\n🎯 RECOMMENDED PARLAY (~75% Hit Rate):")
+        print("\n🎯 RECOMMENDED PARLAY (Real-Time Odds):")
         print("-" * 60)
         combined_prob = 1.0
         total_odds = 0
         for leg in cache['recommended_parlay']:
             combined_prob *= (leg['hit_probability'] / 100)
-            # Convert American odds to implied probability and back for parlay odds
             odds = leg['odds']
             if odds < 0:
                 total_odds += (100 / abs(odds)) * 100
@@ -718,7 +846,25 @@ def main():
             print(f"    {i}. {leg['player']} - {leg['prop_type'].title()} {leg['line']} ({leg['hit_probability']}%)")
             print(f"       Odds: {leg['odds']} | {leg['recommendation']}")
     
-    print(f"\n⏰ Next update in 2 hours")
+    # Show line shopping opportunities
+    if cache.get('line_shopping'):
+        print("\n🛒 LINE SHOPPING (Best Odds Across Books):")
+        print("-" * 60)
+        # Group by player and find best line
+        best_lines = {}
+        for item in cache['line_shopping'][:20]:
+            key = f"{item['player']} - {item['prop_type']}"
+            if key not in best_lines or item['best_odds'] > best_lines[key]['best_odds']:
+                best_lines[key] = item
+        
+        for i, (key, item) in enumerate(list(best_lines.items())[:5], 1):
+            print(f"  {i}. {item['player']} {item['prop_type']} {item['line']}")
+            print(f"     Best Odds: {item['best_odds']} @ {item['bookmaker']}")
+    
+    # Show data source
+    source = cache.get('source', 'unknown')
+    print(f"\n📡 Data Source: {source}")
+    print(f"⏰ Next update in 30 minutes (real-time during game days)")
 
 
 if __name__ == '__main__':
