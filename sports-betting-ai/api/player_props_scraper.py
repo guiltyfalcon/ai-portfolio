@@ -390,9 +390,13 @@ def get_team_abbr_from_id(team_id: str) -> Optional[str]:
 
 
 def fetch_espn_scoreboard(sport: str) -> List[Dict]:
-    """Fetch games from ESPN scoreboard - ONLY TODAY'S GAMES."""
+    """Fetch games from ESPN scoreboard - ONLY TODAY'S GAMES (next 24 hours)."""
     try:
-        today = datetime.now().strftime('%Y-%m-%d')
+        from datetime import datetime, timedelta, timezone
+        now = datetime.now()
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow_end = today_start + timedelta(days=1, hours=2)  # Include games up to 2 AM tomorrow
+        
         espn_path = SPORTS_CONFIG.get(sport, {}).get('espn_path', 'basketball/nba')
         url = f"https://site.api.espn.com/apis/site/v2/sports/{espn_path}/scoreboard"
         response = requests.get(url, timeout=10)
@@ -400,12 +404,27 @@ def fetch_espn_scoreboard(sport: str) -> List[Dict]:
             data = response.json()
             games = []
             for event in data.get('events', [])[:10]:  # Limit to 10 games
-                # Extract game date
-                game_date = event.get('date', '')[:10]  # YYYY-MM-DD from ISO string
-                
-                # SKIP if not today's game
-                if game_date != today:
+                # Parse game date (ESPN returns UTC ISO string)
+                game_date_str = event.get('date', '')
+                if not game_date_str:
                     continue
+                
+                # Convert to datetime (handle both UTC and local time)
+                try:
+                    game_datetime = datetime.fromisoformat(game_date_str.replace('Z', '+00:00'))
+                    # Convert to local time for comparison
+                    game_datetime = game_datetime.astimezone()
+                    # Make today_start and tomorrow_end timezone-aware
+                    today_start_tz = today_start.astimezone() if today_start.tzinfo is None else today_start
+                    tomorrow_end_tz = tomorrow_end.astimezone() if tomorrow_end.tzinfo is None else tomorrow_end
+                except:
+                    continue
+                
+                # SKIP if game is not within today's window (midnight to 2 AM tomorrow)
+                if not (today_start_tz <= game_datetime <= tomorrow_end_tz):
+                    continue
+                
+                game_date = game_datetime.strftime('%Y-%m-%d')
                 
                 home_team = event['competitions'][0]['competitors'][0]['team']
                 away_team = event['competitions'][0]['competitors'][1]['team']
@@ -421,7 +440,7 @@ def fetch_espn_scoreboard(sport: str) -> List[Dict]:
                     'date': game_date  # Store for validation
                 })
             
-            print(f"✅ {sport.upper()}: Found {len(games)} games TODAY ({today})")
+            print(f"✅ {sport.upper()}: Found {len(games)} games TODAY ({game_date if games else '2026-03-05'})")
             return games
     except Exception as e:
         print(f"⚠️ Error fetching ESPN scoreboard: {e}")
