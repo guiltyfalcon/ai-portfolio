@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
 """
-Auto-Tweet Daily Picks - Posts AI's top bets to Twitter/X
+Auto-Tweet Daily Picks - Generates tweet text for browser posting
+Outputs tweet to stdout for manual/browser posting
 """
 
 import json
-import os
 from datetime import datetime
 from pathlib import Path
-
-# Try to import tweepy, handle if not installed
-try:
-    import tweepy
-    TWEETY_INSTALLED = True
-except ImportError:
-    TWEETY_INSTALLED = False
 
 CACHE_FILE = Path('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/player_props_cache.json')
 HIT_THRESHOLD = 60.0  # Only tweet props with 60%+ hit probability
@@ -90,44 +83,16 @@ def format_tweet(picks):
     
     return tweet
 
-def post_to_twitter(tweet):
-    """Post tweet using Twitter API v2."""
-    if not TWEETY_INSTALLED:
-        print("⚠️  tweepy not installed. Printing tweet instead:")
-        print("\n" + "=" * 60)
-        print(tweet)
-        print("=" * 60 + "\n")
-        return False
-    
-    # Check for API credentials
-    api_key = os.getenv('TWITTER_API_KEY')
-    api_secret = os.getenv('TWITTER_API_SECRET')
-    access_token = os.getenv('TWITTER_ACCESS_TOKEN')
-    access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
-    
-    if not all([api_key, api_secret, access_token, access_token_secret]):
-        print("⚠️  Twitter API credentials not set. Printing tweet instead:")
-        print("\n" + "=" * 60)
-        print(tweet)
-        print("=" * 60 + "\n")
-        return False
-    
-    try:
-        client = tweepy.Client(
-            consumer_key=api_key,
-            consumer_secret=api_secret,
-            access_token=access_token,
-            access_token_secret=access_token_secret
-        )
-        
-        response = client.create_tweet(text=tweet)
-        tweet_id = response.data['id']
-        print(f"✅ Tweet posted: https://twitter.com/holikidTV/status/{tweet_id}")
-        return True
-    
-    except Exception as e:
-        print(f"❌ Failed to post tweet: {e}")
-        return False
+def output_tweet(tweet):
+    """Output tweet for browser posting."""
+    print("\n" + "=" * 60)
+    print("📝 READY TO TWEET:")
+    print("=" * 60)
+    print(tweet)
+    print("=" * 60)
+    print(f"\n💡 Use browser tool to post to @holikidTV")
+    print("=" * 60 + "\n")
+    return tweet
 
 def main():
     print(f"🧠 BetBrain AI Auto-Tweet - {datetime.now()}")
@@ -153,13 +118,9 @@ def main():
     
     print(f"📝 Tweet length: {len(tweet)} chars\n")
     
-    # Post to Twitter
-    posted = post_to_twitter(tweet)
-    
-    if posted:
-        print("✅ Auto-tweet complete")
-    else:
-        print("ℹ️  Tweet not posted (missing credentials or tweepy)")
+    # Output for browser posting
+    output_tweet(tweet)
+    print("✅ Tweet generated - ready for browser posting")
 
 if __name__ == '__main__':
     main()
