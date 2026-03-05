@@ -1,0 +1,11 @@
+# Twitter Automation Cron Jobs
+# Install with: crontab /Users/djryan/git/guiltyfalcon/ai-portfolio/twitter/automation/twitter.cron
+
+# Morning picks thread (9 AM ET)
+0 9 * * * osascript -e 'display notification "Spawn sub-agent: Post daily NBA picks thread" with title "Twitter Automation"'
+
+# Afternoon growth (2 PM ET)
+0 14 * * * osascript -e 'display notification "Spawn sub-agent: Follow 5-10 betting accounts" with title "Twitter Automation"'
+
+# Evening engagement (6 PM ET)
+0 18 * * * osascript -e 'display notification "Spawn sub-agent: Retweet 2-3 betting posts" with title "Twitter Automation"'
