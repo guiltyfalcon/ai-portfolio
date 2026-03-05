@@ -21,6 +21,7 @@ from bs4 import BeautifulSoup
 # Import new accuracy modules
 from nba_stats_api import fetch_player_last_n_games, calculate_hit_rate_at_line
 from line_movement_tracker import LineMovementTracker
+from hybrid_ml_model import HybridMLModel
 
 # Sport mapping
 SPORTS_CONFIG = {
@@ -628,8 +629,8 @@ def get_matchup_rating(team_abbr: str, sport: str, prop_type: str) -> float:
     return ratings.get(key_map.get(prop_key, prop_key), 0)
 
 
-def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict = None) -> List[Dict]:
-    """Generate player props with real player names, stats, odds, hit probabilities, and injury status."""
+def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict = None, ml_model = None) -> List[Dict]:
+    """Generate player props with real player names, stats, odds, hit probabilities, injury status, and ML ensemble."""
     players = []
     home_abbr = game.get('home_abbr', '')[:3].upper()
     away_abbr = game.get('away_abbr', '')[:3].upper()
@@ -656,8 +657,8 @@ def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict =
                     historical_rate = calculate_historical_hit_rate(player_data, line)
                     matchup = get_matchup_rating(away_abbr, sport, stat_type)
                     
-                    # Use ADVANCED calculator with ALL factors
-                    hit_prob = calculate_hit_probability_advanced(
+                    # Use ADVANCED calculator with ALL factors (weighted model)
+                    weighted_hit_prob = calculate_hit_probability_advanced(
                         prop_line=line,
                         player_avg=avg,
                         last5_avg=last5_avg,
@@ -672,11 +673,39 @@ def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict =
                         historical_hit_rate=historical_rate
                     )
                     
-                    if hit_prob >= 70:
+                    # Use HYBRID ML MODEL for ensemble prediction
+                    final_hit_prob = weighted_hit_prob
+                    ml_reasoning = "Weighted model only"
+                    
+                    if ml_model:
+                        # Extract features for ML model
+                        prop_features = {
+                            'line': line,
+                            'odds_over': -110,  # Default, would use real odds
+                            'historical_hit_rate': historical_rate,
+                        }
+                        game_context = {
+                            'is_home': True,
+                            'rest_days': 1,
+                            'is_b2b': False,
+                            'matchup_rating': matchup,
+                        }
+                        
+                        features = ml_model.extract_features(player_data, prop_features, game_context)
+                        ml_prob, ml_conf = ml_model.predict(features)
+                        
+                        # Ensemble prediction
+                        final_hit_prob, ml_reasoning = ml_model.ensemble_prediction(
+                            weighted_hit_prob / 100,  # Convert to 0-1 scale
+                            ml_prob,
+                            ml_conf
+                        )
+                    
+                    if final_hit_prob >= 70:
                         odds_over, odds_under, rec = -150, 125, "STRONG"
-                    elif hit_prob >= 60:
+                    elif final_hit_prob >= 60:
                         odds_over, odds_under, rec = -125, 105, "LEAN"
-                    elif hit_prob >= 45:
+                    elif final_hit_prob >= 45:
                         odds_over, odds_under, rec = -110, -110, "EVEN"
                     else:
                         odds_over, odds_under, rec = 115, -140, "UNDER"
@@ -687,7 +716,10 @@ def generate_enhanced_player_props(game: Dict, sport: str, injury_report: Dict =
                         'avg': avg,
                         'last5_avg': last5_avg,
                         'matchup_rating': matchup,
-                        'hit_probability': round(hit_prob, 1),
+                        'hit_probability': round(final_hit_prob, 1),
+                        'weighted_probability': round(weighted_hit_prob, 1),
+                        'ml_adjustment': round(final_hit_prob - weighted_hit_prob, 1),
+                        'ml_reasoning': ml_reasoning,
                         'odds_over': odds_over,
                         'odds_under': odds_under,
                         'recommendation': rec,
@@ -979,7 +1011,7 @@ def scrape_all_sports() -> Dict:
     return cache
 
 
-def scrape_all_sports() -> Dict:
+def scrape_all_sports(ml_model = None) -> Dict:
     """Scrape player props for all sports with enhanced stats and odds."""
     cache = {
         'timestamp': datetime.now().isoformat(),
@@ -1004,8 +1036,8 @@ def scrape_all_sports() -> Dict:
         
         sport_props = []
         for game in games:
-            # Generate enhanced props with real stats and probabilities
-            players = generate_enhanced_player_props(game, sport)
+            # Generate enhanced props with real stats, probabilities, and ML ensemble
+            players = generate_enhanced_player_props(game, sport, ml_model=ml_model)
             
             game_data = {
                 'game_id': game['game_id'],
@@ -1067,12 +1099,18 @@ def main():
     print("  • Multi-sportsbook odds (DK + FD + MGM)")
     print("=" * 60)
     
-    # Initialize line movement tracker
+    # Initialize trackers and models
     script_dir = os.path.dirname(os.path.abspath(__file__))
     line_tracker = LineMovementTracker(script_dir)
+    ml_model = HybridMLModel(script_dir)
     
-    # Scrape all sports
-    cache = scrape_all_sports()
+    print("\n🤖 Loading Hybrid ML Model...")
+    print("  • Ensemble: Weighted Model + ML Classifier")
+    print("  • Features: 15 (historical, usage, matchup, odds)")
+    print("  • Training: Online learning from cache data")
+    
+    # Scrape all sports (with ML ensemble)
+    cache = scrape_all_sports(ml_model=ml_model)
     
     # Track line movements for all props
     print("\n📈 Tracking line movements...")
