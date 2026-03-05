@@ -329,17 +329,39 @@
     document.getElementById('last-update').textContent = new Date().toLocaleString();
 
     // Form submission - save email and redirect to Telegram
-    document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+    document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const email = this.querySelector('input[type="email"]').value;
+      const button = this.querySelector('button[type="submit"]');
       
-      // Save to localStorage (for now - can connect to backend later)
-      const signups = JSON.parse(localStorage.getItem('betbrain-signups') || '[]');
-      signups.push({ email, timestamp: new Date().toISOString() });
-      localStorage.setItem('betbrain-signups', JSON.stringify(signups));
+      // Show loading state
+      button.textContent = 'Joining...';
+      button.disabled = true;
       
-      // Redirect to Telegram
-      window.location.href = 'https://t.me/betbrainaiwinner';
+      try {
+        // Save email via webhook
+        const response = await fetch('/api/email-capture', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Redirect to Telegram
+          window.location.href = 'https://t.me/betbrainaiwinner';
+        } else {
+          alert('Thanks! Check your email for the Telegram invite.');
+          this.reset();
+          button.textContent = 'Join + Get Telegram Access';
+          button.disabled = false;
+        }
+      } catch (error) {
+        // Fallback: redirect anyway even if save fails
+        console.error('Email save failed:', error);
+        window.location.href = 'https://t.me/betbrainaiwinner';
+      }
     });
   </script>
 </body>

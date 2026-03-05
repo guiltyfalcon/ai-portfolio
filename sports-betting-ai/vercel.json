@@ -4,15 +4,24 @@
     "api/webhook.py": {
       "runtime": "python3.9",
       "maxDuration": 10
+    },
+    "api/email-capture/index.py": {
+      "runtime": "python3.9",
+      "maxDuration": 10
     }
   },
   "routes": [
     {
       "src": "/api/webhook",
       "dest": "/api/webhook.py"
+    },
+    {
+      "src": "/api/email-capture",
+      "dest": "/api/email-capture/index.py"
     }
   ],
   "env": {
-    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret"
+    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
+    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token"
   }
 }
