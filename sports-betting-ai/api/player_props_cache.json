@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-06T12:12:52.581826",
+  "timestamp": "2026-03-06T13:13:17.475260",
   "source": "espn_api + enhanced_stats + underdog_odds",
   "sports": {
     "nba": [
@@ -907,7 +907,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Jalen Brunson",
@@ -919,7 +919,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Jalen Brunson",
@@ -931,7 +931,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Julius Randle",
@@ -943,7 +943,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Julius Randle",
@@ -955,7 +955,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Julius Randle",
@@ -967,7 +967,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "RJ Barrett",
@@ -979,7 +979,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "RJ Barrett",
@@ -991,7 +991,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "RJ Barrett",
@@ -1003,7 +1003,7 @@
       "line_change": 0.0,
       "odds_change": 0,
       "sharp_indicator": "neutral",
-      "observations_count": 15
+      "observations_count": 16
     },
     {
       "player": "Shai Gilgeous-Alexander",
