@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetBrain AI - Track Record</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        .glow-green {
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white">
+    <!-- Header -->
+    <nav class="border-b border-gray-800 bg-darker/50 backdrop-blur-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🧠</span>
+                    <span class="text-xl font-bold">BetBrain AI</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-400 hover:text-white transition">Home</a>
+                    <a href="#record" class="text-white font-semibold">Track Record</a>
+                    <a href="https://t.me/betbrainaiwinner" class="text-gray-400 hover:text-white transition">Telegram</a>
+                    <a href="https://twitter.com/holikidTV" class="text-gray-400 hover:text-white transition">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-bold mb-4">📊 Verified Track Record</h1>
+            <p class="text-gray-400 text-xl mb-8">
+                Every pick logged. Every result tracked. 100% transparent.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="https://t.me/betbrainaiwinner" class="bg-primary hover:bg-primaryDark px-8 py-4 rounded-xl font-bold text-lg transition glow">
+                    Join Telegram — Free
+                </a>
+                <a href="https://landing-page-eight-nu-87.vercel.app" class="border border-gray-600 hover:border-primary px-8 py-4 rounded-xl font-bold text-lg transition">
+                    View Live Odds
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section id="record" class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <!-- Overall Record -->
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800 glow">
+                    <h3 class="text-gray-400 text-sm mb-2">Overall Record</h3>
+                    <p class="text-3xl font-bold" id="overall-record">--</p>
+                    <p class="text-gray-500 text-sm mt-1" id="overall-picks">-- picks</p>
+                </div>
+
+                <!-- Hit Rate -->
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800 glow-green">
+                    <h3 class="text-gray-400 text-sm mb-2">Hit Rate</h3>
+                    <p class="text-3xl font-bold text-green-400" id="hit-rate">--%</p>
+                    <p class="text-gray-500 text-sm mt-1">All-time accuracy</p>
+                </div>
+
+                <!-- This Week -->
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800 glow">
+                    <h3 class="text-gray-400 text-sm mb-2">This Week</h3>
+                    <p class="text-3xl font-bold" id="week-record">--</p>
+                    <p class="text-gray-500 text-sm mt-1" id="week-picks">-- picks</p>
+                </div>
+
+                <!-- Total P/L -->
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800 glow">
+                    <h3 class="text-gray-400 text-sm mb-2">Total P/L</h3>
+                    <p class="text-3xl font-bold" id="total-pl">$--</p>
+                    <p class="text-gray-500 text-sm mt-1">Units won/lost</p>
+                </div>
+            </div>
+
+            <!-- By Confidence -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800">
+                    <h3 class="text-gray-400 text-sm mb-2">High Confidence (70%+)</h3>
+                    <p class="text-2xl font-bold text-green-400" id="high-conf">--%</p>
+                    <p class="text-gray-500 text-sm mt-1" id="high-conf-count">-- picks</p>
+                </div>
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800">
+                    <h3 class="text-gray-400 text-sm mb-2">Medium (60-69%)</h3>
+                    <p class="text-2xl font-bold text-yellow-400" id="med-conf">--%</p>
+                    <p class="text-gray-500 text-sm mt-1" id="med-conf-count">-- picks</p>
+                </div>
+                <div class="bg-darker/50 rounded-2xl p-6 border border-gray-800">
+                    <h3 class="text-gray-400 text-sm mb-2">Lean (<60%)</h3>
+                    <p class="text-2xl font-bold text-red-400" id="low-conf">--%</p>
+                    <p class="text-gray-500 text-sm mt-1" id="low-conf-count">-- picks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Picks Table -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-8">Recent Picks</h2>
+            <div class="bg-darker/50 rounded-2xl border border-gray-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-darker border-b border-gray-800">
+                            <tr>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Date</th>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Player</th>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Prop</th>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Odds</th>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Confidence</th>
+                                <th class="text-left py-4 px-6 text-gray-400 font-semibold">Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="picks-table" class="divide-y divide-gray-800">
+                            <!-- Picks loaded dynamically -->
+                            <tr>
+                                <td colspan="6" class="py-8 text-center text-gray-500">
+                                    Loading picks...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <span class="text-2xl">🧠</span>
+                    <span class="text-xl font-bold">BetBrain AI</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://t.me/betbrainaiwinner" class="text-gray-400 hover:text-white transition">Telegram</a>
+                    <a href="https://twitter.com/holikidTV" class="text-gray-400 hover:text-white transition">Twitter</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Privacy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Terms</a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-500 text-sm">
+                <p>⚠️ 21+ only • Gamble responsibly • AI predictions are not guarantees</p>
+                <p class="mt-2">Never bet more than you can afford to lose. If you or someone you know has a gambling problem, call 1-800-GAMBLER.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load track record data
+        async function loadTrackRecord() {
+            try {
+                // In production, this would fetch from your API
+                // For now, we'll load from the local JSON file
+                const response = await fetch('data/public_track_record.json');
+                if (!response.ok) throw new Error('Failed to load data');
+                const data = await response.json();
+                
+                // Update stats
+                const overall = data.overall_record || {};
+                document.getElementById('overall-record').textContent = `${overall.won || 0}-${overall.lost || 0}`;
+                document.getElementById('overall-picks').textContent = `${overall.total_picks || 0} picks`;
+                document.getElementById('hit-rate').textContent = `${overall.hit_rate || 0}%`;
+                document.getElementById('total-pl').textContent = `$${overall.total_pl || 0}`;
+                
+                // Week stats (would be separate in production)
+                document.getElementById('week-record').textContent = `${overall.won || 0}-${overall.lost || 0}`;
+                document.getElementById('week-picks').textContent = `${overall.settled || 0} picks`;
+                
+                // Confidence breakdown (would be separate in production)
+                // For now, placeholder
+                document.getElementById('high-conf').textContent = '--%';
+                document.getElementById('med-conf').textContent = '--%';
+                document.getElementById('low-conf').textContent = '--%';
+                
+                // Load recent picks
+                const picks = data.picks || [];
+                const tbody = document.getElementById('picks-table');
+                
+                if (picks.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-gray-500">
+                                No picks yet. Check back after our first posts!
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                tbody.innerHTML = picks.slice(0, 20).map(pick => {
+                    const resultClass = pick.result === 'won' ? 'text-green-400' : 
+                                       pick.result === 'lost' ? 'text-red-400' : 'text-gray-400';
+                    const resultIcon = pick.result === 'won' ? '✅' : 
+                                      pick.result === 'lost' ? '❌' : '⏳';
+                    
+                    return `
+                        <tr class="hover:bg-darker transition">
+                            <td class="py-4 px-6">${pick.date || '--'}</td>
+                            <td class="py-4 px-6 font-semibold">${pick.player || 'Unknown'}</td>
+                            <td class="py-4 px-6">${pick.prop || '--'} ${pick.game ? `(${pick.game})` : ''}</td>
+                            <td class="py-4 px-6">${pick.odds || '--'}</td>
+                            <td class="py-4 px-6">
+                                <span class="${parseInt(pick.confidence) >= 70 ? 'text-green-400' : 
+                                              parseInt(pick.confidence) >= 60 ? 'text-yellow-400' : 'text-red-400'}">
+                                    ${pick.confidence || 0}%
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 ${resultClass}">
+                                ${resultIcon} ${pick.result || 'Pending'}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading track record:', error);
+                document.getElementById('picks-table').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-gray-500">
+                            Unable to load track record. Check back soon!
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Load on page load
+        loadTrackRecord();
+    </script>
+</body>
+</html>
