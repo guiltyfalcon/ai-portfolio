@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .timestamp {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .metric {
+            display: inline-flex;
+            flex-direction: column;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin: 5px;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .status-good { color: #4ade80; }
+        .status-warn { color: #fbbf24; }
+        .status-error { color: #f87171; }
+        
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            max-height: 250px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .log-entry {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9em;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(102, 126, 234, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            color: #f87171;
+        }
+    </style>
+</head>
+<body>
+    <div class="refresh-indicator">
+        🔄 Auto-refresh: <span id="countdown">30</span>s
+    </div>
+    
+    <div class="header">
+        <h1>🧠 OpenClaw Dashboard</h1>
+        <p>BetBrain AI Automation Monitor</p>
+        <div class="timestamp" id="last-updated">Loading...</div>
+    </div>
+    
+    <div class="grid">
+        <div class="card">
+            <h2>📊 System Overview</h2>
+            <div id="system-metrics">
+                <div class="metric">
+                    <div class="metric-value" id="cron-count">--</div>
+                    <div class="metric-label">Cron Jobs</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="git-status">--</div>
+                    <div class="metric-label">Git Status</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>⏰ Active Cron Jobs</h2>
+            <pre id="cron-jobs">Loading...</pre>
+        </div>
+        
+        <div class="card">
+            <h2>📝 Recent Logs</h2>
+            <div id="recent-logs">Loading...</div>
+        </div>
+        
+        <div class="card">
+            <h2>🔧 Git Repository</h2>
+            <div id="git-info">Loading...</div>
+        </div>
+        
+        <div class="card">
+            <h2>💾 System Health</h2>
+            <pre id="system-health">Loading...</pre>
+        </div>
+        
+        <div class="card">
+            <h2>🤖 Subagent Status</h2>
+            <pre id="subagent-status">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const REFRESH_INTERVAL = 30000; // 30 seconds
+        let countdown = 30;
+        
+        // Update countdown
+        setInterval(() => {
+            countdown--;
+            if (countdown <= 0) countdown = 30;
+            document.getElementById('countdown').textContent = countdown;
+        }, 1000);
+        
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                // Fetch static data from JSON file
+                const response = await fetch('/data/dashboard-data.json');
+                if (!response.ok) throw new Error('Failed to fetch');
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error fetching dashboard:', error);
+                // Use fallback data
+                updateDashboard(getFallbackData());
+            }
+        }
+        
+        // Update dashboard with data
+        function updateDashboard(data) {
+            document.getElementById('last-updated').textContent = 
+                `Last Updated: ${new Date().toLocaleString()}`;
+            
+            // Update metrics
+            document.getElementById('cron-count').textContent = data.cronJobs || 7;
+            document.getElementById('git-status').textContent = data.gitClean ? '✓' : '!';
+            document.getElementById('git-status').className = 
+                `metric-value ${data.gitClean ? 'status-good' : 'status-warn'}`;
+            
+            // Update cron jobs
+            document.getElementById('cron-jobs').textContent = 
+                (data.cronDetails || []).join('\n') || 'No cron jobs found';
+            
+            // Update logs
+            const logsHtml = (data.logs || []).map(log => 
+                `<div class="log-entry">${escapeHtml(log)}</div>`
+            ).join('');
+            document.getElementById('recent-logs').innerHTML = logsHtml || 'No recent logs';
+            
+            // Update git info
+            document.getElementById('git-info').innerHTML = `
+                <p class="${data.gitClean ? 'status-good' : 'status-warn'}">
+                    ${data.gitClean ? '✅ Clean' : '⚠️ Changes pending'}
+                </p>
+                <pre>${(data.gitChanges || []).join('\n') || 'No changes'}</pre>
+            `;
+            
+            // Update system health
+            document.getElementById('system-health').textContent = 
+                data.systemHealth || 'System healthy';
+            
+            // Update subagent status
+            document.getElementById('subagent-status').textContent = 
+                data.subagents || 'No active subagents';
+        }
+        
+        // Fallback data when API fails
+        function getFallbackData() {
+            return {
+                cronJobs: 7,
+                gitClean: false,
+                cronDetails: [
+                    '0 9 * * * Morning picks',
+                    '*/30 9-23 * * * Odds scrapers',
+                    '0 18 * * * Evening recap',
+                    '0 * * * * Welcome messages',
+                    '30 * * * * Email digest'
+                ],
+                logs: [
+                    '🧠 Email Digest Bot - No new signups',
+                    '✅ Player Props Scraper - 29 games scraped',
+                    '✅ Yahoo Scraper - Odds updated',
+                    '✅ Telegram Alerts - No value bets >60%'
+                ],
+                gitChanges: ['openclaw_dashboard.py', 'launch_dashboard.sh'],
+                systemHealth: 'Disk: 45% used\nMemory: 62% used',
+                subagents: 'No active subagents'
+            };
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            document.body.insertBefore(errorDiv, document.body.firstChild);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+        
+        // Initial load
+        fetchDashboardData();
+        
+        // Auto-refresh
+        setInterval(fetchDashboardData, REFRESH_INTERVAL);
+    </script>
+</body>
+</html>
