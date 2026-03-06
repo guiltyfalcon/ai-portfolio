@@ -28,7 +28,7 @@ def load_members():
     if MEMBERS_FILE.exists():
         with open(MEMBERS_FILE, 'r') as f:
             return json.load(f)
-    return {'members': [], 'last_check': None}
+    return {'members': [], 'members_count': 0, 'last_check': None}
 
 def save_members(data):
     """Save member tracking data."""
@@ -108,14 +108,28 @@ def check_new_members():
     tracked = load_members()
     tracked_ids = set(m['id'] for m in tracked.get('members', []))
     
-    # Get current admins (note: full member list requires different API)
-    # For channels, we can't get all members, but we can track via channel posts interactions
-    # Alternative: Use channel join notifications via bot updates (webhook)
+    # Get channel info to see member count
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/getChat"
+    data = {'chat_id': CHANNEL_ID}
     
-    # For now, we'll post a welcome message to the channel itself
-    # which all new members will see when they join
-    
-    welcome_post = """👋 <b>New to BetBrain AI?</b>
+    try:
+        response = requests.post(url, json=data, timeout=10)
+        response.raise_for_status()
+        result = response.json()
+        
+        if not result.get('ok'):
+            print(f"⚠️  Could not fetch channel info: {result}")
+            return
+        
+        chat = result.get('result', {})
+        current_member_count = chat.get('members_count', 0)
+        tracked_count = len(tracked_ids)
+        
+        # Only post welcome if member count increased
+        if current_member_count > tracked_count:
+            print(f"🎉 New members detected! {tracked_count} → {current_member_count}")
+            
+            welcome_post = """👋 <b>New to BetBrain AI?</b>
 
 Welcome! Here's what you need to know:
 
@@ -147,25 +161,35 @@ Welcome! Here's what you need to know:
 
 Drop a 🧠 if you're ready to win!
 """
-    
-    # Post welcome message to channel
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    data = {
-        'chat_id': CHANNEL_ID,
-        'text': welcome_post,
-        'parse_mode': 'HTML'
-    }
-    
-    try:
-        response = requests.post(url, json=data, timeout=10)
-        response.raise_for_status()
-        result = response.json()
-        if result.get('ok'):
-            print("✅ Welcome post sent to channel")
+            
+            # Post welcome message to channel
+            url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+            data = {
+                'chat_id': CHANNEL_ID,
+                'text': welcome_post,
+                'parse_mode': 'HTML'
+            }
+            
+            try:
+                response = requests.post(url, json=data, timeout=10)
+                response.raise_for_status()
+                result = response.json()
+                if result.get('ok'):
+                    print("✅ Welcome post sent to channel")
+                else:
+                    print(f"⚠️  Failed to post: {result}")
+            except Exception as e:
+                print(f"❌ Error posting welcome: {e}")
+            
+            # Update tracked count
+            tracked['members_count'] = current_member_count
+            tracked['last_check'] = datetime.now().isoformat()
+            save_members(tracked)
         else:
-            print(f"⚠️  Failed to post: {result}")
+            print(f"✅ No new members ({current_member_count} members, unchanged)")
+            
     except Exception as e:
-        print(f"❌ Error posting welcome: {e}")
+        print(f"❌ Error checking members: {e}")
     
     print("✅ Member check complete")
 
