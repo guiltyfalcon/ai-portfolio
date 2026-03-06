@@ -1,10 +1,1022 @@
 {
-  "timestamp": "2026-03-06T10:46:11.974293",
+  "timestamp": "2026-03-06T11:18:36.473694",
   "source": "espn_api + enhanced_stats + underdog_odds",
-  "sports": {},
+  "sports": {
+    "nba": [
+      {
+        "game_id": "401810763",
+        "home_team": "Boston Celtics",
+        "away_team": "Dallas Mavericks",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "Jayson Tatum",
+            "team": "Boston Celtics",
+            "team_abbr": "BOS",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 28.5,
+                "avg": 28.4,
+                "last5_avg": 31.2,
+                "matchup_rating": 0,
+                "hit_probability": 56.1,
+                "weighted_probability": 58.7,
+                "ml_adjustment": -2.6,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "reb",
+                "line": 8.5,
+                "avg": 8.6,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 67.7,
+                "weighted_probability": 75.3,
+                "ml_adjustment": -7.6,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              },
+              {
+                "type": "ast",
+                "line": 5.5,
+                "avg": 5.7,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 68.7,
+                "weighted_probability": 76.7,
+                "ml_adjustment": -8.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              }
+            ],
+            "is_star": true,
+            "injury_status": null
+          },
+          {
+            "player": "Jaylen Brown",
+            "team": "Boston Celtics",
+            "team_abbr": "BOS",
+            "pos": "G-F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 25.0,
+                "avg": 24.8,
+                "last5_avg": 27.5,
+                "matchup_rating": 0,
+                "hit_probability": 54.1,
+                "weighted_probability": 55.8,
+                "ml_adjustment": -1.7,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "reb",
+                "line": 6.0,
+                "avg": 6.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 67.1,
+                "weighted_probability": 74.4,
+                "ml_adjustment": -7.3,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              },
+              {
+                "type": "ast",
+                "line": 4.0,
+                "avg": 4.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 67.8,
+                "weighted_probability": 75.4,
+                "ml_adjustment": -7.6,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              }
+            ],
+            "is_star": true,
+            "injury_status": null
+          },
+          {
+            "player": "Kristaps Porzingis",
+            "team": "Boston Celtics",
+            "team_abbr": "BOS",
+            "pos": "C",
+            "props": [
+              {
+                "type": "pts",
+                "line": 19.5,
+                "avg": 19.5,
+                "last5_avg": 21.8,
+                "matchup_rating": 0,
+                "hit_probability": 54.7,
+                "weighted_probability": 56.7,
+                "ml_adjustment": -2.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "reb",
+                "line": 7.0,
+                "avg": 7.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 65.2,
+                "weighted_probability": 71.7,
+                "ml_adjustment": -6.5,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              },
+              {
+                "type": "ast",
+                "line": 2.0,
+                "avg": 1.9,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 66.1,
+                "weighted_probability": 73.1,
+                "ml_adjustment": -7.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -125,
+                "odds_under": 105,
+                "recommendation": "LEAN",
+                "injury_status": null
+              }
+            ],
+            "is_star": true,
+            "injury_status": null
+          }
+        ]
+      },
+      {
+        "game_id": "401810764",
+        "home_team": "Charlotte Hornets",
+        "away_team": "Miami Heat",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "LaMelo Ball",
+            "team": "Charlotte Hornets",
+            "team_abbr": "CHA",
+            "pos": "G",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.5,
+                "avg": 26.5,
+                "last5_avg": 29.8,
+                "matchup_rating": 0,
+                "hit_probability": 55.4,
+                "weighted_probability": 57.7,
+                "ml_adjustment": -2.3,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "reb",
+                "line": 5.0,
+                "avg": 5.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.1,
+                "weighted_probability": 50.1,
+                "ml_adjustment": -0.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "ast",
+                "line": 8.0,
+                "avg": 8.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "weighted_probability": 50.0,
+                "ml_adjustment": 0.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              }
+            ],
+            "is_star": true,
+            "injury_status": null
+          },
+          {
+            "player": "Miles Bridges",
+            "team": "Charlotte Hornets",
+            "team_abbr": "CHA",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.0,
+                "avg": 21.2,
+                "last5_avg": 23.5,
+                "matchup_rating": 0,
+                "hit_probability": 54.3,
+                "weighted_probability": 56.1,
+                "ml_adjustment": -1.9,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "reb",
+                "line": 7.5,
+                "avg": 7.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "weighted_probability": 49.8,
+                "ml_adjustment": 0.0,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              },
+              {
+                "type": "ast",
+                "line": 4.0,
+                "avg": 3.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.5,
+                "weighted_probability": 49.4,
+                "ml_adjustment": 0.1,
+                "ml_reasoning": "Weighted model dominant (70/30 split)",
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN",
+                "injury_status": null
+              }
+            ],
+            "is_star": true,
+            "injury_status": null
+          }
+        ]
+      },
+      {
+        "game_id": "401810765",
+        "home_team": "Houston Rockets",
+        "away_team": "Portland Trail Blazers",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "Anfernee Simons",
+            "team": "Portland Trail Blazers",
+            "team_abbr": "POR",
+            "pos": "G",
+            "props": [
+              {
+                "type": "pts",
+                "line": 22.5,
+                "avg": 22.5,
+                "last5_avg": 25.2,
+                "matchup_rating": 0,
+                "hit_probability": 56.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 3.5,
+                "avg": 3.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 6.0,
+                "avg": 5.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "Jerami Grant",
+            "team": "Portland Trail Blazers",
+            "team_abbr": "POR",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 21.0,
+                "avg": 20.8,
+                "last5_avg": 22.5,
+                "matchup_rating": 0,
+                "hit_probability": 53.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 4.5,
+                "avg": 4.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 3.0,
+                "avg": 2.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          }
+        ]
+      },
+      {
+        "game_id": "401810766",
+        "home_team": "Denver Nuggets",
+        "away_team": "New York Knicks",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "Jalen Brunson",
+            "team": "New York Knicks",
+            "team_abbr": "NY",
+            "pos": "G",
+            "props": [
+              {
+                "type": "pts",
+                "line": 28.0,
+                "avg": 27.9,
+                "last5_avg": 32.1,
+                "matchup_rating": 0,
+                "hit_probability": 59.3,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 4.0,
+                "avg": 3.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 58.9,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 7.0,
+                "avg": 6.9,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 57.9,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "Julius Randle",
+            "team": "New York Knicks",
+            "team_abbr": "NY",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 23.5,
+                "avg": 23.5,
+                "last5_avg": 25.8,
+                "matchup_rating": 0,
+                "hit_probability": 55.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 10.0,
+                "avg": 10.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 55.3,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 5.0,
+                "avg": 5.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 57.1,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "RJ Barrett",
+            "team": "New York Knicks",
+            "team_abbr": "NY",
+            "pos": "G-F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 20.0,
+                "avg": 19.8,
+                "last5_avg": 21.4,
+                "matchup_rating": 0,
+                "hit_probability": 52.7,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 5.5,
+                "avg": 5.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 3.0,
+                "avg": 3.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.2,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          }
+        ]
+      },
+      {
+        "game_id": "401810767",
+        "home_team": "Phoenix Suns",
+        "away_team": "New Orleans Pelicans",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401810768",
+        "home_team": "San Antonio Spurs",
+        "away_team": "LA Clippers",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "Kawhi Leonard",
+            "team": "LA Clippers",
+            "team_abbr": "LAC",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 26.0,
+                "avg": 26.2,
+                "last5_avg": 28.5,
+                "matchup_rating": 0,
+                "hit_probability": 56.1,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 7.0,
+                "avg": 6.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 5.0,
+                "avg": 5.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "Paul George",
+            "team": "LA Clippers",
+            "team_abbr": "LAC",
+            "pos": "F",
+            "props": [
+              {
+                "type": "pts",
+                "line": 23.5,
+                "avg": 23.5,
+                "last5_avg": 25.8,
+                "matchup_rating": 0,
+                "hit_probability": 55.3,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 6.0,
+                "avg": 6.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.1,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 5.0,
+                "avg": 4.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "James Harden",
+            "team": "LA Clippers",
+            "team_abbr": "LAC",
+            "pos": "G",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.5,
+                "last5_avg": 20.1,
+                "matchup_rating": 0,
+                "hit_probability": 53.6,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 4.5,
+                "avg": 4.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 9.0,
+                "avg": 9.2,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.1,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          }
+        ]
+      },
+      {
+        "game_id": "401810769",
+        "home_team": "Los Angeles Lakers",
+        "away_team": "Indiana Pacers",
+        "time": "TBD",
+        "players": [
+          {
+            "player": "Tyrese Haliburton",
+            "team": "Indiana Pacers",
+            "team_abbr": "IND",
+            "pos": "G",
+            "props": [
+              {
+                "type": "pts",
+                "line": 25.0,
+                "avg": 25.2,
+                "last5_avg": 28.5,
+                "matchup_rating": 0,
+                "hit_probability": 58.5,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 4.0,
+                "avg": 4.1,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 50.0,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 10.5,
+                "avg": 10.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          },
+          {
+            "player": "Myles Turner",
+            "team": "Indiana Pacers",
+            "team_abbr": "IND",
+            "pos": "C",
+            "props": [
+              {
+                "type": "pts",
+                "line": 18.5,
+                "avg": 18.5,
+                "last5_avg": 20.2,
+                "matchup_rating": 0,
+                "hit_probability": 53.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "reb",
+                "line": 8.0,
+                "avg": 7.8,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.4,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              },
+              {
+                "type": "ast",
+                "line": 1.5,
+                "avg": 1.5,
+                "last5_avg": null,
+                "matchup_rating": 0,
+                "hit_probability": 49.8,
+                "odds_over": -110,
+                "odds_under": -110,
+                "recommendation": "EVEN"
+              }
+            ],
+            "is_star": true
+          }
+        ]
+      }
+    ],
+    "mlb": [
+      {
+        "game_id": "401833072",
+        "home_team": "Baltimore Orioles",
+        "away_team": "St. Louis Cardinals",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833074",
+        "home_team": "Detroit Tigers",
+        "away_team": "Boston Red Sox",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833075",
+        "home_team": "Houston Astros",
+        "away_team": "Washington Nationals",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833081",
+        "home_team": "Pittsburgh Pirates",
+        "away_team": "Philadelphia Phillies",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833085",
+        "home_team": "Toronto Blue Jays",
+        "away_team": "Pittsburgh Pirates",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833071",
+        "home_team": "Athletics",
+        "away_team": "Colorado Rockies",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833073",
+        "home_team": "Cleveland Guardians",
+        "away_team": "Los Angeles Angels",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833083",
+        "home_team": "San Francisco Giants",
+        "away_team": "Cincinnati Reds",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833084",
+        "home_team": "Texas Rangers",
+        "away_team": "Seattle Mariners",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401833070",
+        "home_team": "Arizona Diamondbacks",
+        "away_team": "Chicago White Sox",
+        "time": "TBD",
+        "players": []
+      }
+    ],
+    "nhl": [
+      {
+        "game_id": "401803334",
+        "home_team": "Detroit Red Wings",
+        "away_team": "Florida Panthers",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803335",
+        "home_team": "Dallas Stars",
+        "away_team": "Colorado Avalanche",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803336",
+        "home_team": "Chicago Blackhawks",
+        "away_team": "Vancouver Canucks",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803337",
+        "home_team": "Edmonton Oilers",
+        "away_team": "Carolina Hurricanes",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803338",
+        "home_team": "Anaheim Ducks",
+        "away_team": "Montreal Canadiens",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803339",
+        "home_team": "Vegas Golden Knights",
+        "away_team": "Minnesota Wild",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401803340",
+        "home_team": "San Jose Sharks",
+        "away_team": "St. Louis Blues",
+        "time": "TBD",
+        "players": []
+      }
+    ],
+    "ncaab": [
+      {
+        "game_id": "401822972",
+        "home_team": "Seton Hall Pirates",
+        "away_team": "St. John's Red Storm",
+        "time": "TBD",
+        "players": []
+      },
+      {
+        "game_id": "401814601",
+        "home_team": "Ohio Bobcats",
+        "away_team": "Miami (OH) RedHawks",
+        "time": "TBD",
+        "players": []
+      }
+    ]
+  },
   "best_bets": [],
   "recommended_parlay": [],
-  "scrape_time": "2026-03-06T10:46:12.616221",
-  "date": "2026-03-06",
-  "message": "No games scheduled today"
+  "line_movements": [
+    {
+      "player": "Jalen Brunson",
+      "prop_type": "pts",
+      "opening_line": 28.0,
+      "opening_odds": -110,
+      "current_line": 28.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Jalen Brunson",
+      "prop_type": "reb",
+      "opening_line": 4.0,
+      "opening_odds": -110,
+      "current_line": 4.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Jalen Brunson",
+      "prop_type": "ast",
+      "opening_line": 7.0,
+      "opening_odds": -110,
+      "current_line": 7.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Julius Randle",
+      "prop_type": "pts",
+      "opening_line": 23.5,
+      "opening_odds": -110,
+      "current_line": 23.5,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Julius Randle",
+      "prop_type": "reb",
+      "opening_line": 10.0,
+      "opening_odds": -110,
+      "current_line": 10.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Julius Randle",
+      "prop_type": "ast",
+      "opening_line": 5.0,
+      "opening_odds": -110,
+      "current_line": 5.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "RJ Barrett",
+      "prop_type": "pts",
+      "opening_line": 20.0,
+      "opening_odds": -110,
+      "current_line": 20.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "RJ Barrett",
+      "prop_type": "reb",
+      "opening_line": 5.5,
+      "opening_odds": -110,
+      "current_line": 5.5,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "RJ Barrett",
+      "prop_type": "ast",
+      "opening_line": 3.0,
+      "opening_odds": -110,
+      "current_line": 3.0,
+      "current_odds": -110,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 13
+    },
+    {
+      "player": "Shai Gilgeous-Alexander",
+      "prop_type": "pts",
+      "opening_line": 31.0,
+      "opening_odds": -125,
+      "current_line": 31.0,
+      "current_odds": -125,
+      "line_change": 0.0,
+      "odds_change": 0,
+      "sharp_indicator": "neutral",
+      "observations_count": 12
+    }
+  ],
+  "value_from_movement": []
 }
