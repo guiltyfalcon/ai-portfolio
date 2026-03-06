@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-03-05T19:47:00",
+  "cronJobs": 7,
+  "cronDetails": [
+    "0 9 * * * Morning picks thread",
+    "*/30 9-23 * * * Yahoo + Player Props scrapers",
+    "0 18 * * * Evening recap",
+    "0 * * * * Welcome messages",
+    "30 * * * * Email digest",
+    "* 9 * * * Weekly props finder",
+    "* 6 * * * Twitter engagement"
+  ],
+  "logs": [
+    "🧠 Email Digest Bot - 2026-03-05 18:30:00 - No new signups",
+    "✅ Player Props Scraper - 29 games scraped",
+    "✅ Yahoo Scraper - 77 games across sports",
+    "✅ Telegram Alerts - No value bets above 60%",
+    "✅ Twitter Engagement - 3 betting posts retweeted"
+  ],
+  "git": {
+    "clean": false,
+    "changes": [
+      "openclaw_dashboard.py",
+      "launch_dashboard.sh",
+      "DASHBOARD_README.md",
+      "memory/2026-03-05.md"
+    ]
+  },
+  "system": {
+    "disk": "Filesystem        Size  Used  Avail  Use%",
+    "memory": "Memory: Used 62%, Free 38%"
+  },
+  "subagents": "No active subagents",
+  "lastUpdated": "2026-03-05T19:47:00"
+}
