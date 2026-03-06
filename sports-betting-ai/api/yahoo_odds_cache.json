@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-06T00:27:47.234660",
+  "timestamp": "2026-03-06T02:27:48.380342",
   "source": "yahoo_sports_api + espn_team_data",
   "sports": {
     "ncaab": [
@@ -14,7 +14,7 @@
         "bookmaker": "BetMGM",
         "bookmaker_count": 1,
         "source": "yahoo_sports_api",
-        "cache_timestamp": "2026-03-06T00:27:59.314579",
+        "cache_timestamp": "2026-03-06T02:28:01.565776",
         "home_ml": -1000,
         "away_ml": 625,
         "home_spread": -12.5,
