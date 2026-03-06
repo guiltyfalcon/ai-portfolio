@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
 BetBrain AI - Email Signup Digest Bot
-Checks Formspree for new waitlist signups and posts hourly digest to Telegram.
+Checks Nylas for new waitlist signups and posts hourly digest to Telegram.
 
 Usage: Run hourly via cron
 """
 
 import json
 import os
+import subprocess
 import requests
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -17,19 +18,15 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '8733590521:AAH-dmhmMPABmnR
 TELEGRAM_CHAT_ID = '@betbrainaiwinner'  # Channel
 PERSONAL_CHAT_ID = '6471395025'  # Your personal chat for notifications
 
-# Formspree API
-FORMSPREE_FORM_ID = 'mnjgarek'
-FORMSPREE_API_URL = f'https://api.formspree.io/v2/forms/{FORMSPREE_FORM_ID}/submissions'
-
 # Tracking file
 DIGEST_FILE = Path('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/data/email_digest_state.json')
 
 def load_state():
-    """Load last check timestamp."""
+    """Load last check timestamp and processed message IDs."""
     if DIGEST_FILE.exists():
         with open(DIGEST_FILE, 'r') as f:
             return json.load(f)
-    return {'last_check': None, 'total_seen': 0}
+    return {'last_check': None, 'processed_ids': [], 'total_seen': 0}
 
 def save_state(state):
     """Save state."""
@@ -38,39 +35,60 @@ def save_state(state):
         json.dump(state, f, indent=2)
 
 def get_new_submissions():
-    """Fetch new submissions from Formspree."""
+    """Fetch new waitlist emails from Nylas."""
     state = load_state()
+    processed_ids = set(state.get('processed_ids', []))
     
-    # Formspree API requires authentication
-    # For now, we'll check the local JSON file instead
-    local_file = Path('/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/data/waitlist_emails.json')
-    
-    if not local_file.exists():
-        return []
-    
-    with open(local_file, 'r') as f:
-        data = json.load(f)
-    
-    emails = data.get('emails', [])
-    total = data.get('total', 0)
-    
-    # Filter new ones since last check
-    last_check = state.get('last_check')
-    if last_check:
+    # Use Nylas CLI to fetch unread emails
+    try:
+        result = subprocess.run(
+            ['nylas', 'email', 'list', '--unread', '--limit', '100', '--json'],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if result.returncode != 0:
+            print(f"❌ Nylas error: {result.stderr}")
+            return []
+        
+        # Parse Nylas output (JSON format)
+        emails = json.loads(result.stdout) if result.stdout.strip() else []
+        
+        # Filter for waitlist-related emails (subject or sender)
+        waitlist_keywords = ['waitlist', 'betbrain', 'signup', 'join']
         new_emails = [
             e for e in emails 
-            if e.get('timestamp', '') > last_check
+            if e.get('id') not in processed_ids
+            and e.get('unread', False)
+            and any(kw.lower() in e.get('subject', '').lower() for kw in waitlist_keywords)
         ]
-    else:
-        # First run - return last 5
-        new_emails = emails[-5:] if len(emails) > 5 else emails
-    
-    # Update state
-    state['last_check'] = datetime.now().isoformat()
-    state['total_seen'] = total
-    save_state(state)
-    
-    return new_emails
+        
+        # Mark as read
+        for email in new_emails:
+            email_id = email.get('id')
+            if email_id:
+                subprocess.run(
+                    ['nylas', 'email', 'mark-read', email_id],
+                    capture_output=True,
+                    timeout=10
+                )
+                processed_ids.add(email_id)
+        
+        # Update state
+        state['last_check'] = datetime.now().isoformat()
+        state['processed_ids'] = list(processed_ids)[-1000:]  # Keep last 1000 IDs
+        state['total_seen'] = len(processed_ids)
+        save_state(state)
+        
+        return new_emails
+        
+    except subprocess.TimeoutExpired:
+        print("❌ Nylas timeout")
+        return []
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return []
 
 def send_digest(submissions):
     """Send digest to Telegram."""
@@ -86,42 +104,30 @@ def send_digest(submissions):
 """
     
     for sub in submissions:
-        email = sub.get('email', 'unknown')
-        timestamp = sub.get('timestamp', '')
-        if timestamp:
+        # Extract from Nylas email format
+        from_email = sub.get('from', [{}])[0].get('email', 'unknown')
+        subject = sub.get('subject', '')
+        date = sub.get('date', '')
+        
+        if date:
             try:
-                dt = datetime.fromisoformat(timestamp)
+                dt = datetime.fromtimestamp(int(date))
                 time_str = dt.strftime('%H:%M')
             except:
                 time_str = ''
         else:
             time_str = ''
         
-        message += f"• <code>{email}</code> {time_str}\n"
+        message += f"• <code>{from_email}</code> {time_str}\n"
     
     message += f"""
-📈 Total signups: {len(submissions)}
-🔗 View all: https://formspree.io/f/{FORMSPREE_FORM_ID}
+📈 Total processed: {len(submissions)}
 
 💡 Next: Auto-DM these users the Telegram invite
 """
     
     # Send to personal chat
     send_telegram_message(PERSONAL_CHAT_ID, message)
-    
-    # Also post to channel (optional - comment out if you only want personal)
-    channel_message = f"""🎉 <b>{len(submissions)} New BetBrain Members!</b>
-
-Welcome to everyone who joined this hour! 
-
-Make sure to:
-✅ Turn on notifications
-✅ Check the pinned message for today's picks
-✅ Invite your friends!
-
-🧠 Let's win together!
-"""
-    send_telegram_message(TELEGRAM_CHAT_ID, channel_message)
     
     return True
 
