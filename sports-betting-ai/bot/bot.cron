@@ -5,8 +5,8 @@
 SHELL=/bin/zsh
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 
-# Morning picks thread (9:00 AM ET) - DAILY PROPS FINDER
-0 9 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api && export TELEGRAM_BOT_TOKEN=8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88 && export TELEGRAM_CHAT_ID=@betbrainaiwinner && python3 weekly_props_finder.py >> /tmp/betbrain-weekly-props.log 2>&1
+# Morning picks thread (9:00 AM ET) - AUTO-POST WITH INJURY CHECK
+0 9 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api && export TELEGRAM_BOT_TOKEN=8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88 && export TELEGRAM_CHAT_ID=@betbrainaiwinner && python3 auto_post_picks.py >> /tmp/betbrain-auto-picks.log 2>&1
 
 # 30-minute odds updates during game days (9 AM - 11 PM ET)
 */30 9-23 * * * cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api && python3 yahoo_scraper.py && python3 player_props_scraper.py && cd /Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/bot && export TELEGRAM_BOT_TOKEN=8733590521:AAH-dmhmMPABmnRcTvODry2z3hgMsV9Lo88 && export TELEGRAM_CHAT_ID=@betbrainaiwinner && python3 telegram_alerts.py >> /tmp/betbrain-updates.log 2>&1
