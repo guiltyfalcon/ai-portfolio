@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuiltyFalcon | AI-Powered Landing Pages That Convert</title>
+    <meta name="description" content="High-conversion landing pages for SaaS founders, creators, and local businesses. Built with AI, delivered in 48 hours.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white font-sans antialiased">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-gray-950/80 backdrop-blur-md border-b border-gray-800 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <span class="font-bold text-white text-sm">GF</span>
+                </div>
+                <span class="text-xl font-bold">GuiltyFalcon</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#services" class="text-gray-400 hover:text-white transition">Services</a>
+                <a href="#portfolio" class="text-gray-400 hover:text-white transition">Portfolio</a>
+                <a href="#pricing" class="text-gray-400 hover:text-white transition">Pricing</a>
+                <a href="#process" class="text-gray-400 hover:text-white transition">Process</a>
+            </div>
+            <a href="#contact" class="bg-brand-600 hover:bg-brand-700 px-6 py-2.5 rounded-full font-semibold transition">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-brand-900/50 border border-brand-700/50 rounded-full px-4 py-2 mb-8">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-brand-100 text-sm font-medium">Now accepting new clients</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                Landing Pages That <br>
+                <span class="gradient-text">Turn Visitors Into Customers</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+                AI-powered landing pages for SaaS founders, creators, and local businesses. 
+                Built to convert. Delivered in 48 hours.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                <a href="#contact" class="bg-brand-600 hover:bg-brand-700 px-8 py-4 rounded-full font-bold text-lg transition flex items-center justify-center gap-2">
+                    Start Your Project
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+                <a href="#portfolio" class="bg-gray-800 hover:bg-gray-700 px-8 py-4 rounded-full font-bold text-lg transition">
+                    View Portfolio
+                </a>
+            </div>
+            
+            <!-- Trust Badges -->
+            <div class="flex flex-wrap justify-center gap-8 text-sm text-gray-500">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>48-Hour Delivery</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>Unlimited Revisions</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <span>100% Satisfaction</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What We Build</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Every landing page is crafted for conversion with modern design principles and AI-powered optimization.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-card rounded-2xl p-8 hover:bg-gray-800/50 transition">
+                    <div class="w-12 h-12 bg-brand-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">SaaS Landing Pages</h3>
+                    <p class="text-gray-400">High-converting pages for software products. Feature highlights, pricing tables, and CTAs that drive signups.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 hover:bg-gray-800/50 transition">
+                    <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Product Pages</h3>
+                    <p class="text-gray-400">Showcase your product with stunning visuals, social proof, and persuasive copy that converts browsers to buyers.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-8 hover:bg-gray-800/50 transition">
+                    <div class="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Local Business</h3>
+                    <p class="text-gray-400">Professional pages for service businesses. Contact forms, service listings, and local SEO optimization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Recent Work</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Landing pages built for founders and businesses who needed results fast.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio Item 1 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800">
+                    <div class="aspect-video bg-gradient-to-br from-brand-900 to-gray-900 flex items-center justify-center">
+                        <div class="text-center p-6">
+                            <div class="text-4xl mb-2">🎯</div>
+                            <h4 class="font-bold">BetBrain AI</h4>
+                            <p class="text-sm text-gray-400">Sports Analytics SaaS</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">AI Sports Betting Platform</h3>
+                        <p class="text-gray-400 text-sm mb-4">Landing page for sports analytics tool with real-time data visualization.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-brand-900/50 text-brand-300 px-3 py-1 rounded-full">SaaS</span>
+                            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">AI</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Portfolio Item 2 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800">
+                    <div class="aspect-video bg-gradient-to-br from-purple-900 to-gray-900 flex items-center justify-center">
+                        <div class="text-center p-6">
+                            <div class="text-4xl mb-2">🎴</div>
+                            <h4 class="font-bold">Pokémon Bulk</h4>
+                            <p class="text-sm text-gray-400">E-commerce</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">Trading Card Marketplace</h3>
+                        <p class="text-gray-400 text-sm mb-4">Product landing page for Pokémon card bulk sales with inventory integration.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-purple-900/50 text-purple-300 px-3 py-1 rounded-full">E-commerce</span>
+                            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">Local</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Portfolio Item 3 -->
+                <div class="group relative overflow-hidden rounded-2xl bg-gray-900 border border-gray-800">
+                    <div class="aspect-video bg-gradient-to-br from-green-900 to-gray-900 flex items-center justify-center">
+                        <div class="text-center p-6">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <h4 class="font-bold">OpenClaw</h4>
+                            <p class="text-sm text-gray-400">Developer Tools</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-lg mb-2">AI Agent Framework</h3>
+                        <p class="text-gray-400 text-sm mb-4">Technical landing page for AI agent development platform with docs integration.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-green-900/50 text-green-300 px-3 py-1 rounded-full">DevTools</span>
+                            <span class="text-xs bg-gray-800 text-gray-300 px-3 py-1 rounded-full">Technical</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-12">
+                <a href="https://github.com/guiltyfalcon/landing-page-portfolio" target="_blank" class="text-brand-400 hover:text-brand-300 font-medium inline-flex items-center gap-2">
+                    View Full Portfolio on GitHub
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">No hidden fees. No surprises. Just high-converting landing pages delivered fast.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Starter -->
+                <div class="glass-card rounded-2xl p-8">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2">Starter</h3>
+                    <div class="text-4xl font-black mb-6">$500</div>
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Single landing page
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Mobile responsive
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Contact form
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            2 revisions
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            48-hour delivery
+                        </li>
+                    </ul>
+                    <a href="https://checkout.stripe.com/c/pay/cs_live_a13Ftozv8iIS5MRG8NbsjTfpZslvYVQKEsUZH0N27JkeowkTXHaWmxjThA#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blppbHNgWjA0UTZMTDAxNEJLaGRQU2M1c059ZnxuVUt%2FYDJLX3ZCY2JgX301fG9XUVZkbHJ%2FUXc3X3RjVjczSDdTQUFQd0gxU0M1SWR%2FV1RAN25QajJNf2d2UjxDfHFJNTVSXEpPUmY9ZCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl" class="block text-center bg-gray-800 hover:bg-gray-700 py-3 rounded-full font-semibold transition">Pay $500</a>
+                </div>
+                <!-- Professional (Popular) -->
+                <div class="glass-card rounded-2xl p-8 border-2 border-brand-500 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-sm font-semibold px-4 py-1 rounded-full">Most Popular</div>
+                    <h3 class="text-lg font-semibold text-brand-400 mb-2">Professional</h3>
+                    <div class="text-4xl font-black mb-6">$1,000</div>
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Everything in Starter
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Multi-section page
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Custom animations
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            SEO optimization
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Unlimited revisions
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Analytics setup
+                        </li>
+                    </ul>
+                    <a href="https://checkout.stripe.com/c/pay/cs_live_a1ubHzRO8YwmpdsBEC5YjmSHGwCeCrVO0Gpo14tPhzDaNWvrnTkfL7Aaea#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blppbHNgWjA0UTZMTDAxNEJLaGRQU2M1c059ZnxuVUt%2FYDJLX3ZCY2JgX301fG9XUVZkbHJ%2FUXc3X3RjVjczSDdTQUFQd0gxU0M1SWR%2FV1RAN25QajJNf2d2UjxDfHFJNTVSXEpPUmY9ZCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl" class="block text-center bg-brand-600 hover:bg-brand-700 py-3 rounded-full font-semibold transition">Pay $1,000</a>
+                </div>
+                <!-- Enterprise -->
+                <div class="glass-card rounded-2xl p-8">
+                    <h3 class="text-lg font-semibold text-gray-400 mb-2">Enterprise</h3>
+                    <div class="text-4xl font-black mb-6">$2,000</div>
+                    <ul class="space-y-4 mb-8 text-gray-300">
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Everything in Pro
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Multi-page site
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Custom integrations
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            Priority support
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            A/B testing setup
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            30 days support
+                        </li>
+                    </ul>
+                    <a href="https://checkout.stripe.com/c/pay/cs_live_a1ppxDBjvmSHCWcy2OFNgILcCrWxX2tuTQT174m0vYfmAzO3TGSieWYNn9#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blppbHNgWjA0UTZMTDAxNEJLaGRQU2M1c059ZnxuVUt%2FYDJLX3ZCY2JgX301fG9XUVZkbHJ%2FUXc3X3RjVjczSDdTQUFQd0gxU0M1SWR%2FV1RAN25QajJNf2d2UjxDfHFJNTVSXEpPUmY9ZCcpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl" class="block text-center bg-gray-800 hover:bg-gray-700 py-3 rounded-full font-semibold transition">Pay $2,000</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">From idea to live page in 48 hours. Here's our proven process.</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1</div>
+                    <h3 class="font-bold text-lg mb-2">Discovery</h3>
+                    <p class="text-gray-400 text-sm">You fill out a brief questionnaire about your business, goals, and style preferences.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2</div>
+                    <h3 class="font-bold text-lg mb-2">Design</h3>
+                    <p class="text-gray-400 text-sm">We create your landing page using AI-powered design tools and conversion best practices.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3</div>
+                    <h3 class="font-bold text-lg mb-2">Review</h3>
+                    <p class="text-gray-400 text-sm">You review the page and request revisions. We iterate until you're 100% satisfied.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-brand-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-bold">4</div>
+                    <h3 class="font-bold text-lg mb-2">Launch</h3>
+                    <p class="text-gray-400 text-sm">We deploy your page to Vercel (or your host) and set up analytics tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            </div>
+            <div class="space-y-6">
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-2">How fast can you deliver?</h3>
+                    <p class="text-gray-400">Most landing pages are delivered within 48 hours of receiving your brief. Complex multi-page sites may take up to 5 days.</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-2">What do you need from me?</h3>
+                    <p class="text-gray-400">Just fill out our brief questionnaire with your business info, target audience, and any design preferences. We'll handle the rest.</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-2">Can I request changes?</h3>
+                    <p class="text-gray-400">Absolutely! Starter packages include 2 revision rounds. Professional and Enterprise include unlimited revisions during the project.</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-2">Do you handle hosting?</h3>
+                    <p class="text-gray-400">We deploy to Vercel by default (free hosting included). If you prefer another host, we can provide the files for you to upload.</p>
+                </div>
+                <div class="glass-card rounded-xl p-6">
+                    <h3 class="font-bold text-lg mb-2">What payment methods do you accept?</h3>
+                    <p class="text-gray-400">We accept PayPal, Venmo, Zelle, and cryptocurrency (BTC, ETH, SOL). 50% deposit to start, 50% on delivery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Convert More Visitors?</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Fill out the form below and we'll get back to you within 24 hours with a custom quote.</p>
+            </div>
+            <div class="glass-card rounded-2xl p-8 md:p-12">
+                <form action="https://formspree.io/f/xnqevwre" method="POST" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+                            <input type="text" name="name" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                            <input type="email" name="email" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Business/Project Name</label>
+                        <input type="text" name="business" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Package Interest</label>
+                        <select name="package" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition">
+                            <option value="starter">Starter - $500</option>
+                            <option value="professional" selected>Professional - $1,000</option>
+                            <option value="enterprise">Enterprise - $2,000</option>
+                            <option value="custom">Custom Project</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Tell us about your project</label>
+                        <textarea name="message" rows="4" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-500 transition" placeholder="What do you sell? Who's your target audience? Any specific features you need?"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 py-4 rounded-full font-bold text-lg transition">
+                        Send Message
+                    </button>
+                </form>
+                <div class="mt-8 pt-8 border-t border-gray-800 text-center">
+                    <p class="text-gray-400 mb-4">Or reach out directly:</p>
+                    <div class="flex justify-center gap-6">
+                        <a href="https://twitter.com/holikidTV" target="_blank" class="text-gray-400 hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                        </a>
+                        <a href="https://t.me/MainBrainAdmin55bot" target="_blank" class="text-gray-400 hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="font-bold text-white text-sm">GF</span>
+                    </div>
+                    <span class="text-xl font-bold">GuiltyFalcon</span>
+                </div>
+                <div class="text-gray-400 text-sm">
+                    © 2026 GuiltyFalcon. All rights reserved.
+                </div>
+                <div class="flex gap-6 text-sm">
+                    <a href="#services" class="text-gray-400 hover:text-white transition">Services</a>
+                    <a href="#portfolio" class="text-gray-400 hover:text-white transition">Portfolio</a>
+                    <a href="#pricing" class="text-gray-400 hover:text-white transition">Pricing</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
