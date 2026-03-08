@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "created": "2026-03-06",
+    "last_updated": "2026-03-06",
+    "total_leads": 0,
+    "hot_leads": 0,
+    "warm_leads": 0,
+    "cold_leads": 0,
+    "agency_url": "https://agency-mocha-seven.vercel.app"
+  },
+  "leads": [],
+  "templates": {
+    "twitter_dm": "Hey {{name}}, saw your post about needing a landing page. I build high-converting pages for {{industry}} businesses - 48hr delivery, $500-2000. Interested in seeing some examples?",
+    "reddit_reply": "I specialize in landing pages for {{industry}}. Recent work: [portfolio link]. $500-2000 depending on complexity. 48hr turnaround. DM if you'd like to discuss your project!",
+    "cold_email": "Subject: Landing page for {{business_name}}\n\nHi {{name}},\n\nCame across {{business_name}} and noticed you might benefit from a dedicated landing page to drive conversions.\n\nI build AI-powered landing pages for {{industry}} businesses:\n- 48-hour delivery\n- $500-2000 pricing\n- Unlimited revisions (Pro+)\n- Mobile-first, conversion-optimized\n\nRecent work: [portfolio link]\n\nWorth a 10-min call to discuss?\n\nBest,\nDJ @ GuiltyFalcon"
+  }
+}

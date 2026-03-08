@@ -1,0 +1,12 @@
+{
+  "name": "guiltyfalcon-agency",
+  "version": "1.0.0",
+  "description": "AI-Powered Landing Page Agency",
+  "scripts": {
+    "dev": "npx serve .",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["landing-page", "agency", "web-design", "conversion"],
+  "author": "GuiltyFalcon",
+  "license": "MIT"
+}
