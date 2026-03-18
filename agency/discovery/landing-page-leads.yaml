@@ -1,0 +1,209 @@
+# Lead Hunter Configuration for Landing Page Agency
+# Target: People looking for landing pages, website help, SaaS design
+
+name: "landing-page-leads"
+description: "Find prospects looking for landing page design and development services"
+
+# ═══════════════════════════════════════════════════════════════
+# TWITTER/X DISCOVERY
+# ═══════════════════════════════════════════════════════════════
+
+twitter:
+  enabled: true
+  priority: 1
+  
+  discovery_methods:
+    # Method 1: Keyword search for people asking for help
+    keyword_search:
+      queries:
+        - "need a landing page"
+        - "landing page designer"
+        - "need website help"
+        - "build me a website"
+        - "SaaS landing page"
+        - "startup website"
+        - "looking for web designer"
+        - "need a website built"
+        - "landing page developer"
+        - "website for my business"
+        - "help with website"
+        - "freelance web designer"
+      filters:
+        min_followers: 50
+        max_followers: 10000
+        account_age_days: 30
+        lang: en
+        exclude_retweets: true
+        
+    # Method 2: Monitor specific hashtags
+    hashtag_tracking:
+      hashtags:
+        - "#buildinpublic"
+        - "#indiehackers"
+        - "#SaaS"
+        - "#landingpage"
+        - "#webdesign"
+      recency: 24h
+      
+    # Method 3: Follow competitor/tool followers
+    competitor_followers:
+      accounts:
+        - webflow
+        - framer
+        - carrd
+        - stripe
+        - vercel
+      sample_size: 200
+      filter_by_bio:
+        must_contain: ["founder", "builder", "creator", "entrepreneur", "SaaS"]
+        
+    # Method 4: Engagement mining on popular posts
+    engagement_mining:
+      monitor_tweets_from:
+        - "@patio11"
+        - "@shreyas"
+        - "@gumroad"
+        - "@stripe"
+      capture:
+        - repliers
+      topic_filter: ["landing page", "website", "SaaS", "startup"]
+
+# ═══════════════════════════════════════════════════════════════
+# REDDIT DISCOVERY
+# ═══════════════════════════════════════════════════════════════
+
+reddit:
+  enabled: true
+  priority: 2
+  
+  subreddits:
+    - forhire
+    - needahire
+    - startups
+    - SaaS
+    - web_design
+    - webdev
+    - entrepreneur
+    - sideproject
+    - indiehackers
+    
+  search_queries:
+    - "[Hiring] landing page"
+    - "[Hiring] website"
+    - "need landing page"
+    - "website help"
+    - "landing page design"
+    - "SaaS website"
+    
+  filters:
+    min_account_age_days: 30
+    min_karma: 100
+    only_hiring_posts: true
+
+# ═══════════════════════════════════════════════════════════════
+# INDIEHACKERS DISCOVERY
+# ═══════════════════════════════════════════════════════════════
+
+indiehackers:
+  enabled: true
+  priority: 2
+  
+  discovery_methods:
+    # Look for people asking for feedback on landing pages
+    feedback_requests:
+      keywords:
+        - "landing page feedback"
+        - "website feedback"
+        - "roast my landing page"
+        - "critique my site"
+        
+    # Look for people building new products
+    new_products:
+      keywords:
+        - "just launched"
+        - "new startup"
+        - "building in public"
+        - "SaaS launch"
+
+# ═══════════════════════════════════════════════════════════════
+# PRODUCT HUNT DISCOVERY
+# ═══════════════════════════════════════════════════════════════
+
+producthunt:
+  enabled: true
+  priority: 3
+  
+  discovery_methods:
+    # New products without landing pages
+    new_launches:
+      categories:
+        - SaaS
+        - Developer Tools
+        - Productivity
+        - Marketing
+      max_days_since_launch: 7
+      
+    # Makers who might need help
+    active_makers:
+      min_products: 1
+      max_products: 5
+
+# ═══════════════════════════════════════════════════════════════
+# SCORING RULES
+# ═══════════════════════════════════════════════════════════════
+
+scoring:
+  weights:
+    explicit_need: 40        # Said "need landing page"
+    business_type: 20        # SaaS, startup, e-commerce
+    budget_signals: 20       # Mentioned budget, willing to pay
+    urgency: 15              # Timeline mentioned
+    engagement: 5            # Activity level
+    
+  signals:
+    hot:
+      - posted: "need a landing page"
+      - posted: "hiring web designer"
+      - posted: "website help needed"
+      - budget_mentioned: true
+      
+    warm:
+      - posted: "building a startup"
+      - posted: "launching soon"
+      - industry: ["SaaS", "e-commerce", "local business"]
+      
+    cold:
+      - following: [web design accounts]
+      - bio_contains: ["founder", "builder"]
+
+# ═══════════════════════════════════════════════════════════════
+# OUTPUT CONFIGURATION
+# ═══════════════════════════════════════════════════════════════
+
+output:
+  file: "../leads.json"
+  format: "json"
+  
+  fields_to_capture:
+    - platform
+    - username
+    - display_name
+    - bio
+    - website
+    - follower_count
+    - post_content
+    - post_url
+    - timestamp
+    - score
+    - temperature
+    - outreach_status
+    - notes
+    
+  outreach_status_options:
+    - new
+    - contacted
+    - responded
+    - qualified
+    - converted
+    - declined
+    - follow_up
