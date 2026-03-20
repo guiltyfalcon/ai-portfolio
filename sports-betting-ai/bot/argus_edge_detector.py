@@ -10,12 +10,10 @@ import csv
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
-import subprocess
 
 # Configuration
 TWITTER_DRAFTS_DIR = Path("/Users/djryan/.openclaw/data/twitter-drafts/")
 BETMONSTER_CSV = Path("/Users/djryan/.openclaw/skills/betmonster/br-stats-complete.csv")
-POLYMARKET_SKILL = Path("/Users/djryan/skills/polymarket-odds/polymarket.mjs")
 YAHOO_ODDS_CACHE = Path("/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json")
 
 # Team name mapping (Yahoo full name -> CSV abbreviation)
@@ -93,7 +91,7 @@ class ArgusEdgeDetector:
         kelly_stake = max(min_stake, min(kelly_quarter, max_stake))
         return round(kelly_stake, 2)
     
-    def evaluate_pick(self, pick: Dict, polymarket_price: Optional[float] = None) -> Dict:
+    def evaluate_pick(self, pick: Dict) -> Dict:
         """Evaluate a single pick using Argus Edge framework"""
         player = pick.get('player', 'Unknown')
         team = pick.get('team', 'Unknown')
@@ -115,17 +113,6 @@ class ArgusEdgeDetector:
         elif edge >= 0.05:
             recommendation = "LEAN"
         
-        # Compare with Polymarket if available
-        pm_comparison = None
-        if polymarket_price:
-            pm_implied = polymarket_price
-            pm_edge = model_prob - pm_implied
-            pm_comparison = {
-                'price': polymarket_price,
-                'implied_pct': polymarket_price * 100,
-                'edge_vs_pm': pm_edge * 100
-            }
-        
         result = {
             'player': player,
             'team': team,
@@ -139,7 +126,6 @@ class ArgusEdgeDetector:
             'kelly_stake': kelly_stake,
             'kelly_pct': (kelly_stake / self.bankroll) * 100,
             'recommendation': recommendation,
-            'polymarket': pm_comparison,
             'evaluated_at': datetime.now().isoformat()
         }
         
@@ -225,26 +211,7 @@ def load_betmonster_csv(tonights_teams: List[str] = None) -> List[Dict]:
     return players
 
 
-def fetch_polymarket_odds(team_name: str) -> Optional[float]:
-    """Fetch Polymarket odds for a team"""
-    try:
-        result = subprocess.run(
-            ["node", str(POLYMARKET_SKILL), "search", team_name],
-            capture_output=True,
-            text=True,
-            timeout=10
-        )
-        
-        if result.returncode == 0:
-            data = json.loads(result.stdout)
-            if isinstance(data, list) and len(data) > 0:
-                # Return first market's price as proxy
-                market = data[0]
-                if isinstance(market, dict):
-                    return market.get('price', market.get('yesBid', None))
-        return None
-    except Exception:
-        return None
+
 
 
 def generate_props_from_stats(players: List[Dict]) -> List[Dict]:
@@ -340,10 +307,6 @@ def generate_twitter_thread(evaluations: List[Dict], summary: Dict) -> List[str]
         tweet += f"   {prop} (Avg: {stat_avg:.1f})\n"
         tweet += f"   Edge: {edge_pct:.1f}% | Kelly: {kelly_pct:.1f}% (${stake:.0f})\n"
         
-        if bet.get('polymarket'):
-            pm = bet['polymarket']
-            tweet += f"   Polymarket: {pm['implied_pct']:.0f}% | Edge vs PM: {pm['edge_vs_pm']:.1f}%\n"
-        
         tweets.append(tweet)
     
     tweets.append("🧠 Argus Edge Framework:\n"
@@ -383,28 +346,15 @@ def main():
     print(f"  - Props generated: {len(props)}")
     print()
     
-    print("📈 Fetching Polymarket odds for teams...")
-    teams = list(set(p['team'] for p in props))[:10]  # Top 10 teams
-    polymarket_odds = {}
-    for team in teams:
-        pm_price = fetch_polymarket_odds(team)
-        if pm_price:
-            polymarket_odds[team] = pm_price
-            print(f"  ✓ {team}: {pm_price*100:.0f}%")
-    print()
-    
     print("🎯 Evaluating picks with Argus Edge framework...")
     evaluations = []
     for prop in props:
-        team = prop.get('team', '')
-        pm_price = polymarket_odds.get(team, None)
-        eval_result = detector.evaluate_pick(prop, pm_price)
+        eval_result = detector.evaluate_pick(prop)
         evaluations.append(eval_result)
         
         rec_emoji = "✅" if eval_result['recommendation'] in ['BET', 'STRONG BET'] else "❌"
-        pm_indicator = f" | PM: {pm_price*100:.0f}%" if pm_price else ""
         print(f"  {rec_emoji} {eval_result['player']} ({eval_result['team']}): {eval_result['recommendation']} "
-              f"(Edge: {eval_result['edge_pct']:.1f}%, Kelly: ${eval_result['kelly_stake']:.0f}){pm_indicator}")
+              f"(Edge: {eval_result['edge_pct']:.1f}%, Kelly: ${eval_result['kelly_stake']:.0f})")
     print()
     
     summary = detector.get_summary()
@@ -458,11 +408,11 @@ def main():
     print()
     
     # Print detailed table of top picks
-    print("=" * 90)
-    print("TOP PICKS WITH POLYMARKET COMPARISON")
-    print("=" * 90)
-    print(f"{'#':<3} {'Player':<25} {'Team':<8} {'Prop':<20} {'Avg':<6} {'Edge%':<8} {'Kelly':<8} {'PM%':<8} {'Edge vs PM':<10}")
-    print("-" * 90)
+    print("=" * 80)
+    print("TOP PICKS FOR TONIGHT")
+    print("=" * 80)
+    print(f"{'#':<3} {'Player':<25} {'Team':<8} {'Prop':<20} {'Avg':<6} {'Edge%':<8} {'Kelly':<8}")
+    print("-" * 80)
     
     top_picks = sorted([e for e in evaluations if e['recommendation'] in ['BET', 'STRONG BET']],
                        key=lambda x: x['edge'], reverse=True)[:10]
@@ -474,10 +424,8 @@ def main():
         avg = f"{pick.get('stat_avg', 0):.1f}"
         edge = f"{pick['edge_pct']:.1f}%"
         kelly = f"${pick['kelly_stake']:.0f}"
-        pm_pct = f"{pick['polymarket']['implied_pct']:.0f}%" if pick.get('polymarket') else "N/A"
-        edge_vs_pm = f"{pick['polymarket']['edge_vs_pm']:.1f}%" if pick.get('polymarket') else "N/A"
         
-        print(f"{i:<3} {player:<25} {team:<8} {prop:<20} {avg:<6} {edge:<8} {kelly:<8} {pm_pct:<8} {edge_vs_pm:<10}")
+        print(f"{i:<3} {player:<25} {team:<8} {prop:<20} {avg:<6} {edge:<8} {kelly:<8}")
     
     print()
     
