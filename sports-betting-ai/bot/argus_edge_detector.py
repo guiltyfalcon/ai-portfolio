@@ -16,6 +16,41 @@ import subprocess
 TWITTER_DRAFTS_DIR = Path("/Users/djryan/.openclaw/data/twitter-drafts/")
 BETMONSTER_CSV = Path("/Users/djryan/.openclaw/skills/betmonster/br-stats-complete.csv")
 POLYMARKET_SKILL = Path("/Users/djryan/skills/polymarket-odds/polymarket.mjs")
+YAHOO_ODDS_CACHE = Path("/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json")
+
+# Team name mapping (Yahoo full name -> CSV abbreviation)
+TEAM_NAME_MAP = {
+    'LA Lakers': 'LAL',
+    'LA Clippers': 'LAC',
+    'San Antonio': 'SAS',
+    'Phoenix': 'PHO',
+    'Miami': 'MIA',
+    'Chicago': 'CHI',
+    'Cleveland': 'CLE',
+    'New Orleans': 'NOP',
+    'Utah': 'UTA',
+    'Milwaukee': 'MIL',
+    'Sacramento': 'SAC',
+    'Philadelphia': 'PHI',
+    'Charlotte': 'CHA',
+    'Washington': 'WAS',
+    'Detroit': 'DET',
+    'Orlando': 'ORL',
+    'Brooklyn': 'BRK',
+    'New York': 'NYK',
+    'Boston': 'BOS',
+    'Toronto': 'TOR',
+    'Indiana': 'IND',
+    'Atlanta': 'ATL',
+    'Houston': 'HOU',
+    'Dallas': 'DAL',
+    'Denver': 'DEN',
+    'Minnesota': 'MIN',
+    'Portland': 'POR',
+    'Oklahoma City': 'OKC',
+    'Golden State': 'GSW',
+    'Memphis': 'MEM',
+}
 
 # Argus Edge Parameters
 EDGE_THRESHOLD = 0.10  # Minimum 10% edge to bet
@@ -135,8 +170,35 @@ class ArgusEdgeDetector:
         }
 
 
-def load_betmonster_csv() -> List[Dict]:
-    """Load player stats from BetMonster CSV"""
+def load_tonights_teams() -> List[str]:
+    """Load teams playing tonight from Yahoo odds cache (as CSV abbreviations)"""
+    if not YAHOO_ODDS_CACHE.exists():
+        return []
+    
+    with open(YAHOO_ODDS_CACHE, 'r') as f:
+        data = json.load(f)
+    
+    nba_games = data.get('sports', {}).get('nba', [])
+    teams = []
+    
+    today = datetime.now().strftime('%d %b %Y').upper()
+    
+    for game in nba_games:
+        time = game.get('commence_time', '')
+        if today in time.upper():
+            home = game.get('home_team', '')
+            away = game.get('away_team', '')
+            # Convert to CSV abbreviation
+            if home:
+                teams.append(TEAM_NAME_MAP.get(home, home[:3].upper()))
+            if away:
+                teams.append(TEAM_NAME_MAP.get(away, away[:3].upper()))
+    
+    return teams
+
+
+def load_betmonster_csv(tonights_teams: List[str] = None) -> List[Dict]:
+    """Load player stats from BetMonster CSV, filtered by tonight's teams"""
     if not BETMONSTER_CSV.exists():
         return []
     
@@ -144,9 +206,15 @@ def load_betmonster_csv() -> List[Dict]:
     with open(BETMONSTER_CSV, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
+            team = row.get('Team', '')
+            
+            # Filter to only players on teams playing tonight
+            if tonights_teams and team not in tonights_teams:
+                continue
+            
             players.append({
                 'player': row.get('Player', ''),
-                'team': row.get('Team', ''),
+                'team': team,
                 'pos': row.get('Pos', ''),
                 'ppg': float(row.get('PTS', 0)) / float(row.get('G', 1)) if row.get('G') else 0,
                 'apg': float(row.get('AST', 0)) / float(row.get('G', 1)) if row.get('G') else 0,
@@ -298,8 +366,15 @@ def main():
     
     detector = ArgusEdgeDetector(bankroll=10000.0)
     
-    print("📊 Loading BetMonster CSV database...")
-    players = load_betmonster_csv()
+    print("📊 Loading tonight's games from Yahoo cache...")
+    tonights_teams = load_tonights_teams()
+    print(f"  - Teams playing: {len(tonights_teams)}")
+    for team in tonights_teams:
+        print(f"    • {team}")
+    print()
+    
+    print("📊 Loading BetMonster CSV database (filtered by tonight's teams)...")
+    players = load_betmonster_csv(tonights_teams)
     print(f"  - Players loaded: {len(players)}")
     print()
     
@@ -336,7 +411,7 @@ def main():
     
     # Cap total stake at 20% of bankroll
     MAX_TOTAL_STAKE_PCT = 0.20
-    if summary['total_kelly_pct'] > MAX_TOTAL_STAKE_PCT * 100:
+    if summary.get('total_kelly_pct', 0) > MAX_TOTAL_STAKE_PCT * 100:
         scale_factor = (MAX_TOTAL_STAKE_PCT * summary['total_kelly_stake']) / summary['total_kelly_stake'] if summary['total_kelly_stake'] > 0 else 1
         for eval in detector.edge_log:
             if eval['recommendation'] in ['BET', 'STRONG BET']:
