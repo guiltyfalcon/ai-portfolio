@@ -2,7 +2,7 @@
 """
 BetBrain AI — Argus Edge Detector
 Implements Argus-style prediction market edge detection with Kelly criterion sizing
-Combines with BetMonster Monte Carlo + Otterline + Polymarket data
+Uses BetMonster picks from Yahoo odds scraper
 """
 
 import json
@@ -11,9 +11,8 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 # Configuration
-OUTPUT_DIR = Path("/Users/djryan/.openclaw/data/betbrain-external-data/")
 TWITTER_DRAFTS_DIR = Path("/Users/djryan/.openclaw/data/twitter-drafts/")
-BETMONSTER_PICKS_DIR = Path("/Users/djryan/.openclaw/data/betmonster-picks/")
+YAHOO_ODDS_CACHE = Path("/Users/djryan/git/guiltyfalcon/ai-portfolio/sports-betting-ai/api/yahoo_odds_cache.json")
 
 # Argus Edge Strategy Parameters (from argus-edge skill)
 EDGE_THRESHOLD = 0.10  # Minimum 10% edge to bet
@@ -198,58 +197,62 @@ class ArgusEdgeDetector:
         }
 
 
-def load_betmonster_picks() -> List[Dict]:
-    """Load latest BetMonster picks"""
-    files = sorted(BETMONSTER_PICKS_DIR.glob("*.json"))
-    if not files:
+def load_yahoo_odds_picks() -> List[Dict]:
+    """Load picks from Yahoo odds cache and generate AI analysis"""
+    if not YAHOO_ODDS_CACHE.exists():
         return []
     
-    with open(files[-1], 'r') as f:
+    with open(YAHOO_ODDS_CACHE, 'r') as f:
         data = json.load(f)
     
-    return data.get('picks', [])
-
-
-def load_otterline_polymarket() -> Optional[Dict]:
-    """Load latest Otterline + Polymarket data"""
-    files = sorted(OUTPUT_DIR.glob("otterline_polymarket_*.json"))
-    if not files:
-        return None
+    nba_games = data.get('sports', {}).get('nba', [])
+    picks = []
     
-    with open(files[-1], 'r') as f:
-        return json.load(f)
-
-
-def merge_pick_data(betmonster_picks: List[Dict], otterline_data: Optional[Dict]) -> List[Dict]:
-    """Merge BetMonster picks with Otterline/Polymarket data"""
-    merged = []
+    for game in nba_games:
+        home = game.get('home_team', 'Unknown')
+        away = game.get('away_team', 'Unknown')
+        spread = game.get('home_spread', 0)
+        total = game.get('total', 0)
+        home_ml = game.get('home_ml', 0)
+        away_ml = game.get('away_ml', 0)
+        home_last_5 = game.get('home_last_5', '')
+        away_last_5 = game.get('away_last_5', '')
+        
+        # Generate AI pick with edge calculation
+        pick = None
+        model_prob = 0.5
+        odds = -110
+        
+        if abs(spread) >= 6 and 'WW' in home_last_5:
+            pick = f'{home} {spread}'
+            model_prob = 0.75
+            odds = game.get('home_spread_odds', -110)
+        elif abs(spread) <= 5 and 'WW' in away_last_5:
+            pick = f'{away} +{abs(spread)}'
+            model_prob = 0.70
+            odds = game.get('away_spread_odds', -110)
+        elif total >= 240:
+            pick = f'OVER {total}'
+            model_prob = 0.65
+            odds = game.get('over_odds', -110)
+        elif home_ml < -200:
+            pick = f'{home} ML'
+            model_prob = 0.70
+            odds = home_ml
+        
+        if pick:
+            edge = model_prob - (abs(odds) / (abs(odds) + 100) if odds < 0 else 100 / (odds + 100))
+            picks.append({
+                'team': home if 'ML' in pick or spread > 0 else away,
+                'matchup': f'{away} @ {home}',
+                'pick': pick,
+                'model_prob': model_prob,
+                'odds': odds,
+                'edge': edge,
+                'confidence': int(model_prob * 100)
+            })
     
-    for bm_pick in betmonster_picks:
-        team = bm_pick.get('team', '')
-        
-        # Find matching Otterline pick
-        otterline_match = None
-        polymarket_price = None
-        
-        if otterline_data:
-            for ol_pick in otterline_data.get('combined_picks', []):
-                ol_team = ol_pick.get('pick', '')
-                if team.lower() in ol_team.lower() or ol_team.lower() in team.lower():
-                    otterline_match = ol_pick
-                    polymarket_price = ol_pick.get('polymarket_price')
-                    break
-        
-        # Create merged pick
-        merged_pick = {
-            **bm_pick,
-            'otterline_tier': otterline_match.get('otterline_tier') if otterline_match else None,
-            'polymarket_price': polymarket_price,
-            'polymarket_match': polymarket_price is not None
-        }
-        
-        merged.append(merged_pick)
-    
-    return merged
+    return picks
 
 
 def generate_argus_twitter_thread(evaluations: List[Dict], summary: Dict) -> List[str]:
@@ -279,13 +282,8 @@ def generate_argus_twitter_thread(evaluations: List[Dict], summary: Dict) -> Lis
         
         tweet = f"{emoji} {i}. {team}\n"
         tweet += f"   Edge: {edge_pct:.1f}% | Kelly: {kelly_pct:.1f}% (${stake:.0f})\n"
-        
-        if bet.get('otterline_tier') and bet['otterline_tier'].lower() != 'pass':
-            tweet += f"   Otterline: {bet['otterline_tier'].upper()}\n"
-        
-        if bet.get('polymarket_price'):
-            pm_pct = bet['polymarket_price'] * 100
-            tweet += f"   Polymarket: {pm_pct:.0f}%\n"
+        if bet.get('pick'):
+            tweet += f"   Pick: {bet['pick']}\n"
         
         tweets.append(tweet)
     
@@ -312,23 +310,15 @@ def main():
     detector = ArgusEdgeDetector(bankroll=10000.0)
     
     # Load data
-    print("📊 Loading data sources...")
-    betmonster_picks = load_betmonster_picks()
-    otterline_data = load_otterline_polymarket()
-    print(f"  - BetMonster picks: {len(betmonster_picks)}")
-    print(f"  - Otterline data: {'✓' if otterline_data else '✗'}")
-    print()
-    
-    # Merge data
-    print("🔄 Merging data sources...")
-    merged_picks = merge_pick_data(betmonster_picks, otterline_data)
-    print(f"  - Merged picks: {len(merged_picks)}")
+    print("📊 Loading Yahoo odds cache...")
+    picks = load_yahoo_odds_picks()
+    print(f"  - Picks generated: {len(picks)}")
     print()
     
     # Evaluate each pick
     print("🎯 Evaluating picks with Argus Edge framework...")
     evaluations = []
-    for pick in merged_picks:
+    for pick in picks:
         eval_result = detector.evaluate_pick(pick)
         evaluations.append(eval_result)
         
