@@ -58,13 +58,15 @@ class ArgusEdgeDetector:
         kelly_stake = max(min_stake, min(kelly_quarter, max_stake))
         return round(kelly_stake, 2)
     
-    def evaluate_pick(self, pick: Dict) -> Dict:
+    def evaluate_pick(self, pick: Dict, polymarket_price: Optional[float] = None) -> Dict:
         """Evaluate a single pick using Argus Edge framework"""
         player = pick.get('player', 'Unknown')
+        team = pick.get('team', 'Unknown')
         prop = pick.get('prop', '')
         line = pick.get('line', 0)
         model_prob = pick.get('model_prob', 0.5)
         odds = pick.get('odds', -110)
+        stat_avg = pick.get('stat_avg', 0)
         
         edge = self.calculate_edge(model_prob, odds)
         kelly_stake = self.calculate_kelly_stake(edge, odds)
@@ -78,10 +80,23 @@ class ArgusEdgeDetector:
         elif edge >= 0.05:
             recommendation = "LEAN"
         
+        # Compare with Polymarket if available
+        pm_comparison = None
+        if polymarket_price:
+            pm_implied = polymarket_price
+            pm_edge = model_prob - pm_implied
+            pm_comparison = {
+                'price': polymarket_price,
+                'implied_pct': polymarket_price * 100,
+                'edge_vs_pm': pm_edge * 100
+            }
+        
         result = {
             'player': player,
+            'team': team,
             'prop': prop,
             'line': line,
+            'stat_avg': stat_avg,
             'model_prob': model_prob,
             'market_odds': odds,
             'edge': edge,
@@ -89,6 +104,7 @@ class ArgusEdgeDetector:
             'kelly_stake': kelly_stake,
             'kelly_pct': (kelly_stake / self.bankroll) * 100,
             'recommendation': recommendation,
+            'polymarket': pm_comparison,
             'evaluated_at': datetime.now().isoformat()
         }
         
@@ -174,6 +190,7 @@ def generate_props_from_stats(players: List[Dict]) -> List[Dict]:
         ppg = player['ppg']
         apg = player['apg']
         rpg = player['rpg']
+        team = player['team']
         
         # Points props - simulate book making line 2-3 points below average
         if ppg > 18:
@@ -185,11 +202,12 @@ def generate_props_from_stats(players: List[Dict]) -> List[Dict]:
             odds = -130 if ppg > 25 else -115
             props.append({
                 'player': player['player'],
+                'team': team,
                 'prop': f'Points Over {line}.5',
                 'line': line + 0.5,
                 'model_prob': min(0.78, max(0.42, model_prob)),
                 'odds': odds,
-                'team': player['team']
+                'stat_avg': ppg
             })
         
         # Assists props - books set line 1-1.5 below average
@@ -199,11 +217,12 @@ def generate_props_from_stats(players: List[Dict]) -> List[Dict]:
             odds = -120 if apg > 6 else -110
             props.append({
                 'player': player['player'],
+                'team': team,
                 'prop': f'Assists Over {line}.5',
                 'line': line + 0.5,
                 'model_prob': min(0.75, max(0.42, model_prob)),
                 'odds': odds,
-                'team': player['team']
+                'stat_avg': apg
             })
         
         # Rebounds props - books set line 1-1.5 below average
@@ -213,11 +232,12 @@ def generate_props_from_stats(players: List[Dict]) -> List[Dict]:
             odds = -120 if rpg > 9 else -110
             props.append({
                 'player': player['player'],
+                'team': team,
                 'prop': f'Rebounds Over {line}.5',
                 'line': line + 0.5,
                 'model_prob': min(0.75, max(0.42, model_prob)),
                 'odds': odds,
-                'team': player['team']
+                'stat_avg': rpg
             })
     
     return props
@@ -241,14 +261,20 @@ def generate_twitter_thread(evaluations: List[Dict], summary: Dict) -> List[str]
     for i, bet in enumerate(bets, 1):
         emoji = "🔒" if bet['recommendation'] == 'STRONG BET' else "⚡"
         player = bet['player']
+        team = bet.get('team', 'Unknown')
         edge_pct = bet['edge_pct']
         kelly_pct = bet['kelly_pct']
         stake = bet['kelly_stake']
         prop = bet['prop']
+        stat_avg = bet.get('stat_avg', 0)
         
-        tweet = f"{emoji} {i}. {player}\n"
-        tweet += f"   {prop}\n"
+        tweet = f"{emoji} {i}. {player} ({team})\n"
+        tweet += f"   {prop} (Avg: {stat_avg:.1f})\n"
         tweet += f"   Edge: {edge_pct:.1f}% | Kelly: {kelly_pct:.1f}% (${stake:.0f})\n"
+        
+        if bet.get('polymarket'):
+            pm = bet['polymarket']
+            tweet += f"   Polymarket: {pm['implied_pct']:.0f}% | Edge vs PM: {pm['edge_vs_pm']:.1f}%\n"
         
         tweets.append(tweet)
     
@@ -282,15 +308,28 @@ def main():
     print(f"  - Props generated: {len(props)}")
     print()
     
+    print("📈 Fetching Polymarket odds for teams...")
+    teams = list(set(p['team'] for p in props))[:10]  # Top 10 teams
+    polymarket_odds = {}
+    for team in teams:
+        pm_price = fetch_polymarket_odds(team)
+        if pm_price:
+            polymarket_odds[team] = pm_price
+            print(f"  ✓ {team}: {pm_price*100:.0f}%")
+    print()
+    
     print("🎯 Evaluating picks with Argus Edge framework...")
     evaluations = []
     for prop in props:
-        eval_result = detector.evaluate_pick(prop)
+        team = prop.get('team', '')
+        pm_price = polymarket_odds.get(team, None)
+        eval_result = detector.evaluate_pick(prop, pm_price)
         evaluations.append(eval_result)
         
         rec_emoji = "✅" if eval_result['recommendation'] in ['BET', 'STRONG BET'] else "❌"
-        print(f"  {rec_emoji} {eval_result['player']}: {eval_result['recommendation']} "
-              f"(Edge: {eval_result['edge_pct']:.1f}%, Kelly: ${eval_result['kelly_stake']:.0f})")
+        pm_indicator = f" | PM: {pm_price*100:.0f}%" if pm_price else ""
+        print(f"  {rec_emoji} {eval_result['player']} ({eval_result['team']}): {eval_result['recommendation']} "
+              f"(Edge: {eval_result['edge_pct']:.1f}%, Kelly: ${eval_result['kelly_stake']:.0f}){pm_indicator}")
     print()
     
     summary = detector.get_summary()
@@ -341,6 +380,30 @@ def main():
             f.write("\n\n")
     
     print(f"✓ Saved to {output_file}")
+    print()
+    
+    # Print detailed table of top picks
+    print("=" * 90)
+    print("TOP PICKS WITH POLYMARKET COMPARISON")
+    print("=" * 90)
+    print(f"{'#':<3} {'Player':<25} {'Team':<8} {'Prop':<20} {'Avg':<6} {'Edge%':<8} {'Kelly':<8} {'PM%':<8} {'Edge vs PM':<10}")
+    print("-" * 90)
+    
+    top_picks = sorted([e for e in evaluations if e['recommendation'] in ['BET', 'STRONG BET']],
+                       key=lambda x: x['edge'], reverse=True)[:10]
+    
+    for i, pick in enumerate(top_picks, 1):
+        player = pick['player'][:24]
+        team = pick.get('team', '')[:7]
+        prop = pick['prop'][:19]
+        avg = f"{pick.get('stat_avg', 0):.1f}"
+        edge = f"{pick['edge_pct']:.1f}%"
+        kelly = f"${pick['kelly_stake']:.0f}"
+        pm_pct = f"{pick['polymarket']['implied_pct']:.0f}%" if pick.get('polymarket') else "N/A"
+        edge_vs_pm = f"{pick['polymarket']['edge_vs_pm']:.1f}%" if pick.get('polymarket') else "N/A"
+        
+        print(f"{i:<3} {player:<25} {team:<8} {prop:<20} {avg:<6} {edge:<8} {kelly:<8} {pm_pct:<8} {edge_vs_pm:<10}")
+    
     print()
     
     print("=" * 60)
